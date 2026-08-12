@@ -4,7 +4,31 @@ All notable changes to the theme-service. Apps record the version they vendored 
 (plus `updating-themes.md`) to migrate. Versioning: minor bump for additive themes/tokens, major for
 breaking token renames/removals or a default-theme change.
 
-## Unreleased
+## 1.2.0 — 2026-08-11
+
+### TL;DR
+
+- **A theme's name is three parts now** (`name` / `group` / `description`) instead of one `label`
+  string, so the theme picker can group by family and stop repeating itself. `label` still works,
+  but **its value changed**.
+- **The background effect can go on the header and footer**, not just the page background — and the
+  apply interview now *asks* where you want it instead of guessing.
+- **The brand lockup is a step larger** at every width. Header height is unchanged.
+
+### Upgrading — four things that may need action
+
+1. **Fork themes** in `tools/palettes/local.mjs`: rename `label` → `name` and `group` → `cohort`.
+2. **Vendored header markup:** add `data-dropdown-swatch-style="dots"` to its `<select>`, or the
+   theme console's swatches silently fall back to strips.
+3. **Vendored `site-footer.css`** with an override on `.site-footer::before`: move it to `::after`.
+   Overrides of `.ftr-link::before` / `.ftr-here::before` did not move.
+4. **Anything reading a theme's `label`** and expecting the old string: `hot-neon-dark-no-background`
+   is now `"Hot Neon · Dark · No Background"`, was `"Hot Neon (No Background)"`.
+
+No token was renamed or removed and the default theme is unchanged, so nothing breaks from the token
+surface alone. Everything below is the reasoning behind the three headlines.
+
+---
 
 **A theme's display name is three parts now, not one string.** Every theme carries `name`
 (`"Hot Neon"`), `group` (`"Dark"` / `"Light"`, may be empty) and `description` (`"No Background"`,
@@ -39,6 +63,30 @@ silently getting it wrong for any name that did not end that way.
   `group`; `cohort` keeps them apart. Fork themes in `local.mjs` need the same two renames — see the
   contract comment at the top of that file. `group` and `description` are optional; `group` defaults
   to the capitalized `mode`.
+
+**The background effect can go on the header and footer now, and applying it is a question rather
+than a guess.** Where the retro grid (`.fx-grid`, strength `--fx-grid-opacity`) lands is now Step 0
+question 3 of the apply interview: **page background only** (the default, and what every themed repo
+does today), **header/footer only**, or **the whole page** — page surface plus both bars. The answer
+is recorded in `THEME-SERVICE.md` under "Applied configuration", so a later session can see what was
+intended instead of re-deciding. A repo whose log predates the question is read as "page background
+only" and left alone.
+
+- **Two bugs made the header/footer answer impossible**, both fixed in the vendored bar CSS:
+  - **`site-footer.css`: the lit top tube moved from `.site-footer::before` to `.site-footer::after`**,
+    matching the header, which has always drawn its tube on `::after`. `.fx-grid` paints on `::before`
+    at `z-index: -1`, and `site-footer.css` loads after `effects.css` — so the tube won on source
+    order and the grid rendered nothing on the footer. `::before` is now free on **both** bars. No
+    layout or visual change: the tube is absolutely positioned at the top edge either way, and it
+    still paints above the grid. The forced-colors `display: none` moved with it.
+  - **`site-header.css` gains `.site-header.fx-grid { position: sticky; top: 0; }`.** `.fx-grid` sets
+    `position: relative`, same specificity as `.site-header`, so a page that loaded `effects.css`
+    last lost its sticky rail as soon as the effect was applied. `0-2-0` wins in either direction.
+- Applying `.fx-grid` to an app's **own** header/footer (not these bars) needs the check the apply
+  reference now spells out: if the element already uses `::before` or sets `position`, put the class
+  on a full-bleed wrapper inside it instead. The rule is *what the surface stands for* — an embedded
+  app frame or a full-popup wrapper is a page background in its own right and keeps the class; a card
+  on the host page does not.
 
 **The brand lockup is a step larger again, and the nav stops stepping where the brand does.** The
 rail's vertical gutter went fluid in 1.1.0, which left the lockup looking small inside a taller

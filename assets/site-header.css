@@ -213,10 +213,17 @@ a.pagenav-seg:focus-visible { outline: 3px solid var(--focus-ring); outline-offs
    possible demonstration of the thing this site is for. No JS involved.
 
    The control itself is themes/dropdown.js's accessible listbox, grouped by
-   family with each theme's own four accents as a swatch. It degrades to the
+   theme name with each theme's own four accents as a swatch. It degrades to the
    native <select> underneath if that script never loads, so both are styled
    below. The console is only a shell — it keeps the border, glow and focus ring,
    and the trigger inside it goes flat.
+
+   `.dropdown-console` in themes/dropdown.css is the generic form of this — cap,
+   divider, pill, flat trigger — and the gallery's theme-picker card uses it. This
+   block stays separate rather than extending it because the header adds the four
+   lamps, a measured fixed width and four breakpoints on top, and because this file
+   is installed into other repos on its own. The shared parts are duplicated on
+   purpose: change one, change the other.
    --------------------------------------------------------------------------- */
 .theme-console {
   display: inline-flex; align-items: center; height: 36px; min-width: 0;
@@ -292,48 +299,19 @@ a.pagenav-seg:focus-visible { outline: 3px solid var(--focus-ring); outline-offs
 .theme-console .dropdown {
   flex: 0 1 auto; width: 316px; min-width: 0; align-self: stretch;
 }
-/* One palette notation in the header, not two. The component's default swatch is
-   a contiguous strip; the trigger beside it shows .tc-lamps, four dots. Reading a
-   row and then the trigger meant re-parsing the same four accents in a different
-   shape, so the panel adopts the lamps' notation: same order (pink, green, blue,
+/* One palette notation in the header, not two. The component's default swatch is a
+   contiguous strip; the trigger beside it shows .tc-lamps, four dots, and reading a
+   row and then the trigger meant re-parsing the same four accents in two different
+   shapes. So the panel adopts the lamps' notation: same order (pink, green, blue,
    purple — build-final.mjs emits data-dropdown-swatch in exactly that order), same
-   circles, same 5px rhythm, one size down for the row's smaller type. Only the
-   header is rescoped; the component keeps its strip, which is what the gallery in
-   preview.html demonstrates. To go back to strips everywhere, delete this block. */
-.theme-console .dropdown-swatch {
-  gap: 5px;
-  border: 0; border-radius: 0;
-  /* The strip clipped its children to a rounded box. Dots need to glow past
-     their own edges, so the clip has to go with the border that motivated it. */
-  overflow: visible;
-}
-.theme-console .dropdown-swatch > span {
-  position: relative;
-  width: 7px; height: 7px; border-radius: 50%;
-}
-/* The lamps glow with box-shadow off var(--lamp). These dots can't: their color
-   is an inline style from the option's data, and no shadow property can read a
-   background. A pseudo-element can — `background: inherit` picks up that same
-   inline value — so a blurred copy of the dot becomes its halo.
+   circles, same 5px rhythm, one size down for the row's smaller type.
 
-   It paints ON TOP of the dot rather than behind it, which needs no z-index and
-   so can't escape the row's stacking context: blurring a solid disc leaves the
-   center solid, so at 65% over its own color the core is unchanged and only the
-   spill past the edge reads.
-
-   inset:0 and 65% are not arbitrary — they reproduce the lamps' own
-   `0 0 5px color-mix(--lamp 65%, transparent)`. An earlier inset:-2px blew the
-   disc up to 11px BEFORE blurring, and the dots came out as blobs rather than
-   dots with halos. The glow must start at the dot's own edge, like a shadow.
-   Scaled by --glow-strength for the same reason every other glow here is. */
-.theme-console .dropdown-swatch > span::after {
-  content: '';
-  position: absolute; inset: 0;
-  border-radius: 50%;
-  background: inherit;
-  filter: blur(2.5px);
-  opacity: calc(.65 * var(--glow-strength));
-}
+   The dot styling itself is NOT here — it lives in themes/dropdown.css as the
+   opt-in `data-dropdown-swatch-style="dots"`, which the header <select> carries.
+   It moved there when the gallery grew a card documenting this pattern: that card
+   also renders on discovery/draft-3/index.html, which never loads this file, so a
+   rule scoped to .theme-console could not reach it. Drop the attribute from the
+   markup to go back to the default strip. */
 
 /* Flat inside the console: the shell already draws the border, radius and glow,
    so the trigger contributes only its text and caret.

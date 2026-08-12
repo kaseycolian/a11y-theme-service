@@ -320,9 +320,19 @@
       syncDisabled();
     }
 
+    /* A row can afford to be terse — the group heading above it supplies the rest.
+       The CLOSED trigger cannot: it is the one label always on screen, with no
+       heading near it, so a theme row reading "Dark · No Background" would leave
+       the trigger saying that and nothing about WHICH theme. data-dropdown-full-label
+       carries the composed name for exactly these cases. Optional: an option
+       without one falls back to its own text, so plain dropdowns are unchanged. */
+    function fullLabelOf(option) {
+      return (option.getAttribute('data-dropdown-full-label') || option.textContent).trim();
+    }
+
     function syncValue() {
       var option = select.options[select.selectedIndex];
-      valueEl.textContent = option ? option.textContent.trim() : emptyText;
+      valueEl.textContent = option ? fullLabelOf(option) : emptyText;
       valueEl.classList.toggle('dropdown-value-empty', !option);
 
       var allRows = list.querySelectorAll('[role="option"]');
@@ -497,7 +507,12 @@
       bufferTime = now;
 
       for (var i = 0; i < rows.length; i++) {
-        var text = select.options[rowIndexes[i]].textContent.trim().toLowerCase();
+        /* The FULL name, not the row's own text: rows grouped under a heading drop
+           the part the heading already said, so sixteen themes offer rows reading
+           "Dark" and "Light" and typing "s" would match none of them. Matching the
+           composed name keeps "sy" landing on Synthwave Sunset — the thing a user
+           types is the theme's name, not the fragment left after grouping. */
+        var text = fullLabelOf(select.options[rowIndexes[i]]).toLowerCase();
         if (text.indexOf(buffer) === 0) {
           if (isOpen()) focusRow(i);
           else choose(i);

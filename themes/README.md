@@ -70,10 +70,12 @@ scripts, which silently leaves the dropdown empty):
 persists the choice. React/Angular use their own provider instead — see the skill's
 `applying-themes.md`.
 
-Options are emitted **grouped by family** (`<optgroup>`), each carrying `data-dropdown-swatch` (that
-theme's four accents) and `data-dropdown-secondary` (its id). A plain `<select>` ignores those two
-attributes and just shows the label — so the snippet above is unchanged. To render them, add
-`data-dropdown` and load `dropdown.js`:
+Options are emitted **grouped by theme name** (`<optgroup>`), so each row states only what its
+heading has not — `Dark`, `Dark · No Background` — rather than repeating the name down the list.
+Each carries `data-dropdown-swatch` (that theme's four accents), `data-dropdown-secondary` (its id)
+and `data-dropdown-full-label` (the composed `Hot Neon · Dark · No Background`, for the closed
+trigger and type-ahead). A plain `<select>` ignores all three and just shows the row text — so the
+snippet above is unchanged. To render them, add `data-dropdown` and load `dropdown.js`:
 
 ```html
 <span id="theme-cap">Theme</span>
@@ -121,19 +123,53 @@ optional:
 | `data-dropdown-icon="<symbol id>"` | `<use href="#id">` from an SVG sprite | No — `aria-hidden` decoration |
 | `data-dropdown-swatch="#hex,#hex,…"` | a color strip | No — `aria-hidden` decoration |
 | `data-dropdown-secondary="text"` | a muted second line | **Yes** — it is content, not filler |
+| `data-dropdown-full-label="text"` | *nothing* in the row — used for the **closed trigger** and type-ahead | No — the row's own text is the name |
 | `data-dropdown-empty-text="…"` | the empty-state message | — |
 
-One attribute goes on the `<select>` rather than an option:
+`data-dropdown-full-label` exists for grouped lists whose rows drop what the heading already said.
+The theme picker groups by theme name, so its rows read `Dark` and `Dark · No Background` — fine
+under a "Hot Neon" heading, useless on the closed trigger, which has no heading near it, and
+unmatchable by type-ahead, where what a user types is `hot`. Give the option the composed
+`Hot Neon · Dark · No Background` and both read that instead. Omit it and the row's own text is
+used, so ordinary dropdowns need nothing.
+
+Two attributes go on the `<select>` rather than an option:
 
 | Attribute | Effect |
 | --------- | ------ |
 | `data-dropdown-anchor="<css selector>"` | Size and align the open panel to the nearest matching **ancestor** instead of to the trigger |
+| `data-dropdown-swatch-style="dots"` | Render `data-dropdown-swatch` as separate glowing circles instead of the default contiguous strip |
 
 Use it when the trigger sits inside a group — a label cap, an addon, an icon rail — so that what
 the user reads as "the control" is the whole group. Without it the panel starts partway across the
 group and looks detached. The site header does exactly this
 (`data-dropdown-anchor=".theme-console"`), which is why its list spans the cap and the lamps too. It is
 opt-in: with no attribute the panel matches the trigger, the way a native `<select>` behaves.
+
+### Console — cap and control in one pill
+
+For a label that reads better *as part of* the control than stacked above it — a persistent
+instrument in a toolbar or rail, rather than a field in a form:
+
+```html
+<div class="dropdown-console">
+  <span class="dropdown-console-cap" id="theme-cap">Theme</span>
+  <select id="theme" data-dropdown data-dropdown-anchor=".dropdown-console"
+          aria-labelledby="theme-cap"></select>
+</div>
+```
+
+A `<div>`, **not** a `<label>`: once `dropdown.js` runs the real control is a `<button>`, which a
+wrapping label neither names nor focuses. `aria-labelledby` on the cap is what makes the trigger
+announce "Theme, *current value*". If you hide the cap responsively, **clip it** — a name pointing at
+a `display: none` element resolves to nothing. The site header's `.theme-console` is this pattern
+specialized (lamps, a fixed width, its own breakpoints); the gallery's theme-picker card uses the
+generic one.
+
+`data-dropdown-swatch-style="dots"` is the same kind of opt-in for the swatch. The header's trigger
+already shows the palette as four dots (`.tc-lamps`), and a contiguous strip in the rows below it
+meant reading the same four accents in two different shapes; the dots make one notation of it. The
+gallery's "Theme picker" card shows it next to the six cards that keep the default strip.
 
 Supports plain lists, icons, swatches, secondary text, `<optgroup>` hierarchies, disabled options,
 and the empty state. Keyboard: `↓`/`↑` (wrapping), `Home`/`End`, `Enter`/`Space`, `Esc`, `Tab`, and

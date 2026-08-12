@@ -212,7 +212,12 @@ states in `wcag-checklist.md`.
 ## The theme selector (all stacks)
 
 Requirements:
-- Lists **all** themes from `themes.index.json` (`themes[]`), labeled `"<family label> · <Mode>"`,
+- Lists **all** themes from `themes.index.json` (`themes[]`). Each entry stores its display name in
+  three parts — `name` (`"Hot Neon"`), `group` (`"Dark"`/`"Light"`, may be `""`) and `description`
+  (`"No Background"`, may be `""`) — plus `label`, the three composed as
+  `"Hot Neon · Dark · No Background"`. Group the list by `name` and show only `group` + `description`
+  in each row, so the name is not repeated on every line; use `label` wherever a row stands alone
+  (a closed trigger, a settings summary),
   plus a default/"Auto" option (no `data-theme` → Rink Classic by OS).
 - On change: set `document.documentElement.setAttribute('data-theme', id)` (or remove it for Auto).
 - **Persist** to `localStorage` and **re-apply before first paint** to avoid a flash of the wrong theme.

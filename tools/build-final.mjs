@@ -19,6 +19,7 @@ import { fileURLToPath } from 'node:url';
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { contrastRatio, round2 } from './contrast-checker/contrast.mjs';
+import { fullLabel, optionLabel, modeLabel } from './theme-name.mjs';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DEFAULT_FAMILY = 'rink-classic';
@@ -67,7 +68,16 @@ function meta(draftId, p) {
   const noBg = familyPart.endsWith('-no-background');
   const family = noBg ? familyPart.slice(0, -'-no-background'.length) : familyPart;
   const id = `${family}-${p.mode}${noBg ? '-no-background' : ''}`;
-  return { id, family, mode: p.mode, label: p.label, noBg };
+  /* The name is carried in three parts (tools/theme-name.mjs) so a consumer can
+     render whichever of them its context has not already said. `group` defaults
+     to the mode rather than being authored: two fields that must agree about the
+     same fact will eventually disagree. `!== undefined` so a palette can still
+     override it with '' and opt out of a group segment entirely. */
+  const group = p.group !== undefined ? p.group : modeLabel(p.mode);
+  const description = p.description || '';
+  const name = p.name;
+  return { id, family, mode: p.mode, name, group, description,
+           label: fullLabel({ name, group, description }), noBg };
 }
 
 // ---------- AA validation (built-ins AND local) ----------
@@ -109,9 +119,14 @@ for (const [draftId, p, origin] of entries) {
   themes[mt.id] = { ...mt, colorScheme: p.mode, glow: p.mode === 'light' ? '0.35' : '1', grid: p.grid, origin, tokens };
   origins[mt.id] = `${origin} "${draftId}"`;
 }
+/* The family heading is just the shared `name` — every variant of a family carries
+   the same one, so which theme is seen first no longer decides what the heading
+   says. This used to regex-strip " (No Background)" back off a composed label,
+   which meant a family whose no-bg variant happened to be defined first got that
+   suffix in its heading, and any other kind of variant kept its suffix outright. */
 const families = {};
 for (const t of Object.values(themes)) {
-  families[t.family] ??= { family: t.family, label: t.label.replace(/ \(No Background\)$/, '') };
+  families[t.family] ??= { family: t.family, name: t.name, label: t.name };
   if (!t.noBg) families[t.family][t.mode] = t.id;  // primary dark/light = the WITH-background variant
 }
 
@@ -140,12 +155,12 @@ if (process.argv.includes('--write')) {
    Pair with effects.css + components.css.
 
    Usage: include theme.css (+ effects.css + components.css). With no data-theme,
-   the default (${defFam.label}) renders${defLight !== defDark ? ' — dark, or light under prefers-color-scheme: light' : ''}.
+   the default (${defFam.name}) renders${defLight !== defDark ? ' — dark, or light under prefers-color-scheme: light' : ''}.
    Force any theme with <html data-theme="<id>">.
    Theme ids: ${Object.keys(themes).join(', ')}.
    ============================================================================= */\n\n`;
 
-  css += `/* Default theme (${defFam.label}). */\n`;
+  css += `/* Default theme (${defFam.name}). */\n`;
   css += block(':root', themes[defDark]) + '\n\n';
   if (defLight !== defDark) {
     css += `@media (prefers-color-scheme: light) {\n`;
@@ -160,7 +175,10 @@ if (process.argv.includes('--write')) {
     version: VERSION, builtinSource: includeBuiltins ? `draft-${srcDraft}` : null, localThemes: Object.keys(LOCAL).length,
     default: { family: defFam.family, dark: defDark, light: defLight },
     themes: Object.fromEntries(Object.values(themes).map(t =>
-      [t.id, { label: t.label, family: t.family, mode: t.mode, origin: t.origin, colorScheme: t.colorScheme, glowStrength: Number(t.glow),
+      // name/group/description are the parts; `label` is the three of them composed,
+      // kept so a consumer that just wants a string does not have to join them itself.
+      [t.id, { name: t.name, group: t.group, description: t.description, label: t.label,
+        family: t.family, mode: t.mode, origin: t.origin, colorScheme: t.colorScheme, glowStrength: Number(t.glow),
         ...(t.grid !== undefined ? { gridOpacity: t.grid } : {}), tokens: t.tokens }])),
   };
   writeFileSync(join(REPO, 'themes/tokens.json'), JSON.stringify(tokensJson, null, 2) + '\n');
@@ -169,7 +187,8 @@ if (process.argv.includes('--write')) {
     version: VERSION,
     default: { family: defFam.family, dark: defDark, light: defLight },
     families: Object.values(families),
-    themes: Object.values(themes).map(t => ({ id: t.id, label: t.label, family: t.family, mode: t.mode, origin: t.origin })),
+    themes: Object.values(themes).map(t => ({ id: t.id, name: t.name, group: t.group,
+      description: t.description, label: t.label, family: t.family, mode: t.mode, origin: t.origin })),
   };
   writeFileSync(join(REPO, 'themes/themes.index.json'), JSON.stringify(index, null, 2) + '\n');
 
@@ -196,16 +215,22 @@ if (process.argv.includes('--write')) {
   // value you'd put in data-theme). dropdown.js reads the data-dropdown-* attributes; a
   // plain <select> ignores them and just shows the label, so both stay supported.
   const swatchOf = t => accents.map(a => t.tokens[VARMAP[a]]).join(',');
-  const modeLabel = m => m[0].toUpperCase() + m.slice(1);
   const selectList = [{
-    id: '', label: `Auto (${defFam.label})`, group: 'Automatic',
+    id: '', label: `Auto (${defFam.name})`, group: 'Automatic',
     secondary: 'follows your OS', swatch: swatchOf(themes[defDark]),
   }].concat(Object.values(themes).map(t => ({
     id: t.id,
-    // The full family name stays in the option text, not just the mode: it is what
-    // the trigger displays once chosen, and what type-ahead matches on.
-    label: `${t.label} · ${modeLabel(t.mode)}`,
-    group: (families[t.family] && families[t.family].label) || t.family,
+    /* The row says only what its group heading has not already said — "Dark",
+       "Dark · No Background" under a "Hot Neon" heading, rather than repeating
+       the family name on every line of the list. */
+    label: optionLabel(t),
+    group: t.name,
+    /* The composed name, for the two places a row's own text is not enough: the
+       CLOSED trigger, which shows the selection with no heading above it to give
+       it context, and type-ahead, where "sy" has to still find Synthwave Sunset.
+       dropdown.js reads it from data-dropdown-full-label; anything without one
+       falls back to the option text, so plain dropdowns are unaffected. */
+    full: t.label,
     secondary: t.id,
     swatch: swatchOf(t),
   })));
@@ -216,9 +241,12 @@ if (process.argv.includes('--write')) {
    Markup you provide:  <select data-theme-select aria-label="Theme"></select>
                         <input type="checkbox" data-motion-toggle> Reduce motion  (optional)
 
-   Options are grouped by family (<optgroup>) and carry data-dropdown-swatch (the theme's
-   four accents) + data-dropdown-secondary (its id). A plain <select> ignores those two
-   attributes; add data-dropdown AND load dropdown.js to render them.
+   Options are grouped by theme name (<optgroup>), so each row carries only what the
+   heading has not said — "Dark", "Dark · No Background". They also carry
+   data-dropdown-swatch (the theme's four accents), data-dropdown-secondary (its id)
+   and data-dropdown-full-label (the composed "Hot Neon · Dark · No Background", used
+   for the closed trigger and type-ahead). A plain <select> ignores all three; add
+   data-dropdown AND load dropdown.js to render them.
 
    For React/Angular, prefer the framework's own provider (see the skill) instead of this file. */
 (function () {
@@ -238,6 +266,7 @@ if (process.argv.includes('--write')) {
           var opt = new Option(t.label, t.id);
           if (t.swatch) opt.setAttribute('data-dropdown-swatch', t.swatch);
           if (t.secondary) opt.setAttribute('data-dropdown-secondary', t.secondary);
+          if (t.full) opt.setAttribute('data-dropdown-full-label', t.full);
           if (!t.group) { sel.appendChild(opt); return; }
           if (!groups[t.group]) {
             groups[t.group] = document.createElement('optgroup');

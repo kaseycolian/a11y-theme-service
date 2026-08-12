@@ -166,9 +166,11 @@
            "Theme, <current theme>" the way a native select does.
            data-dropdown-anchor sizes the panel to the whole console rather than to the
            button inside it — the cap and lamps read as part of the control, so a
-           panel starting after them looks detached. -->
+           panel starting after them looks detached.
+           data-dropdown-swatch-style="dots" swaps the component's default swatch strip
+           for circles matching the .tc-lamps beside it (themes/dropdown.css). -->
       <select data-theme-select data-dropdown data-dropdown-anchor=".theme-console"
-              aria-labelledby="tc-cap"></select>
+              data-dropdown-swatch-style="dots" aria-labelledby="tc-cap"></select>
     </div>
 
   </div>

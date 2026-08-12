@@ -75,6 +75,67 @@
   ].join('\n              ');
 
   /* ---------------------------------------------------------------------------
+     The site header's theme picker, as a card.
+
+     A theme's display name is stored in three parts (see tools/theme-name.mjs):
+     name 'Hot Neon', group 'Dark', description 'No Background'. A grouped list is
+     the case those parts exist for — the heading says the name, so each row only
+     has to carry what is left, and the family name stops repeating down the list.
+
+     STATIC, and deliberately a subset. The real list is generated into
+     themes/theme-select.js from themes.index.json, but this file is a
+     dependency-free classic script that has to run from file:// on the discovery
+     drafts, where nothing can read that JSON. Two families are enough to show the
+     grouping; the hexes are the same ones BUILTIN_SWATCH_OPTIONS above already
+     hardcodes, so this adds a second consumer of that copy rather than a third
+     copy. It is a specimen — picking a row here does not change the page theme.
+     ------------------------------------------------------------------------- */
+  var HOT_DARK   = '#ff3ec8,#6bff45,#22e0ff,#cf7bff';
+  var HOT_LIGHT  = '#c8127f,#1e7714,#0a72a8,#8b1fd0';
+  var ACID_DARK  = '#ff4de0,#c6ff2e,#38f0ff,#b98cff';
+  var ACID_LIGHT = '#c01e9c,#5a7a00,#0a7099,#7028d0';
+
+  /* [ name, [ [group, description, id, swatch, selected], … ] ]
+     The swatch is per ROW, not per family: a family's light and dark variants are
+     different palettes, and showing the dark accents against a "Light" row would
+     misrepresent what picking it does. */
+  var BUILTIN_THEME_OPTIONS = [
+    ['Hot Neon', [
+      ['Dark',  '',              'hot-neon-dark',                HOT_DARK,   true],
+      ['Dark',  'No Background', 'hot-neon-dark-no-background',  HOT_DARK,   false],
+      ['Light', '',              'hot-neon-light',               HOT_LIGHT,  false],
+    ]],
+    ['Acid Arcade', [
+      ['Dark',  '',              'acid-arcade-dark',                ACID_DARK,  false],
+      ['Light', '',              'acid-arcade-light',               ACID_LIGHT, false],
+      ['Light', 'No Background', 'acid-arcade-light-no-background', ACID_LIGHT, false],
+    ]],
+  ];
+
+  /* Composes the parts the same way theme-name.mjs does, so the card and the real
+     header agree: the row shows "<group> · <description>", and the whole name goes
+     on data-dropdown-full-label for the CLOSED trigger and for type-ahead — a row
+     reading "Dark" is not something anyone can find by typing, and the trigger has
+     no heading above it to say which theme "Dark" belongs to. */
+  function themeOptionsHTML(families) {
+    return families.map(function (fam) {
+      var name = fam[0];
+      var rows = fam[1].map(function (r) {
+        var group = r[0], description = r[1], id = r[2], swatch = r[3], selected = r[4];
+        var row = [group, description].filter(Boolean).join(' · ');
+        var full = [name, group, description].filter(Boolean).join(' · ');
+        // No ${q} on the value: option values are scoped to their own <select>, so
+        // unlike the element ids they do not collide across 16 stamped-out copies.
+        return '<option value="' + esc(id) + '" data-dropdown-swatch="' + esc(swatch) + '"' +
+               ' data-dropdown-secondary="' + esc(id) + '"' +
+               ' data-dropdown-full-label="' + esc(full) + '"' +
+               (selected ? ' selected' : '') + '>' + esc(row) + '</option>';
+      }).join('\n                ');
+      return '<optgroup label="' + esc(name) + '">\n                ' + rows + '\n              </optgroup>';
+    }).join('\n              ');
+  }
+
+  /* ---------------------------------------------------------------------------
      html({ sfx, heading, swatches }) -> the six <section class="cat"> blocks.
 
        sfx      suffix for every id / for / radio name and the in-page anchors.
@@ -101,6 +162,11 @@
     var swatchOptions = o.swatches
       ? '<option value="all" data-dropdown-swatch="' + o.swatches + '" selected>Pink · green · blue · purple</option>'
       : BUILTIN_SWATCH_OPTIONS;
+    /* Unlike the swatch card, this one keeps the built-in families on BOTH pages.
+       It demonstrates a PICKER — several themes side by side is the thing being
+       shown — so substituting the one palette a discovery section sits in would
+       leave a list with nothing to group. */
+    var themeOptions = themeOptionsHTML(BUILTIN_THEME_OPTIONS);
 
     /* Every category is built through this, so the id / accessible-name /
        heading-rank contract holds by construction rather than by 6 careful
@@ -196,7 +262,7 @@
       </div>`),
 
       /* ================= Inputs =================
-         The one category big enough to want an internal divider: the six
+         The one category big enough to want an internal divider: the seven
          enhanced-select variants sit under their own sub-head. */
       cat('inputs', 'Inputs', 'Focus, hover and disabled states all come from tokens.', `
       <div class="cat-grid">
@@ -332,6 +398,30 @@
             <label class="field-label" for="dd-locked${q}">Plan</label>
             <select id="dd-locked${q}" data-dropdown disabled>
               <option value="team" selected>Team (contact sales to change)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 7 · the site header's own theme picker. Everything the other six show
+             at once, on real data: grouped, swatched, two lines per row. What is
+             particular to it is that the group heading carries the theme NAME, so
+             each row states only what differs — "Dark", "Dark · No Background" —
+             instead of repeating "Hot Neon" down the whole list. The full name
+             still reaches the closed trigger and type-ahead through
+             data-dropdown-full-label. Dots rather than the default swatch strip,
+             matching the .tc-lamps beside the real one in the header. -->
+        <div class="block">
+          <div class="block-title">Theme picker — capped pill, grouped, dots</div>
+          <!-- A <div>, not a <label>, and the cap names the control through
+               aria-labelledby: once dropdown.js runs, the real control is a
+               <button>, which a wrapping label would neither name nor focus.
+               data-dropdown-anchor sizes the panel to the whole pill so the list
+               spans the cap too. -->
+          <div class="dropdown-console">
+            <span class="dropdown-console-cap" id="dd-theme-cap${q}">Theme</span>
+            <select id="dd-theme${q}" data-dropdown data-dropdown-anchor=".dropdown-console"
+                    data-dropdown-swatch-style="dots" aria-labelledby="dd-theme-cap${q}">
+              ${themeOptions}
             </select>
           </div>
         </div>

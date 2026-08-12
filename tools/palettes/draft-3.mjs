@@ -1,11 +1,15 @@
 /* Draft 3 palettes — background-strength variations. Reuses draft-2 COLOR values verbatim
    (so AA is unchanged); the only differences are the per-theme `grid` (--fx-grid-opacity) and
-   the "(No Background)" labels. grid: 0.40 ≈ 40% of draft-1's full effect; grid: 0 = off;
+   the "No Background" description. grid: 0.40 ≈ 40% of draft-1's full effect; grid: 0 = off;
    omitted = effects.css default (0.22, i.e. draft-2's subdued level). */
 import { palettes as d2 } from './draft-2.mjs';
 
 const withBg = (id, grid) => ({ ...d2[id], grid });
-const noBg   = (id) => ({ ...d2[id], grid: 0, label: `${d2[id].label} (No Background)` });
+/* The variant keeps the family's `name` and says what differs in `description`.
+   It used to fold both into one string — `name + ' (No Background)'` — which then
+   had to be regex-stripped back apart to recover the family heading. Keeping the
+   parts separate is what lets a list group by name and show only the difference. */
+const noBg   = (id) => ({ ...d2[id], grid: 0, description: 'No Background' });
 const same   = (id) => ({ ...d2[id] });
 
 export const palettes = {

@@ -6,6 +6,40 @@ breaking token renames/removals or a default-theme change.
 
 ## Unreleased
 
+**A theme's display name is three parts now, not one string.** Every theme carries `name`
+(`"Hot Neon"`), `group` (`"Dark"` / `"Light"`, may be empty) and `description` (`"No Background"`,
+may be empty); `label` is the three composed with ` · `. Composing at render time is what lets one
+theme read differently per context — and it removes the reverse direction, where `build-final.mjs`
+had to regex-strip `" (No Background)"` back off a finished label to recover the family heading,
+silently getting it wrong for any name that did not end that way.
+
+- **The header dropdown stops repeating itself.** It groups by `name`, so a row states only what its
+  heading has not: `Hot Neon` › `Dark`, `Dark · No Background`, `Light`. New optional
+  `data-dropdown-full-label` carries the composed name to the two places a bare row is not enough —
+  the **closed trigger**, which has no heading near it, and **type-ahead**, so `sy` still finds
+  Synthwave Sunset. Options without it fall back to their own text; plain dropdowns are unaffected.
+- **New `data-dropdown-swatch-style="dots"`** on a `<select>` renders swatches as separate glowing
+  circles instead of the default strip. This is the header's existing look, moved out of
+  `site-header.css` into `dropdown.css` so it is reachable by pages that do not load the header.
+  **If you vendored the header markup, add this attribute to its `<select>`** — without it the theme
+  console falls back to strips.
+- **New `.dropdown-console`** in `dropdown.css` — a cap and the control in one pill, with the
+  divider, flat trigger and wrapping focus ring the site header's `.theme-console` has. The header
+  keeps its own rules (it also carries lamps, a fixed width and four breakpoints) and ships
+  standalone, so the shared parts are duplicated on purpose — change one, change the other.
+- **New gallery card**: "Theme picker — capped pill, grouped, dots", a 7th variant under *Select —
+  list organizations*, documenting all of the above.
+- **Migration.** `themes.index.json` and `tokens.json` theme entries gain `name` / `group` /
+  `description`, and **`label` changes value** — `hot-neon-dark-no-background` was
+  `"Hot Neon (No Background)"` and is now `"Hot Neon · Dark · No Background"` (it already included
+  the mode in the select list; now it is stored that way). Family entries gain `name`; their `label`
+  is unchanged. Reading `label` still works everywhere it did.
+- **Palette sources** (`tools/palettes/*.mjs`) rename `label` → `name` and `group` → `cohort`. The
+  old `group` was the discovery pages' review bucket (`"Faithful · Dark"`), unrelated to the new
+  `group`; `cohort` keeps them apart. Fork themes in `local.mjs` need the same two renames — see the
+  contract comment at the top of that file. `group` and `description` are optional; `group` defaults
+  to the capitalized `mode`.
+
 **The brand lockup is a step larger again, and the nav stops stepping where the brand does.** The
 rail's vertical gutter went fluid in 1.1.0, which left the lockup looking small inside a taller
 header — worst on a phone, where a tracked 10.5px cap was at the floor of comfortable reading.

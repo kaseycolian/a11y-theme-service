@@ -1,7 +1,8 @@
 {
   "dark-01-rink-classic": {
-    "label": "Rink Classic",
-    "group": "Faithful · Dark",
+    "name": "Rink Classic",
+    "description": "",
+    "cohort": "Faithful · Dark",
     "mode": "dark",
     "checks": [
       {
@@ -189,8 +190,9 @@
     ]
   },
   "dark-01-rink-classic-no-background": {
-    "label": "Rink Classic (No Background)",
-    "group": "Faithful · Dark",
+    "name": "Rink Classic",
+    "description": "No Background",
+    "cohort": "Faithful · Dark",
     "mode": "dark",
     "checks": [
       {
@@ -378,8 +380,9 @@
     ]
   },
   "dark-02-midnight-arcade": {
-    "label": "Midnight Arcade",
-    "group": "Faithful · Dark",
+    "name": "Midnight Arcade",
+    "description": "",
+    "cohort": "Faithful · Dark",
     "mode": "dark",
     "checks": [
       {
@@ -567,8 +570,9 @@
     ]
   },
   "dark-02-midnight-arcade-no-background": {
-    "label": "Midnight Arcade (No Background)",
-    "group": "Faithful · Dark",
+    "name": "Midnight Arcade",
+    "description": "No Background",
+    "cohort": "Faithful · Dark",
     "mode": "dark",
     "checks": [
       {
@@ -756,8 +760,9 @@
     ]
   },
   "dark-03-hot-neon": {
-    "label": "Hot Neon",
-    "group": "Faithful · Dark",
+    "name": "Hot Neon",
+    "description": "",
+    "cohort": "Faithful · Dark",
     "mode": "dark",
     "checks": [
       {
@@ -945,8 +950,9 @@
     ]
   },
   "dark-03-hot-neon-no-background": {
-    "label": "Hot Neon (No Background)",
-    "group": "Faithful · Dark",
+    "name": "Hot Neon",
+    "description": "No Background",
+    "cohort": "Faithful · Dark",
     "mode": "dark",
     "checks": [
       {
@@ -1134,8 +1140,9 @@
     ]
   },
   "dark-04-synthwave-sunset": {
-    "label": "Synthwave Sunset",
-    "group": "Fresh · Dark",
+    "name": "Synthwave Sunset",
+    "description": "",
+    "cohort": "Fresh · Dark",
     "mode": "dark",
     "checks": [
       {
@@ -1323,8 +1330,9 @@
     ]
   },
   "dark-06-acid-arcade": {
-    "label": "Acid Arcade",
-    "group": "Fresh · Dark",
+    "name": "Acid Arcade",
+    "description": "",
+    "cohort": "Fresh · Dark",
     "mode": "dark",
     "checks": [
       {
@@ -1512,8 +1520,9 @@
     ]
   },
   "light-01-rink-classic": {
-    "label": "Rink Classic",
-    "group": "Faithful · Light",
+    "name": "Rink Classic",
+    "description": "",
+    "cohort": "Faithful · Light",
     "mode": "light",
     "checks": [
       {
@@ -1701,8 +1710,9 @@
     ]
   },
   "light-01-rink-classic-no-background": {
-    "label": "Rink Classic (No Background)",
-    "group": "Faithful · Light",
+    "name": "Rink Classic",
+    "description": "No Background",
+    "cohort": "Faithful · Light",
     "mode": "light",
     "checks": [
       {
@@ -1890,8 +1900,9 @@
     ]
   },
   "light-02-midnight-arcade": {
-    "label": "Midnight Arcade",
-    "group": "Faithful · Light",
+    "name": "Midnight Arcade",
+    "description": "",
+    "cohort": "Faithful · Light",
     "mode": "light",
     "checks": [
       {
@@ -2079,8 +2090,9 @@
     ]
   },
   "light-02-midnight-arcade-no-background": {
-    "label": "Midnight Arcade (No Background)",
-    "group": "Faithful · Light",
+    "name": "Midnight Arcade",
+    "description": "No Background",
+    "cohort": "Faithful · Light",
     "mode": "light",
     "checks": [
       {
@@ -2268,8 +2280,9 @@
     ]
   },
   "light-06-acid-arcade": {
-    "label": "Acid Arcade",
-    "group": "Fresh · Light",
+    "name": "Acid Arcade",
+    "description": "",
+    "cohort": "Fresh · Light",
     "mode": "light",
     "checks": [
       {
@@ -2457,8 +2470,9 @@
     ]
   },
   "light-06-acid-arcade-no-background": {
-    "label": "Acid Arcade (No Background)",
-    "group": "Fresh · Light",
+    "name": "Acid Arcade",
+    "description": "No Background",
+    "cohort": "Fresh · Light",
     "mode": "light",
     "checks": [
       {
@@ -2646,8 +2660,9 @@
     ]
   },
   "light-03-hot-neon": {
-    "label": "Hot Neon",
-    "group": "Faithful · Light",
+    "name": "Hot Neon",
+    "description": "",
+    "cohort": "Faithful · Light",
     "mode": "light",
     "checks": [
       {
@@ -2835,8 +2850,9 @@
     ]
   },
   "light-04-synthwave-sunset": {
-    "label": "Synthwave Sunset",
-    "group": "Fresh · Light",
+    "name": "Synthwave Sunset",
+    "description": "",
+    "cohort": "Fresh · Light",
     "mode": "light",
     "checks": [
       {

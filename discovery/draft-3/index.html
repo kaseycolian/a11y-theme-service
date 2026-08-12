@@ -187,24 +187,34 @@
      dropdown.js's DOMContentLoaded pass runs and enhances them. -->
 <script src="../../gallery/gallery.js"></script>
 <script>
+/* Display names are three parts, matching tools/palettes/draft-3.mjs and
+   tools/theme-name.mjs: `name` is the family (shared by every variant of it),
+   `description` is what makes this variant different. `cohort` is separate from
+   both — it is this page's own review grouping, and drives .grp-tag + the jump
+   nav below, nothing else. */
 const PALETTES = [
-  { id:'dark-01-rink-classic',                 label:'Rink Classic',                    group:'Faithful · Dark',  mode:'dark' },
-  { id:'dark-01-rink-classic-no-background',   label:'Rink Classic (No Background)',    group:'Faithful · Dark',  mode:'dark' },
-  { id:'dark-02-midnight-arcade',              label:'Midnight Arcade',                 group:'Faithful · Dark',  mode:'dark' },
-  { id:'dark-02-midnight-arcade-no-background',label:'Midnight Arcade (No Background)', group:'Faithful · Dark',  mode:'dark' },
-  { id:'dark-03-hot-neon',                     label:'Hot Neon',                        group:'Faithful · Dark',  mode:'dark' },
-  { id:'dark-03-hot-neon-no-background',       label:'Hot Neon (No Background)',        group:'Faithful · Dark',  mode:'dark' },
-  { id:'dark-04-synthwave-sunset',             label:'Synthwave Sunset',                group:'Fresh · Dark',     mode:'dark' },
-  { id:'dark-06-acid-arcade',                  label:'Acid Arcade',                     group:'Fresh · Dark',     mode:'dark' },
-  { id:'light-01-rink-classic',                label:'Rink Classic',                    group:'Faithful · Light', mode:'light' },
-  { id:'light-01-rink-classic-no-background',  label:'Rink Classic (No Background)',    group:'Faithful · Light', mode:'light' },
-  { id:'light-02-midnight-arcade',             label:'Midnight Arcade',                 group:'Faithful · Light', mode:'light' },
-  { id:'light-02-midnight-arcade-no-background',label:'Midnight Arcade (No Background)',group:'Faithful · Light', mode:'light' },
-  { id:'light-03-hot-neon',                    label:'Hot Neon',                        group:'Faithful · Light', mode:'light' },
-  { id:'light-04-synthwave-sunset',            label:'Synthwave Sunset',                group:'Fresh · Light',    mode:'light' },
-  { id:'light-06-acid-arcade',                 label:'Acid Arcade',                     group:'Fresh · Light',    mode:'light' },
-  { id:'light-06-acid-arcade-no-background',   label:'Acid Arcade (No Background)',     group:'Fresh · Light',    mode:'light' },
+  { id:'dark-01-rink-classic',                 name:'Rink Classic',    description:'',              cohort:'Faithful · Dark',  mode:'dark' },
+  { id:'dark-01-rink-classic-no-background',   name:'Rink Classic',    description:'No Background', cohort:'Faithful · Dark',  mode:'dark' },
+  { id:'dark-02-midnight-arcade',              name:'Midnight Arcade', description:'',              cohort:'Faithful · Dark',  mode:'dark' },
+  { id:'dark-02-midnight-arcade-no-background',name:'Midnight Arcade', description:'No Background', cohort:'Faithful · Dark',  mode:'dark' },
+  { id:'dark-03-hot-neon',                     name:'Hot Neon',        description:'',              cohort:'Faithful · Dark',  mode:'dark' },
+  { id:'dark-03-hot-neon-no-background',       name:'Hot Neon',        description:'No Background', cohort:'Faithful · Dark',  mode:'dark' },
+  { id:'dark-04-synthwave-sunset',             name:'Synthwave Sunset',description:'',              cohort:'Fresh · Dark',     mode:'dark' },
+  { id:'dark-06-acid-arcade',                  name:'Acid Arcade',     description:'',              cohort:'Fresh · Dark',     mode:'dark' },
+  { id:'light-01-rink-classic',                name:'Rink Classic',    description:'',              cohort:'Faithful · Light', mode:'light' },
+  { id:'light-01-rink-classic-no-background',  name:'Rink Classic',    description:'No Background', cohort:'Faithful · Light', mode:'light' },
+  { id:'light-02-midnight-arcade',             name:'Midnight Arcade', description:'',              cohort:'Faithful · Light', mode:'light' },
+  { id:'light-02-midnight-arcade-no-background',name:'Midnight Arcade',description:'No Background', cohort:'Faithful · Light', mode:'light' },
+  { id:'light-03-hot-neon',                    name:'Hot Neon',        description:'',              cohort:'Faithful · Light', mode:'light' },
+  { id:'light-04-synthwave-sunset',            name:'Synthwave Sunset',description:'',              cohort:'Fresh · Light',    mode:'light' },
+  { id:'light-06-acid-arcade',                 name:'Acid Arcade',     description:'',              cohort:'Fresh · Light',    mode:'light' },
+  { id:'light-06-acid-arcade-no-background',   name:'Acid Arcade',     description:'No Background', cohort:'Fresh · Light',    mode:'light' },
 ];
+
+/* The parts composed, the same way tools/theme-name.mjs does it. The mode is not
+   in here: the cohort above already says "· Dark" / "· Light", and the id is
+   printed underneath. */
+const fullName = (p) => [p.name, p.description].filter(Boolean).join(' · ');
 
 
 /* The four accents THIS palette actually ships, pulled out of the contrast
@@ -249,7 +259,7 @@ const nav = document.getElementById('jumpNav');
 main.insertAdjacentHTML('afterbegin', ThemeGallery.SPRITE);
 
 let navHTML = '';
-let lastGroup = '';
+let lastCohort = '';
 const groupsSeen = new Set();
 
 PALETTES.forEach(p => {
@@ -271,8 +281,8 @@ PALETTES.forEach(p => {
         <span class="swatch sw-text"></span>
       </div>
       <div class="names">
-        <span class="grp-tag">${p.group}</span>
-        <h2 class="name">${p.label}</h2>
+        <span class="grp-tag">${p.cohort}</span>
+        <h2 class="name">${fullName(p)}</h2>
         <span class="id">${p.id}</span>
       </div>
       <div class="spacer"></div>
@@ -292,22 +302,22 @@ PALETTES.forEach(p => {
       // Same reason as sfx, for the region's accessible name: without the theme
       // spelled out, this document offers sixteen regions called "Typography".
       // Both parts of the .sec-head naming are needed, not just the <h2>: the
-      // labels alone repeat (dark and light are each "Rink Classic"), and it is
+      // names alone repeat (dark and light are each "Rink Classic"), and it is
       // the .grp-tag above them that says which. Reads as
       // "Typography for Rink Classic, Faithful · Dark".
-      name: `${p.label}, ${p.group}`,
+      name: `${fullName(p)}, ${p.cohort}`,
       swatches: accentsOf(p.id).join(','),
     })}</div>
   `;
   main.appendChild(section);
 
-  // Nav grouping
-  const groupKey = p.group;
-  if (groupKey !== lastGroup) {
-    navHTML += `<span class="grp">${groupKey}</span>`;
-    lastGroup = groupKey;
+  // Nav grouping — by cohort, this page's review buckets, not by theme name.
+  const cohortKey = p.cohort;
+  if (cohortKey !== lastCohort) {
+    navHTML += `<span class="grp">${cohortKey}</span>`;
+    lastCohort = cohortKey;
   }
-  navHTML += `<a href="#${p.id}">${p.label}</a>`;
+  navHTML += `<a href="#${p.id}">${fullName(p)}</a>`;
 });
 nav.innerHTML = navHTML;
 

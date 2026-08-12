@@ -237,6 +237,195 @@
 }
 .dropdown-swatch > span { display: block; width: 9px; height: 18px; }
 
+/* ---- swatch style: dots (opt-in) ------------------------------------------
+   Add data-dropdown-swatch-style="dots" to the <select> to swap the contiguous
+   strip above for four glowing circles. Two places want this — the site header's
+   theme console, whose trigger already shows the palette as four .tc-lamps dots
+   (reading a row and then the trigger meant re-parsing the same four accents in
+   two different shapes), and the gallery card that documents that pattern.
+
+   :has() rather than a class, because dropdown.js builds .dropdown itself and the
+   <select> is its own descendant (it is moved inside the wrapper alongside the
+   toggle and panel) — so the author's attribute stays on the markup they wrote
+   and no JS has to copy it across.
+
+   The :has() is wrapped in :where() so it adds NO specificity. That is load-bearing,
+   not tidiness: these rules have to sit at the same rank as the default strip rules
+   they replace — winning only on source order — so that a page styling the swatch
+   through an ancestor still overrides them. Unwrapped, the selector below would
+   score (0,3,2) and silently outrank site-header.css's `.theme-console
+   .dropdown-swatch > span` (0,2,1), pinning the header's dots at this size through
+   every breakpoint instead of letting them step down to 6px and 5px. */
+:where(.dropdown:has(select[data-dropdown-swatch-style="dots"])) .dropdown-swatch {
+  gap: 5px;
+  border: 0; border-radius: 0;
+  /* The strip clipped its children to a rounded box. Dots need to glow past
+     their own edges, so the clip has to go with the border that motivated it. */
+  overflow: visible;
+}
+:where(.dropdown:has(select[data-dropdown-swatch-style="dots"])) .dropdown-swatch > span {
+  position: relative;
+  width: 7px; height: 7px; border-radius: 50%;
+}
+/* The header's lamps glow with box-shadow off var(--lamp). These dots can't: their
+   color is an inline style from the option's data, and no shadow property can read
+   a background. A pseudo-element can — `background: inherit` picks up that same
+   inline value — so a blurred copy of the dot becomes its halo.
+
+   It paints ON TOP of the dot rather than behind it, which needs no z-index and
+   so can't escape the row's stacking context: blurring a solid disc leaves the
+   center solid, so at 65% over its own color the core is unchanged and only the
+   spill past the edge reads.
+
+   inset:0 and 65% are not arbitrary — they reproduce the lamps' own
+   `0 0 5px color-mix(--lamp 65%, transparent)`. An earlier inset:-2px blew the
+   disc up to 11px BEFORE blurring, and the dots came out as blobs rather than
+   dots with halos. The glow must start at the dot's own edge, like a shadow.
+   Scaled by --glow-strength for the same reason every other glow here is. */
+:where(.dropdown:has(select[data-dropdown-swatch-style="dots"])) .dropdown-swatch > span::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: inherit;
+  filter: blur(2.5px);
+  opacity: calc(.65 * var(--glow-strength, 1));
+}
+
+/* ---- console: a cap and the control in one pill (opt-in) -------------------
+   For a control whose label reads better AS PART OF the control than stacked
+   above it — a persistent instrument in a toolbar or a rail, rather than a field
+   in a form. The cap names it, a divider separates the two, and the pill draws
+   the border, radius and focus ring that the trigger would otherwise draw itself.
+
+   Markup — a <div>, NOT a <label>:
+
+     <div class="dropdown-console">
+       <span class="dropdown-console-cap" id="x-cap">Theme</span>
+       <select id="x" data-dropdown data-dropdown-anchor=".dropdown-console"
+               aria-labelledby="x-cap"></select>
+     </div>
+
+   A wrapping <label> would be wrong here and it is worth saying why: once
+   dropdown.js enhances the <select> the real control is a <button>, which a
+   <label> neither names nor focuses. aria-labelledby pointing at the cap is what
+   makes the trigger announce "Theme, <current value>", the way a native select
+   does. And if you ever hide the cap responsively, CLIP it — a name pointing at a
+   display:none element resolves to nothing.
+
+   data-dropdown-anchor sizes the open panel to the whole pill instead of to the
+   button inside it, so the list spans the cap too rather than starting partway
+   across what the user reads as one control.
+
+   assets/site-header.css's .theme-console is this same pattern, specialized: it
+   adds the four .tc-lamps, a purple identity, a measured fixed width and four
+   breakpoints. It keeps its own rules rather than extending these because it is
+   installed into other repos on its own. Keep the two in step. */
+.dropdown-console {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  border-radius: var(--radius);
+  /* Clips the cap's tint to the pill's rounded corners. The panel is fixed and in
+     the top layer, so this cannot clip the open list. */
+  overflow: hidden;
+  cursor: pointer;
+  background: color-mix(in srgb, var(--accent-purple) 7%, var(--bg-elevated));
+  border: 1px solid color-mix(in srgb, var(--accent-purple) 50%, var(--border));
+  box-shadow: 0 0 calc(12px * var(--glow-strength, 1))
+              color-mix(in srgb, var(--accent-purple) 20%, transparent);
+  transition: border-color var(--dur) ease, box-shadow var(--dur) ease;
+}
+.dropdown-console:hover {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 calc(18px * var(--glow-strength, 1))
+              color-mix(in srgb, var(--accent-purple) 38%, transparent);
+}
+/* The trigger is the real control, so the ring belongs to the pill it fills.
+   Both selectors are live: the first once dropdown.js has enhanced it, the second
+   on the native <select> fallback if that script never loads. */
+.dropdown-console:has(.dropdown-toggle:focus-visible),
+.dropdown-console:has(select:focus-visible) {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.dropdown-console:has(select:focus-visible) select { outline: none; }
+
+/* align-self: stretch, not a height — the cap's tinted panel and its divider run
+   the full height of whatever the trigger turns out to be, so the pill keeps the
+   44px touch target rather than being pinned to the cap's own line box. */
+.dropdown-console-cap {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  flex: none;
+  padding: 0 11px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--accent-purple) 35%, var(--border));
+}
+
+/* Flat inside the pill: the shell already draws the border, radius and glow, so
+   the trigger contributes only its text and caret. The left padding matches the
+   right and is load-bearing, not decoration — when the trigger is expanded it
+   tints its own background, and at 0 that fill would begin exactly at the first
+   letter, so the value reads as jammed against its own highlight. */
+.dropdown-console .dropdown { flex: 1 1 auto; min-width: 0; align-self: stretch; }
+.dropdown-console .dropdown-toggle {
+  height: 100%;
+  padding: 0 11px;
+  gap: 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+.dropdown-console .dropdown-toggle[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--accent-purple) 14%, transparent);
+  box-shadow: none;
+}
+/* The ring is drawn by the pill above, so the trigger must not draw its own. */
+.dropdown-console .dropdown-toggle:focus-visible { outline: none; box-shadow: none; }
+.dropdown-console .dropdown-caret { color: var(--accent-purple); }
+
+/* Native fallback, for when dropdown.js never loads. The bare <select> is still a
+   direct child of the pill then, so it has to go flat the same way the trigger
+   does — otherwise the cap sits against a second, nested control border. */
+.dropdown-console > select {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  align-self: stretch;
+  padding: 0 11px 0 11px;
+  border: 0;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.dropdown-console > select option { background: var(--bg-elevated); color: var(--text); }
+.dropdown-console > select optgroup { background: var(--bg-elevated); color: var(--text-muted); }
+
+@media (forced-colors: active) {
+  .dropdown-console { border: 1px solid CanvasText; }
+  .dropdown-console-cap { border-right: 1px solid CanvasText; }
+}
+
 /* ---- groups (<optgroup> hierarchies) -------------------------------------- */
 
 /* Matches .field-label — group headings and field labels are the same rank. */

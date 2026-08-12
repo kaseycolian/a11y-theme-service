@@ -49,8 +49,12 @@
 }
 
 /* The header's lit tube, mirrored. 270deg rather than 90deg so the ramp runs the
-   other way and the two edges read as a matched pair rather than a repeat. */
-.site-footer::before {
+   other way and the two edges read as a matched pair rather than a repeat.
+
+   On ::after, matching the header (.site-header::after), which leaves ::before
+   free on BOTH bars for effects.css's .fx-grid — it paints its backdrop there,
+   so a tube on ::before would silently win and the grid would never render. */
+.site-footer::after {
   content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px;
   pointer-events: none;
   background: var(--accent-purple);
@@ -384,7 +388,7 @@
    is active. */
 @media (forced-colors: active) {
   .site-footer { border-top: 1px solid CanvasText; }
-  .site-footer::before { display: none; }
+  .site-footer::after { display: none; }
   .ftr-link::before { display: none; }
   .ftr-link { border-top: 1px solid CanvasText; }
   .ftr-here::before { outline: 1px solid CanvasText; outline-offset: -1px; }

@@ -56,9 +56,11 @@ recolor any pairs.
   the theme-service repo from app code.
 - **Confirm before you change (existing apps).** Before applying, ask the user the Step 0 questions in
   `references/applying-themes.md`: **component styling depth** (colors-only vs full restyle to match
-  the gallery), **fonts** (replace vs keep), any **existing theme selector** (replace vs wire-in; keep
-  vs delete old themes), and **selector placement**. Don't restyle components or replace fonts without
-  an explicit opt-in. In a non-interactive run, use the recommended defaults and record the assumption.
+  the gallery), **fonts** (replace vs keep), **background effect placement** (`.fx-grid` on the page
+  background only, the header/footer only, or the whole page), any **existing theme selector** (replace
+  vs wire-in; keep vs delete old themes), and **selector placement**. Don't restyle components or
+  replace fonts without an explicit opt-in. In a non-interactive run, use the recommended defaults and
+  record the assumption.
 - **Keep the tracking log.** Every themed repo has a `<theme-dir>/THEME-SERVICE.md` recording the
   version, the decisions on record, and a dated **History** of every apply/update. **Check for it first**
   — if it exists, the repo is already themed: read it and use the **update** flow, don't re-apply from

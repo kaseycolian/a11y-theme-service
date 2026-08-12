@@ -77,8 +77,10 @@ a color role that has no token, stop and flag it — that's this file's job, not
 
 - **Confirm before changing (existing apps).** Ask the user the Step 0 questions in
   `skill/references/applying-themes.md`: component **styling depth** (colors-only vs full restyle),
-  **fonts** (replace vs keep), any **existing selector** (replace vs wire-in; keep vs delete old
-  themes), and **selector placement**. Don't restyle components or replace fonts without opt-in.
+  **fonts** (replace vs keep), **background effect placement** (`.fx-grid` on the page background only,
+  the header/footer only, or the whole page), any **existing selector** (replace vs wire-in; keep vs
+  delete old themes), and **selector placement**. Don't restyle components or replace fonts without
+  opt-in.
 - **Keep the tracking log.** Every themed repo has a `THEME-SERVICE.md` (version + decisions + dated
   History). Check for it first — if present, the repo is already themed: read it and follow
   `skill/references/updating-themes.md` instead of re-applying. Always append a History entry.

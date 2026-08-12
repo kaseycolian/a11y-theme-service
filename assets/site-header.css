@@ -60,6 +60,13 @@
   backdrop-filter: blur(10px) saturate(1.15);
 }
 
+/* effects.css's .fx-grid sets `position: relative` so its absolute ::before has a
+   box to fill. Same specificity as the rule above, so whichever file loads last
+   wins — and if that is effects.css, the rail silently stops being sticky the
+   moment someone applies the background effect to the header. 0-2-0 wins in
+   either direction, so the rail's own positioning no longer depends on order. */
+.site-header.fx-grid { position: sticky; top: 0; }
+
 /* The lit tube along the bottom edge. Deliberately the same pink->purple->blue
    ramp as the #grad-flow gradient the overview diagrams draw their connectors
    with, so the header edge and the diagrams read as one system. It re-colors

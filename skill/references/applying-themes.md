@@ -33,15 +33,32 @@ history log so a later session can revisit it.
    app's current fonts and apply colors/effects only? (Default: **keep the app's fonts** unless they
    want the full retro-neon look.)
 
-3. **Existing theme selector (ask only if the app already has one):**
+3. **Background effect — where should it go?** Several themes carry a background effect (the retro
+   crossing-line grid, `.fx-grid`, at each theme's own `--fx-grid-opacity`). Ask which surfaces it
+   paints on:
+   - **The page background only (recommended default):** `.fx-grid` on the page-level background
+     surface — `<body>` or the main full-width wrapper — and **nothing else**. Sections, cards and
+     panels sitting *on top* of that background stay flat; the grid is the backdrop they sit over.
+     This is what every already-themed repo does.
+   - **The header and footer only:** `.fx-grid` on the header and footer components, and **not** on
+     the page background surface. The bars carry the effect; the page behind them is a flat `--bg`.
+   - **The whole page — background, header and footer:** `.fx-grid` on the page background surface
+     **and** on the header and footer components. The strongest read of the retro look.
+   - Either way it costs nothing on the plain themes: `.fx-grid::before` reads
+     `opacity: var(--fx-grid-opacity)`, which is `0` on the **"(No Background)"** variants, so the
+     effect auto-hides there wherever you put it. Record which surfaces you marked.
+   - If the app has no header/footer, only the first option is meaningful — say so and move on.
+
+4. **Existing theme selector (ask only if the app already has one):**
    - **Replace** the app's selector with the theme-service one, or **wire the new themes into the
      existing dropdown** (keep their control, add our themes as options + persistence)?
    - **Existing themes:** remove the app's old themes, or keep them **alongside** the new ones?
 
-4. **Selector placement** — propose a logical spot and confirm it (see "Selector placement" below).
+5. **Selector placement** — propose a logical spot and confirm it (see "Selector placement" below).
 
 For a **new / greenfield** project there's no existing selector/themes/components to reconcile, so
-skip 1–3's "existing" parts; still confirm **selector placement** (per the intended UX and any user
+skip the "existing" parts of 1, 2 and 4; still ask **background effect placement** (3 — it applies
+just as much to a new app), and confirm **selector placement** (per the intended UX and any user
 requirements) and that using the full component classes is wanted (usually yes).
 
 ---
@@ -87,6 +104,7 @@ requirements) and that using the full component classes is wanted (usually yes).
    ## Applied configuration (current decisions on record)
    - Component styling: `<colors-only | full-restyle>`
    - Fonts: `<kept app fonts | replaced with theme fonts>`
+   - Background effect: `<page background | header + footer | page + header + footer | off>` — `.fx-grid` on: `<selector(s)>`
    - Selector: `<theme-service selector | wired into existing dropdown>` — placement: `<where>`
    - Existing themes: `<none | removed | kept alongside>`
 
@@ -117,7 +135,8 @@ Use the component classes directly; the app inherits the full look for free.
    `.tabs`/`.tab`, `.result`, `.t-h1..t-h4`/`.t-body`/`.t-muted`/`.t-link`, and effect classes
    `.fx-grid`, `.fx-scroll`, `.fx-bar-top`/`.fx-bar-bottom`. (See `gallery/gallery.js` for a full
    gallery of every class + state in its intended markup — it is what both `themes/preview.html` and
-   `discovery/draft-N/index.html` render, so it is the one authoritative copy.)
+   `discovery/draft-N/index.html` render, so it is the one authoritative copy.) Put `.fx-grid` on the
+   surfaces the **Step 0 question 3** answer names — see the placement table in Path B below.
 3. Add the **theme selector** (below) and the **motion toggle** (optional).
 4. Verify against `wcag-checklist.md`.
 
@@ -179,19 +198,52 @@ Notes:
   `components.css` is optional and only if the app adopts our component classes.
 - **The neon effects are opt-in via classes** — the tokens re-color everything, but the *effects*
   only paint on an element carrying their class. Most importantly, the **retro grid backdrop needs
-  `.fx-grid` on a background surface** (e.g. the main content area or a full-popup wrapper); without
-  it, the "with background" themes look flat because there's no element for the checkerboard to render
-  on. It respects each theme's `--fx-grid-opacity`, so it shows on grid themes and **auto-hides on the
-  "(No Background)" variants**. Similarly, the gradient scrollbar needs `.fx-scroll` on a scroll area,
-  and the mirrored gradient bars use `.fx-bar-top` / `.fx-bar-bottom`. If the user wants the grid
-  backdrop, add `.fx-grid` to a sensible full-width surface; otherwise leave it off.
+  `.fx-grid` on a surface**; without it, the "with background" themes look flat because there's no
+  element for the checkerboard to render on. It respects each theme's `--fx-grid-opacity`, so it shows
+  on grid themes and **auto-hides on the "(No Background)" variants**. Similarly, the gradient
+  scrollbar needs `.fx-scroll` on a scroll area, and the mirrored gradient bars use `.fx-bar-top` /
+  `.fx-bar-bottom`.
+
+  **Where `.fx-grid` goes is the Step 0 question 3 answer — don't pick a surface yourself:**
+
+  | Answer | Mark with `.fx-grid` | Leave unmarked |
+  |---|---|---|
+  | Page background only *(default)* | The page background surface — `<body>`, the main full-width wrapper, or a full-popup wrapper | Header, footer, and every section/card/panel on top of the background |
+  | Header and footer only | The header and footer components | The page background surface |
+  | Whole page | The page background surface **and** the header and footer components | Sections/cards/panels on top of the background |
+
+  In every case, **never** put it on the panels and sections layered over the page background — the
+  grid is the backdrop they sit over, and stacking it re-darkens each surface.
+
+  The test is *what the surface stands for*, not how deeply it's nested. A surface that is itself a
+  page background in its own right still counts as one: an extension's full-popup wrapper, an embedded
+  app frame or device mock, a preview pane rendering a document. `themes/preview.html` is the worked
+  example — `<body class="fx-grid">` and nothing else on the page, but the gallery's `.app-frame`
+  miniature (`gallery/gallery.js`) carries it too, because that frame is standing in for the *app's*
+  background, not for a card on this one.
+
+  Two notes on the header/footer answers:
+  - **The a11y-way-pages bars take the class directly.** `<header class="site-header fx-grid">` and
+    `<footer class="site-footer fx-grid">` work as-is: both bars draw their lit tube on `::after` and
+    `site-header.css` carries a `.site-header.fx-grid { position: sticky }` guard, precisely so the
+    grid can compose onto them.
+  - **An app's own header/footer needs two checks first.** `.fx-grid` paints on `::before` at
+    `z-index: -1` and sets `position: relative`. If the element already uses `::before`, or sets
+    `position` to anything other than `relative` (a sticky header especially), the class will either
+    render nothing or break the element. In that case put `.fx-grid` on a **full-bleed wrapper inside**
+    the component instead — e.g. `<header class="app-header"><div class="fx-grid">…</div></header>` —
+    and keep the wrapper outside any max-width inner rail so it spans the bar.
+
+  If the page background surface is translucent glass over the body (the site header and footer are,
+  by design), the body's grid already shows through it. That's intended — don't add `.fx-grid` to the
+  bars to "fix" it unless the user asked for the header/footer placement.
 
 ### B3. Ensure a themeable root
 Confirm the mapped variables resolve: since they live on `:root`, any element can read them. If the
 app scopes styles oddly (e.g. shadow DOM in Angular), `theme.css` on `:root` still cascades in
 (custom properties pierce shadow boundaries).
 
-### B4. Add / reconcile the theme selector (per the Step 0 decision)
+### B4. Add / reconcile the theme selector (per the Step 0 question 4/5 decisions)
 - **No existing selector:** add the theme-service selector (below), listing **all** themes, placed per
   "Selector placement".
 - **Replace the existing selector:** swap their control for the theme-service one; remove their old
@@ -330,9 +382,15 @@ function useTheme() {
 5. Any app-specific color pairs pass `tools/contrast-checker/` at AA. Walk `wcag-checklist.md`.
 6. If the user chose *full restyle*, confirm each migrated component still **works** (clicks, keyboard,
    ARIA, form submits) — not just that it looks right.
-7. **Write / append `<vendor>/THEME-SERVICE.md`**: set the current version + "Applied configuration"
+7. **Background effect lands where the user asked.** On a grid theme (e.g. `rink-classic-dark`), the
+   grid is visible on exactly the surfaces the Step 0 question 3 answer named and **nowhere else** —
+   in particular not stacked on the sections/cards over the page background. Switch to the matching
+   **"(No Background)"** variant and confirm it disappears from all of them. If you marked a header or
+   footer, also confirm the bar kept its own decoration (the lit tube) and its own positioning (a
+   sticky header still sticks).
+8. **Write / append `<vendor>/THEME-SERVICE.md`**: set the current version + "Applied configuration"
    (the Step 0 decisions) and **append a dated History entry** summarizing what you did (and any
    defaults you assumed in a non-interactive run). This is how the next session knows the repo is
    already themed and what was decided.
-8. Summarize for the user: what changed, the decisions applied, and anything you deliberately left
+9. Summarize for the user: what changed, the decisions applied, and anything you deliberately left
    (e.g. components kept as colors-only).

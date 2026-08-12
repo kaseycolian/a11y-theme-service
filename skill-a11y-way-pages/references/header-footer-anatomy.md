@@ -186,7 +186,7 @@ genuinely wants cards, that's a deliberate deviation to record in `A11Y-WAY-PAGE
 
 | Part | Class | What it must keep |
 |---|---|---|
-| Slab | `.site-footer` | Direct child of `<body>` = the page's **one** `contentinfo`. Not sticky. Lit tube is a `::before` on the **top** edge. |
+| Slab | `.site-footer` | Direct child of `<body>` = the page's **one** `contentinfo`. Not sticky. Lit tube is a `::after` on the **top** edge — `::after` like the header's, so `::before` stays free for `.fx-grid`. |
 | Inner | `.ftr-inner` | Same `max-width` and `clamp()` padding as `.hdr-inner`, so footer content lines up with header content at every width. One column; two at **1080px** (`minmax(240px, 330px)` lede + `1fr` index) — the same width the header drops to two rows, and the width below which the index no longer has room to run two products beside a 330px lede. |
 | Lede | `.ftr-lede` > `.ftr-brand` + `.ftr-mission` + `.ftr-src` | The lockup restated, **not as a link** — the header's already goes home, so a second one only adds a tab stop to the same destination. A column at the two extremes and a full-width **band** between 621px and 1080px, where the column shape would waste the rail — see the band note below. |
 | Lockup | `.ftr-brand` > `img.brand-mark.ftr-mark` + `.ftr-wordmark` | Keep the `brand-mark` class: `brand-mark-theme.js` re-colors every `img.brand-mark` on the page. `.ftr-mark` sizes and lights it locally so this file stands alone. Wordmark repeats `.brand-title`'s size, weight and tracking verbatim. |
@@ -257,6 +257,15 @@ theme. The header draws it on its bottom edge at `90deg`; the footer mirrors it 
 `.fx-bar-top`/`.fx-bar-bottom` (135°/315°). It re-colors with the theme, which makes it a readout as
 well as a rule.
 
+Both bars draw the tube on **`::after`**, not `::before` — deliberately. `::before` is left free on
+`.site-header` and `.site-footer` so `effects.css`'s `.fx-grid` can compose straight onto them when
+the user wants the background effect on the header and footer. `.fx-grid` paints its backdrop on
+`::before` at `z-index: -1`; put a tube there and it wins on source order, and the grid silently
+never renders. Keep any new full-bleed decoration on the bars off `::before` for the same reason.
+`.fx-grid` also sets `position: relative`, which is why `site-header.css` carries a
+`.site-header.fx-grid { position: sticky }` guard — without it the rail stops sticking whenever
+`effects.css` loads last.
+
 The footer then repeats the idea one size down, as the thing each product reacts to — this is the
 whole hover affordance, and the reason the rows need no card:
 
@@ -298,7 +307,7 @@ border putting it back:
 ```css
 @media (forced-colors: active) {
   .site-footer { border-top: 1px solid CanvasText; }
-  .site-footer::before { display: none; }   /* the tube is a background; it's gone anyway */
+  .site-footer::after { display: none; }    /* the tube is a background; it's gone anyway */
   .ftr-link::before { display: none; }      /* and so is every row rule */
   .ftr-link { border-top: 1px solid CanvasText; }
   .ftr-here::before { outline: 1px solid CanvasText; outline-offset: -1px; }

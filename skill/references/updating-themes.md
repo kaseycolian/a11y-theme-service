@@ -6,12 +6,18 @@ correct changes — and never regress accessibility.
 
 ## 1. Read the repo's tracking log first
 Open `<vendor>/THEME-SERVICE.md`. It tells you the repo is already themed, the **App version**, the
-**Applied configuration** (component styling depth, fonts, selector choice, whether old themes were
-kept), and the **History** of prior work. **Honor those decisions** — e.g. don't restyle components if
-the record says colors-only, don't replace fonts if they were kept, don't touch a selector the user
+**Applied configuration** (component styling depth, fonts, background effect placement, selector
+choice, whether old themes were kept), and the **History** of prior work. **Honor those decisions** —
+e.g. don't restyle components if the record says colors-only, don't replace fonts if they were kept,
+don't move the background effect off the surfaces it's recorded on, don't touch a selector the user
 chose to keep — unless the user now asks to change them. Also read `VERSION` at the theme-service repo
 root (locate it per `SKILL.md` Step 0). If the versions match and no files differ, there's nothing to
 do — say so.
+
+**A log with no `Background effect:` line predates that question.** Read it as **page background
+only** — the historical behavior — and leave the app's `.fx-grid` usage exactly as it is. Don't
+re-ask, don't add the effect to the header/footer, and don't remove it from wherever it already sits.
+Add the line to "Applied configuration" describing what the app actually does today.
 
 ## 2. See what changed in the source
 Compare the app's vendored copies against the source `themes/` files:

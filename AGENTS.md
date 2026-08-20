@@ -32,6 +32,8 @@ creates or edits a theme; nothing here depends on it, and you do not need it to 
 - `a11y-way-pages/` — the A11Y Way brand site and its skill. Separate audience, separate entry point
   (`a11y-way-pages/AGENTS.md`); nothing in this file depends on it. Ignore it for theme work.
 - `ARCHITECTURE.md` — how it all fits, the token contract, and framework wiring.
+- `TODO.md` — deferred work, with enough context to pick it up cold. **Read it before starting
+  anything new in this repo**; it is where postponed decisions and their reasons are recorded.
 
 ## How to use it in another repo
 

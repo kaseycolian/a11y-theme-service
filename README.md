@@ -127,6 +127,8 @@ package.json       scripts: install-all, install-no-themes, build-themes, build-
 USAGE.md           How to ask an agent to APPLY the themes to a repo
 CREATING-THEMES.md How to CREATE or EDIT themes (Path 2)
 ARCHITECTURE.md    How it all fits: the layers, token contract, theming mechanism, framework wiring
+TODO.md            Deferred work with the context to pick it up cold — read this before starting
+                   anything new here
 CHANGELOG.md  VERSION   (VERSION is the single source of truth; `npm run release` bumps + tags it)
 ```
 

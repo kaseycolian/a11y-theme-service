@@ -13,13 +13,14 @@ tools/palettes/local.mjs       ← LOCAL palette source (a fork's own themes; co
 themes/  (BUILD OUTPUT — gitignored, not committed; regenerate any time)
   theme.css  tokens.json  themes.index.json  theme-init.js  theme-select.js
 themes/  (COMMITTED, hand-authored): effects.css  components.css  dropdown.css  dropdown.js
-                                     preview.html  README.md
+                                     README.md
         │  (vendored/copied into each app; version recorded in the app's THEME-SERVICE.md)
         ▼
 consuming apps                 ← include theme.css+effects.css+components.css, set data-theme
 
 discovery/draft-<n>/  ← optional review playground (owner): node tools/build-palettes.mjs <n> --write
-gallery/              ← the component gallery, rendered by BOTH preview.html and the discovery page
+gallery/              ← the component gallery, rendered by the discovery pages (and by the brand
+                         site in a11y-way-pages/, which consumes this repo but is not part of it)
 ```
 
 - **Built-ins vs local:** `build-final.mjs` merges the origin's built-in themes (from `draft-3.mjs`,
@@ -71,7 +72,8 @@ Structural tokens (theme-independent, in `components.css` `:root`): `--font-ui -
 
 - `skill/` installs into `~/.claude/skills/theme-service` (junction on Windows, symlink elsewhere) via
   `install/`. Two modes: `npm run install-all` (link skill + build themes) and `npm run
-  install-no-themes` (link skill only). `AGENTS.md` mirrors the skill for non-Claude agents.
+  install-no-themes` (link skill only); both pass `--only theme-service`, so a theme user installs
+  this skill and nothing else. `AGENTS.md` mirrors the skill for non-Claude agents.
 - **Machine-local config** `~/.claude/theme-service.local.json` (OUTSIDE the repo, gitignored, never in
   commit history): `{ repo, version, includeBuiltinThemes, history[] }`. It's the **changeable source
   pointer** (which theme-service clone this machine uses — set on install; change via re-install /

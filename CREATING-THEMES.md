@@ -97,13 +97,10 @@ manual workflow, if you want to drive it yourself:
    and tags `vX.Y.Z`. Commit first for real: it commits only those two files, so it **refuses on a
    dirty tree** rather than tag a commit without your themes in it. New themes are additive → `minor`.
 
-**Publishing to the live site (origin repo).** The GitHub Pages home (`docs/overview.html`) links the
-live template page (`themes/preview.html`) from its "Preview Themes" nav segment, which renders the
-built `theme.css`. The Pages
-workflow (`.github/workflows/pages.yml`) auto-detects the **highest-numbered `discovery/draft-N`** and
-builds themes from it, so finalizing a new draft as the highest `draft-N` automatically becomes the
-live preview on the next push to `main` — no extra publish step. Convention: highest `draft-N` = the
-latest finalized set.
+**Publishing (origin repo).** The Pages workflow (`.github/workflows/pages.yml`) auto-detects the
+**highest-numbered `discovery/draft-N`** and builds themes from it, so finalizing a new draft as the
+highest `draft-N` publishes it on the next push to `main` — no extra step. Convention: highest
+`draft-N` = the latest finalized set.
 
 ## Rolling changes out to your apps
 

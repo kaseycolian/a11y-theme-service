@@ -1,5 +1,5 @@
 /* =============================================================================
-   The A11Y Way — site header. Shared by docs/overview.html and themes/preview.html.
+   The A11Y Way — site header. Shared by a11y-way-pages/site/overview.html and a11y-way-pages/site/preview.html.
 
    ONE source of truth: both pages link this file, so the header cannot drift
    between them. Load it AFTER components.css — a few rules here deliberately

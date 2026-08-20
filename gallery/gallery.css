@@ -1,6 +1,6 @@
 /* =============================================================================
    gallery.css — layout for the component gallery that gallery.js renders.
-   Loaded by themes/preview.html and discovery/draft-N/index.html; see README.md.
+   Loaded by a11y-way-pages/site/preview.html and discovery/draft-N/index.html; see README.md.
 
    Three nesting levels, and only three:
 
@@ -38,7 +38,7 @@
   --gal-title-size: 15px;     /* .cat-title */
   /* Anchor offset under a sticky header. This default assumes the shipped A11Y
      Way header at its two-row width; override it per page if yours is a
-     different height (themes/preview.html does, tracking the rail's own clamp).
+     different height (a11y-way-pages/site/preview.html does, tracking the rail's own clamp).
      Too small hides the heading under the header, too large only adds air. */
   --gal-scroll-margin: 132px;
 }

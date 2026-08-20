@@ -14,18 +14,18 @@
 <script src="../assets/brand-mark-theme.js" defer></script>
 
 <!-- This is exactly how a consuming app wires it up (all scripts EXTERNAL — CSP-safe): -->
-<script src="theme-init.js"></script>
-<link rel="stylesheet" href="theme.css">
-<link rel="stylesheet" href="effects.css">
-<link rel="stylesheet" href="components.css">
-<link rel="stylesheet" href="dropdown.css">
+<script src="../../themes/theme-init.js"></script>
+<link rel="stylesheet" href="../../themes/theme.css">
+<link rel="stylesheet" href="../../themes/effects.css">
+<link rel="stylesheet" href="../../themes/components.css">
+<link rel="stylesheet" href="../../themes/dropdown.css">
 
 <!-- The gallery's own layout, shared with discovery/draft-N/index.html so the two
      pages can't drift. Also NOT vendored by a consuming app. See gallery/README.md. -->
-<link rel="stylesheet" href="../gallery/gallery.css">
+<link rel="stylesheet" href="../../gallery/gallery.css">
 
 <!-- Site header and footer only — NOT part of what a consuming app vendors. Shared
-     with docs/overview.html so neither can drift. Must come after components.css. -->
+     with overview.html so neither can drift. Must come after components.css. -->
 <link rel="stylesheet" href="../assets/site-header.css">
 <link rel="stylesheet" href="../assets/site-footer.css">
 
@@ -44,7 +44,7 @@
 
   html, * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-ui); transition: background .2s; }
-  /* Header lives in ../assets/site-header.css — shared with docs/overview.html. */
+  /* Header lives in ../assets/site-header.css — shared with overview.html. */
 
   /* Bottom padding is the gap to the footer, not the gap to the viewport edge —
      ../assets/site-footer.css adds its own margin-top on top of this.
@@ -113,7 +113,7 @@
 
 <a class="skip-link" href="#main">Skip to content</a>
 
-<!-- Shared header. Keep this markup identical to docs/overview.html except for
+<!-- Shared header. Keep this markup identical to overview.html except for
      which nav segment carries aria-current. Styles: ../assets/site-header.css -->
 <header class="site-header">
   <div class="hdr-inner">
@@ -124,7 +124,7 @@
          being aria-hidden. Nothing left to drift out of sync with what is
          drawn, and the accessible name matches the visible one at every
          breakpoint, which is what voice control needs it to. -->
-    <a class="brand" href="../docs/overview.html">
+    <a class="brand" href="overview.html">
       <!-- Shared asset: ../assets/brand-mark.svg. alt="" because the wordmark
            beside it already names the lockup. -->
       <img class="brand-mark" src="../assets/brand-mark.svg" alt="">
@@ -137,7 +137,7 @@
     </a>
 
     <nav class="pagenav" aria-label="Pages">
-      <a class="pagenav-seg" href="../docs/overview.html">Overview</a>
+      <a class="pagenav-seg" href="overview.html">Overview</a>
       <!-- .seg-tail is CLIPPED below 620px, not removed: the phone label reads
            "Preview" (the brand descriptor beside it already said "Themes"),
            while the accessible name stays "Preview Themes" at every width.
@@ -214,8 +214,8 @@
   </noscript>
 </main>
 
-<!-- Shared footer. Keep this markup identical between docs/overview.html and
-     themes/preview.html — only the header's aria-current differs between the two
+<!-- Shared footer. Keep this markup identical between overview.html and
+     preview.html — only the header's aria-current differs between the two
      pages, and nothing in here is page-specific. Styles: ../assets/site-footer.css -->
 <footer class="site-footer">
   <div class="ftr-inner">
@@ -298,12 +298,12 @@
      [data-gallery] above as soon as it runs, so it MUST come before dropdown.js:
      that script enhances every [data-dropdown] on its own DOMContentLoaded pass,
      and this order guarantees the gallery's six selects are already in the DOM. -->
-<script src="../gallery/gallery.js"></script>
+<script src="../../gallery/gallery.js"></script>
 
 <!-- The shipped helpers, external = CSP-safe. dropdown.js first so the theme
      selector is enhanced as it is populated; either order works, this one just
      skips a rebuild. -->
-<script src="dropdown.js"></script>
-<script src="theme-select.js"></script>
+<script src="../../themes/dropdown.js"></script>
+<script src="../../themes/theme-select.js"></script>
 </body>
 </html>

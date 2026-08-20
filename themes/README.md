@@ -4,7 +4,7 @@ Apps consume these files. Every theme here is validated to WCAG 2.2 AA in every 
 fails contrast is never written, so nothing in this folder can ship a failing pair. The token/registry/helper
 files are **build output** — run `npm run build-themes` from the repo root to (re)generate them
 (they're gitignored, not committed, so forks can pull origin updates conflict-free). The
-hand-authored `effects.css`, `components.css`, and `preview.html` are committed. Source of truth =
+hand-authored `effects.css`, `components.css`, `dropdown.css` and `dropdown.js` are committed. Source of truth =
 the palette files (`tools/palettes/draft-*.mjs` built-in + `local.mjs` yours).
 
 ## Files
@@ -19,7 +19,6 @@ the palette files (`tools/palettes/draft-*.mjs` built-in + `local.mjs` yours).
 | `themes.index.json` | Registry: families, modes, and the default — drives theme pickers and the add-theme flow. |
 | `theme-init.js` | **External** (CSP-safe) script: applies the saved/`?theme=` theme before first paint. Load in `<head>`. |
 | `theme-select.js` | **External** (CSP-safe, generated) script: populates & wires any `<select data-theme-select>` + `[data-motion-toggle]`. |
-| `preview.html` | Live theme switcher + usage example. Open it in a browser. Its component gallery is rendered from `gallery/` — the same template the palette discovery page uses, so the two can't drift. Add a card there, not here. |
 
 ## Use it in an app
 
@@ -39,7 +38,7 @@ the palette files (`tools/palettes/draft-*.mjs` built-in + `local.mjs` yours).
    ```
 
 3. Use the component classes in markup: `.btn.btn-solid.a-pink`, `.input`, `.field-label`,
-   `.notice.success`, `.drop`, `.switch`, `.tab`, etc. (see `preview.html`). Or just consume the
+   `.notice.success`, `.drop`, `.switch`, `.tab`, etc. (see `gallery/gallery.js`). Or just consume the
    tokens (`var(--accent-pink)`, `var(--bg)`, …) in your own CSS.
 
 4. **Disable animations** (beyond OS `prefers-reduced-motion`): set `data-motion="off"` on the
@@ -94,7 +93,7 @@ behavior is upstream's; the names are this repo's — `.dropdown-*` classes, `da
 and `window.ThemeService`, matching `.btn` / `.input` / `.field` rather than upstream's `ac-` prefix
 (which exists over there to avoid colliding with exactly those names). So it is **not** a drop-in
 re-copy from upstream: porting a fix means translating identifiers, and `dropdown.js`'s header
-carries the full mapping. It is the control the theme picker in `preview.html`'s header uses.
+carries the full mapping. It is the control a theme picker in a page header uses.
 
 `.dropdown` is a separate component from `.drop` in `components.css`, not a rename of it — `.drop`
 is styles-only for a listbox you wire yourself, and nothing here styles a bare `.drop*` selector.
@@ -183,7 +182,7 @@ above the trigger when there is more room there. It takes its width and left edg
 
 The elements it builds are `.dropdown` (wrapper) wrapping `.dropdown-toggle`, `.dropdown-panel` >
 `.dropdown-list` > `.dropdown-option`, and the hidden `.dropdown-native` select. Target those to
-restyle it; `assets/site-header.css` is a worked example.
+restyle it; `.dropdown-console` below is a worked example of a capped variant.
 
 ```js
 // window.ThemeService — the only global this file adds. Not to be confused with an

@@ -21,9 +21,9 @@ history log so a later session can revisit it.
      re-colored. Lowest risk, smallest diff. Change as little of the components' own styling as
      possible while pulling the palette through.
    - **Full restyle to match the theme-service look:** components adopt the same **look, feel, and
-     interaction** as the reference gallery in `gallery/gallery.js` — the one both `themes/preview.html`
-     and the discovery page render, so it is the canonical example of every component in its intended
-     markup — by using the `components.css` classes, while **preserving all existing functionality**. Bigger
+     interaction** as the reference gallery in `gallery/gallery.js` — the one the discovery pages
+     (`discovery/draft-N/index.html`) render, so it is the canonical example of every component in its
+     intended markup — by using the `components.css` classes, while **preserving all existing functionality**. Bigger
      visual change and more work; only do it if the user opts in. Do **not** rewrite the whole UI
      without this explicit go-ahead.
    - If they're unsure, offer a **visual before/after** (a small scratch page or screenshots of a few
@@ -134,8 +134,8 @@ Use the component classes directly; the app inherits the full look for free.
    `.drop-panel`, `.choice`, `.switch`, `.notice.{info,success,warn,error}`, `.badge`, `.chip-toggle`,
    `.tabs`/`.tab`, `.result`, `.t-h1..t-h4`/`.t-body`/`.t-muted`/`.t-link`, and effect classes
    `.fx-grid`, `.fx-scroll`, `.fx-bar-top`/`.fx-bar-bottom`. (See `gallery/gallery.js` for a full
-   gallery of every class + state in its intended markup — it is what both `themes/preview.html` and
-   `discovery/draft-N/index.html` render, so it is the one authoritative copy.) Put `.fx-grid` on the
+   gallery of every class + state in its intended markup — it is what `discovery/draft-N/index.html`
+   renders, so it is the one authoritative copy.) Put `.fx-grid` on the
    surfaces the **Step 0 question 3** answer names — see the placement table in Path B below.
 3. Add the **theme selector** (below) and the **motion toggle** (optional).
 4. Verify against `wcag-checklist.md`.
@@ -217,16 +217,16 @@ Notes:
 
   The test is *what the surface stands for*, not how deeply it's nested. A surface that is itself a
   page background in its own right still counts as one: an extension's full-popup wrapper, an embedded
-  app frame or device mock, a preview pane rendering a document. `themes/preview.html` is the worked
-  example — `<body class="fx-grid">` and nothing else on the page, but the gallery's `.app-frame`
-  miniature (`gallery/gallery.js`) carries it too, because that frame is standing in for the *app's*
-  background, not for a card on this one.
+  app frame or device mock, a preview pane rendering a document. The gallery is the worked example:
+  a page puts `.fx-grid` on `<body>` and nothing else, yet the `.app-frame` miniature in
+  `gallery/gallery.js` carries it too — because that frame stands in for the *app's* background, not
+  for a card on the host page.
 
   Two notes on the header/footer answers:
-  - **The a11y-way-pages bars take the class directly.** `<header class="site-header fx-grid">` and
-    `<footer class="site-footer fx-grid">` work as-is: both bars draw their lit tube on `::after` and
-    `site-header.css` carries a `.site-header.fx-grid { position: sticky }` guard, precisely so the
-    grid can compose onto them.
+  - **A bar can take the class directly if it leaves `::before` free.** `.fx-grid` paints its
+    backdrop on `::before` at `z-index: -1`, so a header or footer that draws its own decoration on
+    `::after` (rather than `::before`) composes with it cleanly — add `fx-grid` to the element and
+    you are done.
   - **An app's own header/footer needs two checks first.** `.fx-grid` paints on `::before` at
     `z-index: -1` and sets `position: relative`. If the element already uses `::before`, or sets
     `position` to anything other than `relative` (a sticky header especially), the class will either

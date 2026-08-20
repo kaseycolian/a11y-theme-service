@@ -1,7 +1,7 @@
 /* theme-service — serve-site.mjs
  *
  * LOCAL DEV ONLY — serves the informational GitHub Pages site (`_site/`) so the
- * overview page (docs/overview.html) and the themes preview (themes/preview.html)
+ * overview page (a11y-way-pages/site/overview.html) and the themes preview (a11y-way-pages/site/preview.html)
  * can be developed against the *deployed* URL layout (`/` and `/preview/`), which
  * opening the files from disk can't reproduce. Nothing here ships to a consuming
  * app; this is not part of installing or using the theme service.
@@ -19,7 +19,8 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join, normalize, sep } from 'node:path';
 import { buildSite } from './build-site.mjs';
 
-const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
+// Two up: this file is a11y-way-pages/tools/, and _site/ is at the REPO root.
+const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SITE = join(REPO, '_site');
 
 const argv = process.argv.slice(2);
@@ -121,10 +122,11 @@ if (!flag('--no-watch')) {
     }, 150);
   };
 
-  for (const dir of ['docs', 'assets', 'themes', 'gallery', join('tools', 'palettes')]) {
+  for (const dir of [join('a11y-way-pages', 'site'), join('a11y-way-pages', 'assets'),
+                     'themes', 'gallery', join('tools', 'palettes')]) {
     const full = join(REPO, dir);
     if (existsSync(full)) watch(full, { recursive: true }, onChange);
   }
-  watch(join(REPO, 'tools', 'assemble-site.mjs'), onChange);
-  console.log(`  watching docs/, assets/, themes/, gallery/, tools/palettes/ — Ctrl+C to stop\n`);
+  watch(join(REPO, 'a11y-way-pages', 'tools', 'assemble-site.mjs'), onChange);
+  console.log(`  watching a11y-way-pages/{site,assets}/, themes/, gallery/, tools/palettes/ — Ctrl+C to stop\n`);
 }

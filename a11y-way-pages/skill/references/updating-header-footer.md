@@ -23,7 +23,11 @@ nothing to do — say so** and stop. Don't manufacture a diff.
 
 ## 2. Diff against the source
 
-Compare the repo's vendored copies with the source `assets/`:
+Compare the repo's vendored copies with the source `a11y-way-pages/assets/`:
+
+> **Moved in v1.3.0.** These files used to live at the repo root in `assets/`. A tracking log written
+> before that release will say they come from "the theme-service repo's `assets/`" — update that line
+> when you re-sync. Nothing about the files themselves changed in the move.
 
 - `site-header.css`, `site-footer.css`
 - `brand-mark.svg`, `brand-mark-theme.js`, `favicon.svg`, `favicon-theme.js`
@@ -80,4 +84,4 @@ Then refresh the version line and the "Brand decisions on record" block if anyth
 
 If the user is working in a **fork of theme-service** and wants the origin's header/footer changes,
 that's `skill/references/updating-from-origin.md` in the `theme-service` skill — it merges the whole
-repo, including `assets/`. Come back here only for pushing those changes out to consuming repos.
+repo, including `a11y-way-pages/assets/`. Come back here only for pushing those changes out to consuming repos.

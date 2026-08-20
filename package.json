@@ -4,8 +4,8 @@
   "description": "Create WCAG 2.2 AA compliant dark/light themes and install them into any repo, new or legacy. A theme that fails contrast is never written. Includes the Claude Code skill (and AGENTS.md) for creating, applying, and updating themes. Version is tracked in the VERSION file.",
   "license": "MIT",
   "scripts": {
-    "install-all": "node install/install.mjs --builtins true && npm run build-themes",
-    "install-no-themes": "node install/install.mjs --builtins false",
+    "install-all": "node install/install.mjs --builtins true --only theme-service && npm run build-themes",
+    "install-no-themes": "node install/install.mjs --builtins false --only theme-service",
     "install-skill": "npm run install-no-themes",
     "build-themes": "node tools/build-final.mjs --write",
     "build-themes:mine": "node tools/build-final.mjs --write --no-builtin",
@@ -16,9 +16,12 @@
 
     "validate": "node tools/build-palettes.mjs 3",
 
-    "//dev:overview-site": "LOCAL DEV of this repo's informational GitHub Pages site (docs/overview.html + themes/preview.html) ONLY. Not needed to install or use the theme service.",
-    "dev:overview-site": "node tools/serve-site.mjs",
-    "dev:overview-site:build": "node tools/build-site.mjs",
-    "dev:overview-site:serve": "node tools/serve-site.mjs --no-build --no-watch"
+    "//dev:install-pages-skill": "MAINTAINER ONLY. Links a11y-way-pages/skill into ~/.claude/skills/a11y-way-pages, globally for every repo on this machine, from THIS clone — so you can drive the header/footer skill against the brand site you are editing, which is the reference implementation its docs point at. Leaves the theme-service skill's link untouched. The install-* scripts above deliberately install theme-service ONLY: a theme user never needs this skill.",
+    "dev:install-pages-skill": "node install/install.mjs --only a11y-way-pages",
+
+    "//dev:overview-site": "MAINTAINER ONLY. Local dev of the A11Y Way brand site (a11y-way-pages/site/overview.html + preview.html). Nothing here is needed to install or use the theme service.",
+    "dev:overview-site": "node a11y-way-pages/tools/serve-site.mjs",
+    "dev:overview-site:build": "node a11y-way-pages/tools/build-site.mjs",
+    "dev:overview-site:serve": "node a11y-way-pages/tools/serve-site.mjs --no-build --no-watch"
   }
 }

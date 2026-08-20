@@ -30,8 +30,8 @@ _site/
 scratch/
 
 # Full-resolution image sources. The web-optimized derivative is what ships
-# (e.g. assets/header-image.webp); keeping the multi-MB original out of git
+# (e.g. a11y-way-pages/assets/header-image.webp); keeping the multi-MB original out of git
 # stops it bloating every clone. Re-encode with:
-#   ffmpeg -i assets/header-image.png -vf "scale=1600:-2:flags=lanczos" \
-#          -c:v libwebp -quality 82 -compression_level 6 assets/header-image.webp
-assets/header-image.png
+#   ffmpeg -i a11y-way-pages/assets/header-image.png -vf "scale=1600:-2:flags=lanczos" \
+#          -c:v libwebp -quality 82 -compression_level 6 a11y-way-pages/assets/header-image.webp
+a11y-way-pages/assets/header-image.png

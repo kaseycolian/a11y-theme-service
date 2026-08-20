@@ -2,14 +2,19 @@
  *
  * Builds the GitHub Pages site tree (`_site/`) with clean, extension-less URLs:
  *
- *     /          -> the overview page   (docs/overview.html)
- *     /preview/  -> the themes preview  (themes/preview.html)
+ *     /          -> the overview page   (a11y-way-pages/site/overview.html)
+ *     /preview/  -> the themes preview  (a11y-way-pages/site/preview.html)
  *     /themes/*  -> the built theme assets (theme.css, *.js, ...)
  *
  * The source HTML files keep their `.html` links so they still open correctly
  * from the local filesystem; this script rewrites those links for the deployed
  * layout WITHOUT modifying the sources. Run `node tools/build-final.mjs <N> --write`
  * first so the generated theme assets exist under themes/.
+ *
+ * Paths here are relative, so this must run with the REPO ROOT as cwd (build-site.mjs
+ * and pages.yml both do). Both source pages live two levels down now, in
+ * a11y-way-pages/site/, which is why their theme links are ../../themes/ and their
+ * brand-asset links are ../assets/ (a11y-way-pages/assets/, a sibling of site/).
  *
  * Every rewrite is an exact-string replace that fails loudly if the token is
  * absent — so a future edit that moves an asset link can't silently ship broken
@@ -33,40 +38,33 @@ function rewrite(source, label, replacements) {
 rmSync('_site', { recursive: true, force: true });
 mkdirSync('_site/preview', { recursive: true });
 
-// Overview -> _site/index.html (site root). It lives in docs/, so its assets are
-// referenced as ../themes/…; from the root they become themes/…
-const home = rewrite(readFileSync('docs/overview.html', 'utf8'), 'docs/overview.html', [
-  ['href="overview.html"', 'href="./"'],  // brand self-link -> site root
-  ['../themes/preview.html', 'preview/'], // CTA -> clean preview URL (must precede the generic themes/ rewrite)
-  ['../themes/', 'themes/'],              // asset links (css/js)
-  ['../assets/', 'assets/'],              // favicon + its themer
+// Overview -> _site/index.html (site root). In the repo it sits beside preview.html in
+// a11y-way-pages/site/; from the site root every link loses its leading ../
+const home = rewrite(readFileSync('a11y-way-pages/site/overview.html', 'utf8'), 'site/overview.html', [
+  ['href="overview.html"', 'href="./"'],   // brand self-link -> site root
+  ['href="preview.html"', 'href="preview/"'], // sibling page -> clean preview URL
+  ['../../themes/', 'themes/'],            // built theme assets (css/js)
+  ['../assets/', 'assets/'],               // favicon, brand mark + their themers
 ]);
 writeFileSync('_site/index.html', home);
 
-// Preview -> _site/preview/index.html (/preview/). It lives in themes/, so its
-// assets are same-dir (theme.css); from /preview/ they become ../themes/…
-const preview = rewrite(readFileSync('themes/preview.html', 'utf8'), 'themes/preview.html', [
-  ['href="../docs/overview.html"', 'href="../"'], // back link -> home
-  ['src="theme-init.js"', 'src="../themes/theme-init.js"'],
-  ['href="theme.css"', 'href="../themes/theme.css"'],
-  ['href="effects.css"', 'href="../themes/effects.css"'],
-  ['href="components.css"', 'href="../themes/components.css"'],
-  ['href="dropdown.css"', 'href="../themes/dropdown.css"'],
-  ['src="dropdown.js"', 'src="../themes/dropdown.js"'],
-  ['src="theme-select.js"', 'src="../themes/theme-select.js"'],
+// Preview -> _site/preview/index.html (/preview/). One level down from the site root,
+// so its two-up repo links (../../themes/, ../../gallery/) become one-up here, and its
+// ../assets/ already resolves to _site/assets — no rewrite for that one.
+const preview = rewrite(readFileSync('a11y-way-pages/site/preview.html', 'utf8'), 'site/preview.html', [
+  ['href="overview.html"', 'href="../"'],  // back link -> home
+  ['../../themes/', '../themes/'],
+  ['../../gallery/', '../gallery/'],
 ]);
 writeFileSync('_site/preview/index.html', preview);
 
-// Theme assets (skip preview.html — it's already served at /preview/)
-cpSync('themes', '_site/themes', {
-  recursive: true,
-  filter: (src) => !src.endsWith('preview.html'),
-});
+// Theme assets. No filter any more: preview.html is a brand page and lives in
+// a11y-way-pages/site/, not in themes/.
+cpSync('themes', '_site/themes', { recursive: true });
 
 // The shared component gallery (gallery.js + gallery.css), which the preview page
-// renders after its page head. No rewrite needed: preview.html lives in themes/ and
-// links ../gallery/…, which resolves to the repo root here and to _site/gallery/
-// from /preview/ — the same place either way.
+// renders after its page head. preview.html links ../../gallery/ in the repo, rewritten
+// to ../gallery/ above so it resolves to _site/gallery/ from /preview/.
 cpSync('gallery', '_site/gallery', { recursive: true });
 
 // Site assets (favicon + brand mark + the scripts that re-color them per theme).
@@ -75,7 +73,7 @@ cpSync('gallery', '_site/gallery', { recursive: true });
 // /preview/ resolves ../assets/ to the same place.
 // (skip full-resolution image sources — they're gitignored, so they don't exist
 // in CI; excluding them keeps a local dry-run identical to the real deploy)
-cpSync('assets', '_site/assets', {
+cpSync('a11y-way-pages/assets', '_site/assets', {
   recursive: true,
   filter: (src) => !src.endsWith('header-image.png'),
 });

@@ -8,7 +8,7 @@ written.** Accessibility is handled at the palette stage, before any app consume
 Lightweight and framework-agnostic: the source of truth is plain **CSS custom properties** (with a
 JSON mirror), so it drops into vanilla JS/CSS, Angular, or React with **no build step** for the app
 consuming it. Default theme is **Rink Classic** (dark, auto-light by OS).
-`themes/preview.html` shows every theme in real components.
+The discovery pages (`discovery/draft-N/index.html`) show every theme in real components.
 
 **New here?** Start with the **[Visual Overview](docs/OVERVIEW.md)** — diagrams of what it is, how you
 use it, and the clone / save / update workflow (local + optional GitHub).
@@ -26,17 +26,16 @@ path:
 Install once, then apply the existing themes to any repo on your machine. No palette/creation work.
 
 1. **Clone** this repo anywhere.
-2. **Install** — two modes. Both link **both skills** into `~/.claude/skills` and write a
-   machine-local pointer to this repo (nothing is written *inside* the repo):
+2. **Install** — two modes. Both link the **`theme-service`** skill into `~/.claude/skills` and write
+   a machine-local pointer to this repo (nothing is written *inside* the repo):
    ```sh
-   npm run install-all         # install the skills AND build the themes (recommended)
-   npm run install-no-themes    # install the skills only — don't generate any themes
-   # (the platform scripts install/install.ps1 · install/install.sh still link the skills)
+   npm run install-all         # install the skill AND build the themes (recommended)
+   npm run install-no-themes    # install the skill only — don't generate any themes
+   # (the platform scripts install/install.ps1 · install/install.sh do the same)
    ```
-   Two skills ship here, deliberately separate so neither can disturb the other's work:
-   **`theme-service`** creates and applies themes, and **`a11y-way-pages`** stands up the site
-   header, footer and favicon on a page (see below). The pages skill consumes theme tokens
-   read-only — it never creates or edits a theme.
+   That is the only skill you need. The repo also holds `a11y-way-pages/` — the A11Y Way brand site
+   and its own skill — which is maintainer-only and is deliberately **not** installed by any of the
+   commands above.
    The theme files (`themes/theme.css`, `tokens.json`, …) are **build output**, not committed —
    `install-all` produces them; run `npm run build-themes` any time to (re)generate. Re-run install
    to refresh the link.
@@ -66,23 +65,12 @@ Full walkthrough & prompts: **[CREATING-THEMES.md](CREATING-THEMES.md)**. In sho
 > Use the theme-service skill to add a new theme — &lt;paste a palette&gt; / guide me to one / design a new
 > theme family called "&lt;name&gt;". Validate AA, regenerate, and bump the version.
 
-### Path 3 — Put the site header and footer on a page
-
-The `a11y-way-pages` skill stands up this site's furniture — the sticky header (brand lockup, page
-nav, motion toggle, theme console), the footer (cross-linked product family + source link), and the
-themed favicon — on a new page here or in a completely different repo. It **asks about your brand
-first** (name, mark, cross-links, class naming), detects the target's templating layer so a
-framework repo gets one component rather than duplicated markup, and defaults to restyling an
-existing header/footer in place rather than replacing working ARIA and wiring.
-
-The furniture is built entirely from theme tokens, so the target repo has to be themed first
-(Path 1). Tell your agent:
-> Add the site header and footer to this repo, matched to its brand.
-
-Procedure: [`skill-a11y-way-pages/`](skill-a11y-way-pages/) — `SKILL.md` plus `references/` for the
-brand interview, the header/footer anatomy, the update flow, and the accessibility checklist.
-
 You don't have to choose Path 2 to use the service — Path 1 is complete on its own.
+
+> **Not a theme user?** `a11y-way-pages/` is the A11Y Way brand site and the skill that stands up its
+> header, footer and favicon. Separate audience, separate docs — see
+> [`a11y-way-pages/README.md`](a11y-way-pages/README.md). Nothing in the theme service depends on it,
+> and none of the install commands above touch it.
 
 ---
 
@@ -116,7 +104,7 @@ This repo is the **origin**. Fork or clone it and it becomes **your** source of 
 
 ```
 themes/            The distributable themes. effects.css, components.css, dropdown.css, dropdown.js,
-                   preview.html, README.md are
+                   README.md are
                    committed; theme.css / tokens.json / themes.index.json / theme-init.js /
                    theme-select.js are BUILD OUTPUT (gitignored) — run `npm run build-themes`.
 tools/             build-final.mjs (build themes/), build-palettes.mjs (discovery drafts),
@@ -124,18 +112,16 @@ tools/             build-final.mjs (build themes/), build-palettes.mjs (discover
                    palettes/ (draft-*.mjs = built-in source; local.mjs = YOUR themes),
                    contrast-checker/ (standalone WCAG library + CLI)
 gallery/           The component gallery, ONE copy: gallery.js (markup) + gallery.css (layout).
-                   Rendered by BOTH themes/preview.html and the discovery page, so a card added
-                   once shows up in both. See gallery/README.md
+                   Rendered by the discovery pages (and by the brand site), so a card added once
+                   shows up everywhere. See gallery/README.md
 skill/             The theme-service skill (SKILL.md + references/) — how agents apply/update/add themes
-skill-a11y-way-pages/  The a11y-way-pages skill — how agents stand up the site header, footer and
-                   favicon on a page, in this repo or any other. Consumes theme tokens read-only;
-                   never edits themes
-assets/            SITE FURNITURE (not vendored by consuming apps): site-header.css, site-footer.css,
-                   brand-mark.svg + brand-mark-theme.js, favicon.svg + favicon-theme.js
-AGENTS.md          Agent-agnostic mirror of both skills (for non-Claude agents)
+a11y-way-pages/    MAINTAINER ONLY — the A11Y Way brand site: its skill, the header/footer/favicon
+                   furniture, the two published pages and the site build. Consumes theme tokens
+                   read-only, never edits themes. Nothing outside it depends on it
+AGENTS.md          Agent-agnostic mirror of the theme-service skill (for non-Claude agents)
 discovery/         Palette-selection playground (draft-1/2/3) — reference for how themes were chosen
-install/           install.mjs (cross-platform) / install.ps1 / install.sh — link both skills + write
-                   the machine-local pointer (~/.claude/theme-service.local.json)
+install/           install.mjs (cross-platform) / install.ps1 / install.sh — link the skill(s) + write
+                   the machine-local pointer, via the shared write-config.mjs
 package.json       scripts: install-all, install-no-themes, build-themes, build-themes:mine,
                    update-from-origin, release, validate (no dependencies)
 USAGE.md           How to ask an agent to APPLY the themes to a repo
@@ -157,7 +143,7 @@ are in [`themes/README.md`](themes/README.md).
 
 ## Explore the themes
 
-- **`themes/preview.html`** — the template page: every finished theme shown in real components, with a
+- **`discovery/draft-N/index.html`** — every candidate palette shown in real components, with a
   live switcher (open in a browser).
 - **`discovery/index.html`** — the draft playground: every candidate palette rendered with the full
   component gallery, side by side, with computed AA ratios. Reference for the creation process.
@@ -184,19 +170,13 @@ The generators **refuse to write if any pair fails WCAG 2.2 AA** (your own `loca
 too). The standalone checker is in [`tools/contrast-checker/`](tools/contrast-checker/) (library + CLI,
 usable in any project).
 
-## Local dev of this repo's informational site (maintainers only)
+## The A11Y Way brand site (maintainers only)
 
-`docs/overview.html` and `themes/preview.html` are the pages published to GitHub Pages to explain what
-this repo is. **Nothing below is needed to install or use the theme service** — it only builds/serves
-those two pages locally, exactly as `.github/workflows/pages.yml` deploys them (clean URLs: `/` and
-`/preview/`, which opening the files from disk can't reproduce).
+The published GitHub Pages site, the header/footer/favicon furniture, and the skill that installs them
+on other repos all live in **[`a11y-way-pages/`](a11y-way-pages/)**. None of it is needed to install or
+use the theme service, and nothing in the theme service depends on it.
 
-```sh
-npm run dev:overview-site         # build _site/, serve it, rebuild on source change
-npm run dev:overview-site:build   # build _site/ only — a dry run of the Pages deploy
-npm run dev:overview-site:serve   # serve the existing _site/ as-is (no build, no watch)
-npm run dev:overview-site -- --port 5000   # any of the above on a different port
-```
+Its README covers the local dev loop (`npm run dev:overview-site`) and how to work on the furniture.
 
 **Versioning:** `VERSION` is the single source of truth (`build-final.mjs` reads it). `npm run release`
 bumps it, prepends a `CHANGELOG.md` entry, commits, and creates the git tag `vX.Y.Z` (push with

@@ -34,7 +34,7 @@ jobs:
           echo "Latest finalized draft: draft-$N (tools/palettes/draft-$N.mjs)"
           node tools/build-final.mjs "$N" --write
       - name: Assemble _site with clean URLs (/ = overview, /preview/ = preview)
-        run: node tools/assemble-site.mjs
+        run: node a11y-way-pages/tools/assemble-site.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

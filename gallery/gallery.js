@@ -3,7 +3,7 @@
 
    Two pages render this, and nothing else renders a component sheet:
 
-     themes/preview.html          once, as the finished theme (heading base 2)
+     a11y-way-pages/site/preview.html          once, as the finished theme (heading base 2)
      discovery/draft-N/index.html once per candidate palette (heading base 3)
 
    That is the whole point of the file: a card designed for one page appears on

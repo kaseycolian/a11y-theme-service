@@ -118,7 +118,7 @@ Record which you chose — the update flow needs to know the mapping.
    - If the repo has one site stylesheet, appending is fine — but keep the header and footer in clearly
      marked, contiguous blocks so the update flow can find them.
 
-2. **Copy from the source `assets/`:**
+2. **Copy from the source `a11y-way-pages/assets/`:**
    - `site-header.css` — if applying the header.
    - `site-footer.css` — if applying the footer.
    - `brand-mark.svg` + `brand-mark-theme.js` — if reusing the A11Y Way mark.
@@ -146,7 +146,7 @@ Record which you chose — the update flow needs to know the mapping.
    # A11Y Way — page header & footer
 
    This repo's site header, footer and favicon come from the shared **theme-service** repo's
-   `assets/` — currently on version `<VERSION>`. The files here are vendored copies. Do not
+   `a11y-way-pages/assets/` — currently on version `<VERSION>`. The files here are vendored copies. Do not
    hardcode colors: everything consumes theme tokens (`var(--…)`).
 
    ## For agents working in this repo
@@ -211,7 +211,8 @@ The easy case. The repo has an `A11Y-WAY-PAGES.md` and working furniture.
 The repo is themed but has no furniture.
 
 1. Do the brand interview. Do Common setup.
-2. **Write the markup** against the reference in `docs/overview.html` / `themes/preview.html`, adapted
+2. **Write the markup** against the reference in `a11y-way-pages/site/overview.html` /
+   `a11y-way-pages/site/preview.html`, adapted
    per `header-footer-anatomy.md`. Keep the four header zones in DOM order and the footer's landmark
    rules — those are the parts that carry the accessibility, not the styling.
 3. **Wire the head** — the favicon link plus the two themer scripts, `defer`, external (CSP-safe):

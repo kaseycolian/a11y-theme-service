@@ -49,7 +49,7 @@ discovery→finalize flow; it supports either brand-consistent variants or a del
 3. **Build.** `npm run build-themes` regenerates `themes/` (merging built-ins + `local.mjs`; use
    `npm run build-themes:mine` to build only local themes). For a new-family exploration, review first
    with `node tools/build-palettes.mjs <n> --write` → `discovery/draft-<n>/index.html`.
-4. **Verify** in `themes/preview.html` (the new theme appears in the switcher and renders correctly),
+4. **Verify** in `discovery/draft-<n>/index.html` (the new theme renders correctly in every component),
    then walk `wcag-checklist.md`. **Never delete existing themes** to make room — only add.
    Both that page and the draft page render the same gallery (`gallery/`), so either one exercises
    every component; use the draft page when you want all palettes side by side.
@@ -58,13 +58,11 @@ discovery→finalize flow; it supports either brand-consistent variants or a del
    commits, and tags `vX.Y.Z`.
 6. Downstream apps pick up new themes via the **update flow** (`updating-themes.md`); a data-driven
    selector shows them automatically. Forks pick up origin changes via `updating-from-origin.md`.
-7. **Publishing to the live site (origin repo).** The GitHub Pages home (`docs/overview.html`) links the
-   live template page (`themes/preview.html`) from its "Preview Themes" nav segment, which renders the
-   built `theme.css`. The
-   Pages workflow (`.github/workflows/pages.yml`) auto-detects the **highest-numbered
-   `discovery/draft-N`** and builds themes from it, so when you finalize a new draft as the highest
-   `draft-N`, it automatically becomes the live preview on the next push to `main` — no extra publish
-   step. Convention: highest `draft-N` = the latest finalized set.
+7. **Publishing (origin repo).** The Pages workflow (`.github/workflows/pages.yml`) auto-detects the
+   **highest-numbered `discovery/draft-N`** and builds themes from it, so finalizing a new draft as the
+   highest `draft-N` publishes it on the next push to `main` — no extra step. Convention: highest
+   `draft-N` = the latest finalized set. (What that workflow *renders* is the A11Y Way brand site, which
+   is `a11y-way-pages/`'s concern, not this skill's.)
 
 ## Changing the default/flagship theme
 Set `DEFAULT_FAMILY` in `tools/build-final.mjs` to the family you want on `:root`, re-run

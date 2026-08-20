@@ -10,9 +10,9 @@ toggle, theme console), the site footer (cross-linked product family + source li
 favicon/brand mark. It works on a new page in this repo and on a page in a completely different repo,
 adapting the brand, the class names and the templating language to whatever that repo already uses.
 
-The **source of truth** is the `theme-service` repo's `assets/` folder: `site-header.css`,
+The **source of truth** is the theme-service repo's `a11y-way-pages/assets/` folder: `site-header.css`,
 `site-footer.css`, `brand-mark.svg` + `brand-mark-theme.js`, `favicon.svg` + `favicon-theme.js`. The
-reference *markup* lives in `docs/overview.html` and `themes/preview.html`, which carry the header and
+reference *markup* lives in `a11y-way-pages/site/overview.html` and `a11y-way-pages/site/preview.html`, which carry the header and
 footer verbatim. `references/header-footer-anatomy.md` documents the contract behind both, so you can
 rebuild them in a repo whose stack looks nothing like this one.
 
@@ -25,12 +25,13 @@ route there and come back.
 **Find the source repo**, in this order:
 1. Read the machine-local config `~/.claude/theme-service.local.json` → `{ "repo": "<abs path>" }`.
 2. If missing, this skill lives at `~/.claude/skills/a11y-way-pages/` (symlink/junction into the
-   repo's `skill-a11y-way-pages/`); its real grandparent directory is the repo. Resolve it, or check
+   repo's `a11y-way-pages/skill/`); its real grandparent directory is the repo. Resolve it, or check
    the repo's `AGENTS.md`.
 3. If you still can't find it, tell the user to run the installer (`install/install.ps1` on Windows,
    `install/install.sh` on macOS/Linux) from their clone, or ask for the repo path.
 
-Confirm the source has `assets/site-header.css`, `assets/site-footer.css` and a top-level `VERSION`.
+Confirm the source has `a11y-way-pages/assets/site-header.css`, `a11y-way-pages/assets/site-footer.css`
+and a top-level `VERSION`.
 
 **Then confirm the target repo is themed.** The header and footer are built entirely from theme
 tokens — `--bg-panel`, `--text`, `--text-muted`, `--border`, `--focus-ring`, `--accent-*`,

@@ -1,8 +1,8 @@
 /* theme-service — build-site.mjs
  *
  * LOCAL DEV ONLY — builds the informational GitHub Pages site (`_site/`), i.e.
- * the overview page (docs/overview.html) and the themes preview
- * (themes/preview.html). This has nothing to do with installing or using the
+ * the overview page (a11y-way-pages/site/overview.html) and the themes preview
+ * (a11y-way-pages/site/preview.html). This has nothing to do with installing or using the
  * theme service in an app; it exists so the pages that *explain* this repo can
  * be developed locally.
  *
@@ -10,7 +10,7 @@
  * dry-run of the real deploy:
  *   1. detect the highest-numbered finalized draft (tools/palettes/draft-<N>.mjs)
  *   2. node tools/build-final.mjs <N> --write   (generate themes/ assets)
- *   3. node tools/assemble-site.mjs             (assemble _site/ with clean URLs)
+ *   3. node a11y-way-pages/tools/assemble-site.mjs   (assemble _site/ with clean URLs)
  *
  * Run:  npm run dev:overview-site:build
  */
@@ -19,7 +19,9 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
-const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
+// Two up: this file is a11y-way-pages/tools/, and everything it drives (the theme
+// build, the palette sources, the _site output) is rooted at the REPO root.
+const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 /** Highest finalized draft — the same rule pages.yml uses to pick the live set. */
 export function latestDraft() {
@@ -49,7 +51,7 @@ export function buildSite({ quiet = false } = {}) {
   const n = latestDraft();
   if (!quiet) console.log(`\n[overview-site] building from draft-${n} (tools/palettes/draft-${n}.mjs)`);
   run('build-final.mjs', [join(REPO, 'tools', 'build-final.mjs'), String(n), '--write']);
-  run('assemble-site.mjs', [join(REPO, 'tools', 'assemble-site.mjs')]);
+  run('assemble-site.mjs', [join(REPO, 'a11y-way-pages', 'tools', 'assemble-site.mjs')]);
 }
 
 // Only build when invoked directly (serve-site.mjs imports buildSite instead).

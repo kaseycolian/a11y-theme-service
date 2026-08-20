@@ -22,7 +22,7 @@ A **category** is a kind of component (Typography, Inputs, …). A **block** is 
 - **Add a component:** add a `.block` inside the right `.cat-grid` in `gallery.js`. No CSS, no layout
   work — `.cat-grid` is `auto-fit` + `minmax`, so it picks its own column count.
 - **Add a category:** add one `cat('<slug>', 'Title', 'Note', \`…\`)` entry in `gallery.js`, then one
-  `<a href="#cat-<slug>">` line in `themes/preview.html`'s `.cat-nav`. The section id, accessible name
+  `<a href="#cat-<slug>">` line in the host page's `.cat-nav`. The section id, accessible name
   and heading rank come from the `cat()` helper, so they can't drift.
 - Both pages pick the change up on reload. There is no build step.
 
@@ -50,7 +50,7 @@ It is a specimen: picking a row does not change the page theme.
 
 ## The two call sites
 
-**`themes/preview.html`** — declarative. A host div right after `.page-head`, and the script after it:
+**`a11y-way-pages/site/preview.html`** — declarative. A host div right after `.page-head`, and the script after it:
 
 ```html
 <div id="gallery" data-gallery data-gallery-heading="2"></div>
@@ -88,5 +88,5 @@ pages' vertical rhythm from drifting apart the way their card spacing can't.
 ## Site build
 
 `tools/assemble-site.mjs` copies this folder to `_site/gallery/`. `../gallery/…` resolves correctly
-from both `themes/preview.html` in the repo and `_site/preview/index.html` in the deployed tree, so
+from both `a11y-way-pages/site/preview.html` in the repo and `_site/preview/index.html` in the deployed tree, so
 there is nothing to rewrite.

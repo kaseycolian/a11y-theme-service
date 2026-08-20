@@ -14,13 +14,13 @@
 <script src="../assets/brand-mark-theme.js" defer></script>
 
 <!-- Real theme assets, exactly as a consuming app wires them (external = CSP-safe) -->
-<script src="../themes/theme-init.js"></script>
-<link rel="stylesheet" href="../themes/theme.css">
-<link rel="stylesheet" href="../themes/effects.css">
-<link rel="stylesheet" href="../themes/components.css">
-<link rel="stylesheet" href="../themes/dropdown.css">
+<script src="../../themes/theme-init.js"></script>
+<link rel="stylesheet" href="../../themes/theme.css">
+<link rel="stylesheet" href="../../themes/effects.css">
+<link rel="stylesheet" href="../../themes/components.css">
+<link rel="stylesheet" href="../../themes/dropdown.css">
 
-<!-- Site header and footer. Shared with themes/preview.html so neither can drift
+<!-- Site header and footer. Shared with preview.html so neither can drift
      between the two pages. Must come after components.css. -->
 <link rel="stylesheet" href="../assets/site-header.css">
 <link rel="stylesheet" href="../assets/site-footer.css">
@@ -29,7 +29,7 @@
   html, * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-ui);
          transition: background .2s, color .2s; }
-  /* Header lives in ../assets/site-header.css — shared with themes/preview.html. */
+  /* Header lives in ../assets/site-header.css — shared with preview.html. */
   /* Bottom padding is the gap to the footer, not the gap to the viewport edge —
      ../assets/site-footer.css adds its own margin-top on top of this. */
   main { max-width: 1040px; margin: 0 auto; padding: 32px 20px 56px; }
@@ -111,7 +111,7 @@
 
 <a class="skip-link" href="#main">Skip to content</a>
 
-<!-- Shared header. Keep this markup identical to themes/preview.html except for
+<!-- Shared header. Keep this markup identical to preview.html except for
      which nav segment carries aria-current. Styles: ../assets/site-header.css -->
 <header class="site-header">
   <div class="hdr-inner">
@@ -142,7 +142,7 @@
            .seg-label is load-bearing, not a wrapper for its own sake: it keeps
            the whole label as ONE flex item, so the space survives. See
            site-header.css. -->
-      <a class="pagenav-seg" href="../themes/preview.html"><span class="seg-label">Preview<span class="seg-tail"> Themes</span></span></a>
+      <a class="pagenav-seg" href="preview.html"><span class="seg-label">Preview<span class="seg-tail"> Themes</span></span></a>
     </nav>
 
     <label class="switch motion">
@@ -359,7 +359,7 @@
         <div class="node-card node-card--accent" style="--node-accent: var(--accent-green)">
           <span class="node-label">Passes — written to themes/</span>
           <span class="node-sub">and shown on the
-            <a href="../themes/preview.html">template page</a>, in real components</span></div>
+            <a href="preview.html">template page</a>, in real components</span></div>
         <!-- No connector between these two: they are the check's two outcomes, not a
              sequence. The dashed border marks the refused one. -->
         <div class="node-card" style="--node-accent: var(--accent-pink); border-style:dashed">
@@ -393,8 +393,8 @@
   </section>
 </main>
 
-<!-- Shared footer. Keep this markup identical between docs/overview.html and
-     themes/preview.html — only the header's aria-current differs between the two
+<!-- Shared footer. Keep this markup identical between overview.html and
+     preview.html — only the header's aria-current differs between the two
      pages, and nothing in here is page-specific. Styles: ../assets/site-footer.css -->
 <footer class="site-footer">
   <div class="ftr-inner">
@@ -475,7 +475,7 @@
 
 <!-- Shipped helpers, external = CSP-safe. dropdown.js first so the selector is
      enhanced as it is populated; either order works, this one just skips a rebuild. -->
-<script src="../themes/dropdown.js"></script>
-<script src="../themes/theme-select.js"></script>
+<script src="../../themes/dropdown.js"></script>
+<script src="../../themes/theme-select.js"></script>
 </body>
 </html>

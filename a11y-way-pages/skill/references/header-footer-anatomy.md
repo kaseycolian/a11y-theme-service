@@ -48,8 +48,9 @@ theme ....... the product itself (loudest, always reachable)
 ```
 
 The responsive rules only ever **re-flow** these four, never reorder them, so tab order always matches
-reading order (SC 2.4.3). Reference markup: `docs/overview.html`, `themes/preview.html` — byte-identical
-except which `.pagenav-seg` carries `aria-current="page"`. Styles: `assets/site-header.css`.
+reading order (SC 2.4.3). Reference markup: `a11y-way-pages/site/overview.html` and
+`a11y-way-pages/site/preview.html` — byte-identical except which `.pagenav-seg` carries
+`aria-current="page"`. Styles: `a11y-way-pages/assets/site-header.css`.
 
 | Part | Class | What it must keep |
 |---|---|---|
@@ -157,7 +158,7 @@ See the Links section of `page-a11y-checklist.md` for what a requested new tab h
 **If you change the header's height, one value downstream moves with it.** The rail is sticky, so any
 in-page anchor needs a `scroll-margin-top` that clears it or the heading lands underneath — silently,
 with no scrollbar or overflow to notice. In this repo that is `--gal-scroll-margin`
-(`gallery/gallery.css` default, overridden in `themes/preview.html`), and the override is written as
+(`gallery/gallery.css` default, overridden in `a11y-way-pages/site/preview.html`), and the override is written as
 a `calc()` off the same clamp so it follows the rail instead of drifting out of date. Remember the
 rail has three heights, not one: single row above 1080px, two rows below it, and **three** once the
 page nav wraps on a narrow phone. Verify by actually calling `scrollIntoView()` and measuring where
@@ -176,7 +177,7 @@ lede ........ who this is, why it exists, where the code is  (a masthead)
 index ....... the products, cross-linked                     (a nav)
 ```
 
-Reference markup: same two pages, byte-identical. Styles: `assets/site-footer.css`.
+Reference markup: same two pages, byte-identical. Styles: `a11y-way-pages/assets/site-footer.css`.
 
 **No boxes.** This is the rule that keeps the footer from reading as a generic card tray. The header
 is a rail of type and one lit edge; the footer is drawn to the same brief so the two bracket the page
@@ -342,10 +343,10 @@ Two SVGs, each with a sibling script that re-colors it per theme.
 
 | File | What it is |
 |---|---|
-| `assets/brand-mark.svg` | The 'A' bridge lockup mark, 200×200. Strokes read `var(--accent-pink)` / `var(--accent-green)` with brand-color fallbacks baked in, so the file also stands alone. |
-| `assets/brand-mark-theme.js` | Re-colors the header mark. Loaded `defer` from `<head>`. |
-| `assets/favicon.svg` | The tab icon. Uses its own `--a11y-theme-*` properties. |
-| `assets/favicon-theme.js` | Re-colors the favicon. Loaded `defer` from `<head>`. |
+| `a11y-way-pages/assets/brand-mark.svg` | The 'A' bridge lockup mark, 200×200. Strokes read `var(--accent-pink)` / `var(--accent-green)` with brand-color fallbacks baked in, so the file also stands alone. |
+| `a11y-way-pages/assets/brand-mark-theme.js` | Re-colors the header mark. Loaded `defer` from `<head>`. |
+| `a11y-way-pages/assets/favicon.svg` | The tab icon. Uses its own `--a11y-theme-*` properties. |
+| `a11y-way-pages/assets/favicon-theme.js` | Re-colors the favicon. Loaded `defer` from `<head>`. |
 
 **Why the scripts exist:** a browser renders an `<img>` and a favicon in an **isolated document**, so
 the page's custom properties never reach them and the baked-in fallbacks always win. Each script reads

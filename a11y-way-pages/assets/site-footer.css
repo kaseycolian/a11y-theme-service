@@ -1,5 +1,5 @@
 /* =============================================================================
-   The A11Y Way — site footer. Shared by docs/overview.html and themes/preview.html.
+   The A11Y Way — site footer. Shared by a11y-way-pages/site/overview.html and a11y-way-pages/site/preview.html.
 
    ONE source of truth, same deal as site-header.css: both pages link this file,
    so the footer cannot drift between them. Load it AFTER components.css, and

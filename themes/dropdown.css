@@ -253,9 +253,9 @@
    not tidiness: these rules have to sit at the same rank as the default strip rules
    they replace — winning only on source order — so that a page styling the swatch
    through an ancestor still overrides them. Unwrapped, the selector below would
-   score (0,3,2) and silently outrank site-header.css's `.theme-console
-   .dropdown-swatch > span` (0,2,1), pinning the header's dots at this size through
-   every breakpoint instead of letting them step down to 6px and 5px. */
+   score (0,3,2) and silently outrank a host page's own `.some-console
+   .dropdown-swatch > span` (0,2,1), pinning its dots at this size through every
+   breakpoint instead of letting them step down to 6px and 5px. */
 :where(.dropdown:has(select[data-dropdown-swatch-style="dots"])) .dropdown-swatch {
   gap: 5px;
   border: 0; border-radius: 0;
@@ -316,10 +316,10 @@
    button inside it, so the list spans the cap too rather than starting partway
    across what the user reads as one control.
 
-   assets/site-header.css's .theme-console is this same pattern, specialized: it
-   adds the four .tc-lamps, a purple identity, a measured fixed width and four
-   breakpoints. It keeps its own rules rather than extending these because it is
-   installed into other repos on its own. Keep the two in step. */
+   A host page's own console (a sticky site header, say) is typically this same
+   pattern specialized further — its own identity color, a measured fixed width, its
+   own breakpoints. Such a page is expected to keep its own rules rather than extend
+   these, so that it can ship standalone; if you maintain both, keep them in step. */
 .dropdown-console {
   display: inline-flex;
   align-items: center;

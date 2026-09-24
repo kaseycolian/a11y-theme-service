@@ -4,6 +4,69 @@ All notable changes to the theme-service. Apps record the version they vendored 
 (plus `updating-themes.md`) to migrate. Versioning: minor bump for additive themes/tokens, major for
 breaking token renames/removals or a default-theme change.
 
+## 1.3.0 — 2026-09-24
+
+Stricter contrast checks and a one-skill install
+
+### TL;DR
+
+- **Contrast ratios are compared exactly now.** A pair at 4.496:1 used to round up to 4.50 and
+  pass. WCAG says it doesn't meet 4.5:1, and now the theme builder, `npm run validate` and the
+  contrast checker agree.
+- **`--border-strong` is checked on every surface:** `--bg` and `--bg-elevated` as well as
+  `--bg-panel`.
+- **The install commands install one skill.** `npm run install-all` and the other install scripts
+  link only `theme-service` now.
+
+### Upgrading
+
+1. **Apps:** nothing to do. No token value changed and every built-in theme still passes, so the
+   theme files an app vendored are still correct.
+2. **Your own themes** (`tools/palettes/local.mjs`): run `npm run build-themes`. A theme that only
+   just passed before can fail now. The build names the pair and its ratio, for example
+   `--border-strong on --bg: 2.98:1, needs 3:1`.
+3. **Code that calls the contrast checker:** `rate()` and `checkPairs()` return `ratio` truncated
+   to two decimals instead of rounded (4.4959 is `4.49`, was `4.5`). Pass/fail uses the exact value.
+
+---
+
+**Contrast checks.**
+
+- The theme builder (`npm run build-themes`), `npm run validate`, and the contrast checker's library
+  and CLI compare the exact ratio. W3C: "the computed values should not be rounded (e.g., 4.499:1
+  would not meet the 4.5:1 threshold)"
+  ([Understanding SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)).
+- The CLI's single-pair `--min` check used to pass a near miss, even with ✗ printed for AA on the
+  line above it. It now fails and exits 1.
+- Ratios are shown truncated, never rounded up. `contrast.mjs` exports a new `floor2()`. `round2()`
+  is still exported for existing callers, but don't use it for pass/fail.
+- `--border-strong` draws the edge of ghost and icon buttons, the switch track and toggle chips.
+  Those sit on the page and in menus as well as on panels, so it's now checked at 3:1 on all three
+  surfaces. That's 28 checks per theme, up from 26.
+- The pair list lives in one file, `tools/palette-checks.mjs`, used by both the builder and
+  `npm run validate`, so the two can't disagree.
+- When the builder refuses a theme, it lists each failing pair and its ratio instead of only a
+  count.
+- `npm run validate` now exits 1 when a theme fails, so it can gate CI. It used to print the
+  failure and exit 0.
+- `npm test` runs new unit tests for the contrast checker, the pair list, and both builders refusing
+  to write a failing theme. They use Node's built-in test runner, so there are no dependencies.
+- The draft 3 discovery page shows the new checks.
+
+**Installing.**
+
+- `npm run install-all`, `install-no-themes` and `install-skill` link only the `theme-service`
+  skill. They used to link the A11Y Way pages skill too, which theme users don't need. Running
+  `install/install.sh` or `install/install.ps1` yourself still links both unless you pass
+  `--only theme-service` (`-Only theme-service` in PowerShell).
+- Re-running the installer keeps your settings. `install.sh` and `install.ps1` used to rewrite
+  `~/.claude/theme-service.local.json` from scratch, dropping your built-in themes preference and
+  your install history. The PowerShell one also wrote a byte-order mark that made the file
+  unreadable. Both now use the same config writer as `install.mjs`, and both gained `--only`,
+  `--source`, `--builtins` and `--help` (`-Only`, `-Source`, `-Builtins`, `-Help` in PowerShell).
+- `themes/preview.html` is gone from `themes/`. To see every theme in real components, open
+  `discovery/draft-3/index.html`.
+
 ## 1.2.0 — 2026-08-11
 
 ### TL;DR

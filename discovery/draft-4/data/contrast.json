@@ -3751,26 +3751,26 @@
       },
       {
         "label": "pink text on bg",
-        "fg": "#925aff",
+        "fg": "#6d7e98",
         "bg": "#000000",
         "min": 4.5,
-        "ratio": 5.12,
+        "ratio": 5.08,
         "pass": true
       },
       {
         "label": "pink text on panel",
-        "fg": "#925aff",
+        "fg": "#6d7e98",
         "bg": "#000c02",
         "min": 4.5,
-        "ratio": 4.86,
+        "ratio": 4.82,
         "pass": true
       },
       {
         "label": "on-pink on pink fill",
-        "fg": "#0a021c",
-        "bg": "#925aff",
+        "fg": "#040b18",
+        "bg": "#6d7e98",
         "min": 4.5,
-        "ratio": 4.93,
+        "ratio": 4.77,
         "pass": true
       },
       {
@@ -3799,7 +3799,7 @@
       },
       {
         "label": "blue text on bg",
-        "fg": "#6c7ab5",
+        "fg": "#6d7e98",
         "bg": "#000000",
         "min": 4.5,
         "ratio": 5.08,
@@ -3807,18 +3807,18 @@
       },
       {
         "label": "blue text on panel",
-        "fg": "#6c7ab5",
+        "fg": "#6d7e98",
         "bg": "#000c02",
         "min": 4.5,
-        "ratio": 4.83,
+        "ratio": 4.82,
         "pass": true
       },
       {
         "label": "on-blue on blue fill",
-        "fg": "#070a1a",
-        "bg": "#6c7ab5",
+        "fg": "#040b18",
+        "bg": "#6d7e98",
         "min": 4.5,
-        "ratio": 4.76,
+        "ratio": 4.77,
         "pass": true
       },
       {
@@ -3895,10 +3895,10 @@
       },
       {
         "label": "pink text on elevated",
-        "fg": "#925aff",
+        "fg": "#6d7e98",
         "bg": "#001800",
         "min": 4.5,
-        "ratio": 4.53,
+        "ratio": 4.5,
         "pass": true
       },
       {
@@ -3911,7 +3911,7 @@
       },
       {
         "label": "blue text on elevated",
-        "fg": "#6c7ab5",
+        "fg": "#6d7e98",
         "bg": "#001800",
         "min": 4.5,
         "ratio": 4.5,
@@ -3959,10 +3959,10 @@
       },
       {
         "label": "pink text on rain",
-        "fg": "#925aff",
+        "fg": "#6d7e98",
         "bg": "#06160b",
         "min": 4.5,
-        "ratio": 4.54,
+        "ratio": 4.51,
         "pass": true
       },
       {
@@ -3975,7 +3975,7 @@
       },
       {
         "label": "blue text on rain",
-        "fg": "#6c7ab5",
+        "fg": "#6d7e98",
         "bg": "#06160b",
         "min": 4.5,
         "ratio": 4.51,
@@ -4047,26 +4047,26 @@
       },
       {
         "label": "pink text on bg",
-        "fg": "#925aff",
+        "fg": "#6d7e98",
         "bg": "#000000",
         "min": 4.5,
-        "ratio": 5.12,
+        "ratio": 5.08,
         "pass": true
       },
       {
         "label": "pink text on panel",
-        "fg": "#925aff",
+        "fg": "#6d7e98",
         "bg": "#000c02",
         "min": 4.5,
-        "ratio": 4.86,
+        "ratio": 4.82,
         "pass": true
       },
       {
         "label": "on-pink on pink fill",
-        "fg": "#0a021c",
-        "bg": "#925aff",
+        "fg": "#040b18",
+        "bg": "#6d7e98",
         "min": 4.5,
-        "ratio": 4.93,
+        "ratio": 4.77,
         "pass": true
       },
       {
@@ -4095,7 +4095,7 @@
       },
       {
         "label": "blue text on bg",
-        "fg": "#6c7ab5",
+        "fg": "#6d7e98",
         "bg": "#000000",
         "min": 4.5,
         "ratio": 5.08,
@@ -4103,18 +4103,18 @@
       },
       {
         "label": "blue text on panel",
-        "fg": "#6c7ab5",
+        "fg": "#6d7e98",
         "bg": "#000c02",
         "min": 4.5,
-        "ratio": 4.83,
+        "ratio": 4.82,
         "pass": true
       },
       {
         "label": "on-blue on blue fill",
-        "fg": "#070a1a",
-        "bg": "#6c7ab5",
+        "fg": "#040b18",
+        "bg": "#6d7e98",
         "min": 4.5,
-        "ratio": 4.76,
+        "ratio": 4.77,
         "pass": true
       },
       {
@@ -4191,10 +4191,10 @@
       },
       {
         "label": "pink text on elevated",
-        "fg": "#925aff",
+        "fg": "#6d7e98",
         "bg": "#001800",
         "min": 4.5,
-        "ratio": 4.53,
+        "ratio": 4.5,
         "pass": true
       },
       {
@@ -4207,7 +4207,7 @@
       },
       {
         "label": "blue text on elevated",
-        "fg": "#6c7ab5",
+        "fg": "#6d7e98",
         "bg": "#001800",
         "min": 4.5,
         "ratio": 4.5,
@@ -4248,9 +4248,9 @@
       {
         "label": "text on bg",
         "fg": "#005825",
-        "bg": "#f4f6f9",
+        "bg": "#f9fafc",
         "min": 4.5,
-        "ratio": 8,
+        "ratio": 8.3,
         "pass": true
       },
       {
@@ -4264,9 +4264,9 @@
       {
         "label": "muted on bg",
         "fg": "#2d7642",
-        "bg": "#f4f6f9",
+        "bg": "#f9fafc",
         "min": 4.5,
-        "ratio": 5.12,
+        "ratio": 5.31,
         "pass": true
       },
       {
@@ -4279,34 +4279,34 @@
       },
       {
         "label": "pink text on bg",
-        "fg": "#321a5f",
-        "bg": "#f4f6f9",
+        "fg": "#314058",
+        "bg": "#f9fafc",
         "min": 4.5,
-        "ratio": 13.38,
+        "ratio": 10.02,
         "pass": true
       },
       {
         "label": "pink text on panel",
-        "fg": "#321a5f",
+        "fg": "#314058",
         "bg": "#ffffff",
         "min": 4.5,
-        "ratio": 14.49,
+        "ratio": 10.47,
         "pass": true
       },
       {
         "label": "on-pink on pink fill",
         "fg": "#ffffff",
-        "bg": "#321a5f",
+        "bg": "#314058",
         "min": 4.5,
-        "ratio": 14.49,
+        "ratio": 10.47,
         "pass": true
       },
       {
         "label": "green text on bg",
         "fg": "#117e16",
-        "bg": "#f4f6f9",
+        "bg": "#f9fafc",
         "min": 4.5,
-        "ratio": 4.82,
+        "ratio": 5,
         "pass": true
       },
       {
@@ -4327,34 +4327,34 @@
       },
       {
         "label": "blue text on bg",
-        "fg": "#2e3976",
-        "bg": "#f4f6f9",
+        "fg": "#314058",
+        "bg": "#f9fafc",
         "min": 4.5,
-        "ratio": 9.88,
+        "ratio": 10.02,
         "pass": true
       },
       {
         "label": "blue text on panel",
-        "fg": "#2e3976",
+        "fg": "#314058",
         "bg": "#ffffff",
         "min": 4.5,
-        "ratio": 10.69,
+        "ratio": 10.47,
         "pass": true
       },
       {
         "label": "on-blue on blue fill",
         "fg": "#ffffff",
-        "bg": "#2e3976",
+        "bg": "#314058",
         "min": 4.5,
-        "ratio": 10.69,
+        "ratio": 10.47,
         "pass": true
       },
       {
         "label": "purple text on bg",
         "fg": "#001800",
-        "bg": "#f4f6f9",
+        "bg": "#f9fafc",
         "min": 4.5,
-        "ratio": 17.15,
+        "ratio": 17.78,
         "pass": true
       },
       {
@@ -4376,9 +4376,9 @@
       {
         "label": "focus ring on bg",
         "fg": "#039946",
-        "bg": "#f4f6f9",
+        "bg": "#f9fafc",
         "min": 3,
-        "ratio": 3.43,
+        "ratio": 3.55,
         "pass": true
       },
       {
@@ -4392,9 +4392,9 @@
       {
         "label": "border-strong on bg",
         "fg": "#039946",
-        "bg": "#f4f6f9",
+        "bg": "#f9fafc",
         "min": 3,
-        "ratio": 3.43,
+        "ratio": 3.55,
         "pass": true
       },
       {
@@ -4423,10 +4423,10 @@
       },
       {
         "label": "pink text on elevated",
-        "fg": "#321a5f",
+        "fg": "#314058",
         "bg": "#ffffff",
         "min": 4.5,
-        "ratio": 14.49,
+        "ratio": 10.47,
         "pass": true
       },
       {
@@ -4439,10 +4439,10 @@
       },
       {
         "label": "blue text on elevated",
-        "fg": "#2e3976",
+        "fg": "#314058",
         "bg": "#ffffff",
         "min": 4.5,
-        "ratio": 10.69,
+        "ratio": 10.47,
         "pass": true
       },
       {
@@ -4472,7 +4472,7 @@
       {
         "label": "text on rain",
         "fg": "#005825",
-        "bg": "#d0f7e5",
+        "bg": "#c7fcbf",
         "min": 4.5,
         "ratio": 7.47,
         "pass": true
@@ -4480,47 +4480,47 @@
       {
         "label": "muted on rain",
         "fg": "#2d7642",
-        "bg": "#d0f7e5",
+        "bg": "#c7fcbf",
         "min": 4.5,
-        "ratio": 4.79,
+        "ratio": 4.78,
         "pass": true
       },
       {
         "label": "pink text on rain",
-        "fg": "#321a5f",
-        "bg": "#d0f7e5",
+        "fg": "#314058",
+        "bg": "#c7fcbf",
         "min": 4.5,
-        "ratio": 12.5,
+        "ratio": 9.03,
         "pass": true
       },
       {
         "label": "green text on rain",
         "fg": "#117e16",
-        "bg": "#d0f7e5",
+        "bg": "#c7fcbf",
         "min": 4.5,
         "ratio": 4.5,
         "pass": true
       },
       {
         "label": "blue text on rain",
-        "fg": "#2e3976",
-        "bg": "#d0f7e5",
+        "fg": "#314058",
+        "bg": "#c7fcbf",
         "min": 4.5,
-        "ratio": 9.22,
+        "ratio": 9.03,
         "pass": true
       },
       {
         "label": "purple text on rain",
         "fg": "#001800",
-        "bg": "#d0f7e5",
+        "bg": "#c7fcbf",
         "min": 4.5,
-        "ratio": 16.02,
+        "ratio": 16.01,
         "pass": true
       },
       {
         "label": "focus ring on rain",
         "fg": "#039946",
-        "bg": "#d0f7e5",
+        "bg": "#c7fcbf",
         "min": 3,
         "ratio": 3.2,
         "pass": true
@@ -4528,7 +4528,7 @@
       {
         "label": "border-strong on rain",
         "fg": "#039946",
-        "bg": "#d0f7e5",
+        "bg": "#c7fcbf",
         "min": 3,
         "ratio": 3.2,
         "pass": true
@@ -4544,9 +4544,9 @@
       {
         "label": "text on bg",
         "fg": "#005825",
-        "bg": "#f4f6f9",
+        "bg": "#f9fafc",
         "min": 4.5,
-        "ratio": 8,
+        "ratio": 8.3,
         "pass": true
       },
       {
@@ -4560,9 +4560,9 @@
       {
         "label": "muted on bg",
         "fg": "#2d7642",
-        "bg": "#f4f6f9",
+        "bg": "#f9fafc",
         "min": 4.5,
-        "ratio": 5.12,
+        "ratio": 5.31,
         "pass": true
       },
       {
@@ -4575,34 +4575,34 @@
       },
       {
         "label": "pink text on bg",
-        "fg": "#321a5f",
-        "bg": "#f4f6f9",
+        "fg": "#314058",
+        "bg": "#f9fafc",
         "min": 4.5,
-        "ratio": 13.38,
+        "ratio": 10.02,
         "pass": true
       },
       {
         "label": "pink text on panel",
-        "fg": "#321a5f",
+        "fg": "#314058",
         "bg": "#ffffff",
         "min": 4.5,
-        "ratio": 14.49,
+        "ratio": 10.47,
         "pass": true
       },
       {
         "label": "on-pink on pink fill",
         "fg": "#ffffff",
-        "bg": "#321a5f",
+        "bg": "#314058",
         "min": 4.5,
-        "ratio": 14.49,
+        "ratio": 10.47,
         "pass": true
       },
       {
         "label": "green text on bg",
         "fg": "#117e16",
-        "bg": "#f4f6f9",
+        "bg": "#f9fafc",
         "min": 4.5,
-        "ratio": 4.82,
+        "ratio": 5,
         "pass": true
       },
       {
@@ -4623,34 +4623,34 @@
       },
       {
         "label": "blue text on bg",
-        "fg": "#2e3976",
-        "bg": "#f4f6f9",
+        "fg": "#314058",
+        "bg": "#f9fafc",
         "min": 4.5,
-        "ratio": 9.88,
+        "ratio": 10.02,
         "pass": true
       },
       {
         "label": "blue text on panel",
-        "fg": "#2e3976",
+        "fg": "#314058",
         "bg": "#ffffff",
         "min": 4.5,
-        "ratio": 10.69,
+        "ratio": 10.47,
         "pass": true
       },
       {
         "label": "on-blue on blue fill",
         "fg": "#ffffff",
-        "bg": "#2e3976",
+        "bg": "#314058",
         "min": 4.5,
-        "ratio": 10.69,
+        "ratio": 10.47,
         "pass": true
       },
       {
         "label": "purple text on bg",
         "fg": "#001800",
-        "bg": "#f4f6f9",
+        "bg": "#f9fafc",
         "min": 4.5,
-        "ratio": 17.15,
+        "ratio": 17.78,
         "pass": true
       },
       {
@@ -4672,9 +4672,9 @@
       {
         "label": "focus ring on bg",
         "fg": "#039946",
-        "bg": "#f4f6f9",
+        "bg": "#f9fafc",
         "min": 3,
-        "ratio": 3.43,
+        "ratio": 3.55,
         "pass": true
       },
       {
@@ -4688,9 +4688,9 @@
       {
         "label": "border-strong on bg",
         "fg": "#039946",
-        "bg": "#f4f6f9",
+        "bg": "#f9fafc",
         "min": 3,
-        "ratio": 3.43,
+        "ratio": 3.55,
         "pass": true
       },
       {
@@ -4719,10 +4719,10 @@
       },
       {
         "label": "pink text on elevated",
-        "fg": "#321a5f",
+        "fg": "#314058",
         "bg": "#ffffff",
         "min": 4.5,
-        "ratio": 14.49,
+        "ratio": 10.47,
         "pass": true
       },
       {
@@ -4735,10 +4735,10 @@
       },
       {
         "label": "blue text on elevated",
-        "fg": "#2e3976",
+        "fg": "#314058",
         "bg": "#ffffff",
         "min": 4.5,
-        "ratio": 10.69,
+        "ratio": 10.47,
         "pass": true
       },
       {

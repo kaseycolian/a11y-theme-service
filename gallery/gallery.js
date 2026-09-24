@@ -72,7 +72,7 @@
     '<option value="hot" data-dropdown-swatch="#ff3ec8,#6bff45,#22e0ff,#cf7bff">Hot Neon</option>',
     '<option value="synthwave" data-dropdown-swatch="#ff5d8f,#ffb03a,#4ad8ff,#c17bff">Synthwave Sunset</option>',
     '<option value="acid" data-dropdown-swatch="#ff4de0,#c6ff2e,#38f0ff,#b98cff">Acid Arcade</option>',
-    '<option value="neo" data-dropdown-swatch="#925aff,#35da65,#6c7ab5,#c9fbd4">NEO</option>',
+    '<option value="neo" data-dropdown-swatch="#6d7e98,#35da65,#6d7e98,#c9fbd4">NEO</option>',
   ].join('\n              ');
 
   /* ---------------------------------------------------------------------------

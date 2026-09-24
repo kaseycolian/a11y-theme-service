@@ -2,12 +2,12 @@
 [data-palette="light-07-neo"] {
   color-scheme: light;
   --glow-strength: 0.35;
-  --fx-grid-opacity: 0.15;
+  --fx-grid-opacity: 0.26;
   --fx-backdrop-image: none;
-  --fx-backdrop-color: #07fa76;
+  --fx-backdrop-color: #39ff14;
   --fx-backdrop-mask: var(--fx-rain);
   --fx-backdrop-anim: fx-rain;
-  --bg: #f4f6f9;
+  --bg: #f9fafc;
   --bg-panel: #ffffff;
   --bg-elevated: #ffffff;
   --text: #005825;
@@ -15,11 +15,11 @@
   --border: #9adca7;
   --border-strong: #039946;
   --focus-ring: #039946;
-  --accent-pink: #321a5f;
+  --accent-pink: #314058;
   --on-pink: #ffffff;
   --accent-green: #117e16;
   --on-green: #ffffff;
-  --accent-blue: #2e3976;
+  --accent-blue: #314058;
   --on-blue: #ffffff;
   --accent-purple: #001800;
   --on-purple: #ffffff;

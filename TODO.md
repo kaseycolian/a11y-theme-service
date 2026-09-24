@@ -5,38 +5,7 @@ things that were deliberately postponed, with enough context to pick up cold.
 
 ---
 
-## 1. Cut the v1.3.0 release
-
-**Status:** not started. Last release was `v1.2.0`; `VERSION` still reads `1.2.0`.
-
-Commit `ee92801` ("Split the A11Y Way brand out of the theme service") is committed and pushed but
-**unreleased**. It warrants a **minor** bump because it moves vendored source paths.
-
-```sh
-npm run release minor -- --note "…"
-```
-
-Two things the changelog entry must say:
-
-- **`assets/` moved to `a11y-way-pages/assets/`.** Any repo that vendored the header/footer furniture
-  has a tracking log pinning the old root path. Known case:
-  `a11y-component-examples/src/site/styles/A11Y-WAY-PAGES.md` says the files "come from the shared
-  theme-service repo's `assets/`" — that line needs updating on its next re-sync.
-  `a11y-way-pages/skill/references/updating-header-footer.md` already carries a "Moved in v1.3.0" note
-  for whoever runs that re-sync.
-- **The install commands changed shape.** `install-all` / `install-no-themes` / `install-skill` now
-  pass `--only theme-service`, so they install **one** skill. `install.sh` and `install.ps1` gained
-  `--only` / `--source` / `--builtins` / `--help`, and both stopped truncating
-  `~/.claude/theme-service.local.json` (they were wiping `includeBuiltinThemes` and all of
-  `history[]` on every run; the PowerShell one also wrote a BOM that made the file unparseable).
-
-Note `release.mjs` prepends its entry **above the first `## ` heading**. There is no `## Unreleased`
-section right now, so it will land correctly above `## 1.2.0` — but if someone adds one first, fold
-it in by hand rather than letting the script strand it below the new heading.
-
----
-
-## 2. A theme-service preview page
+## 1. A theme-service preview page
 
 **Status:** not started.
 

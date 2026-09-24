@@ -4,6 +4,36 @@ All notable changes to the theme-service. Apps record the version they vendored 
 (plus `updating-themes.md`) to migrate. Versioning: minor bump for additive themes/tokens, major for
 breaking token renames/removals or a default-theme change.
 
+## 1.4.1 — 2026-09-24
+
+NEO: a steel-grey accent in place of the violet, and a brighter light-mode rain
+
+### TL;DR
+
+- **No more violet in NEO.** The pink slot now uses the same color as blue, so errors, radios, pressed
+  chips and the header's accent line match the links and info messages. That color is also now a
+  steel grey instead of an indigo.
+- **Light-mode rain stands out more.** It falls in a neon green over a lighter grey page, and the page
+  between the glyphs has no green in it.
+
+### Upgrading
+
+1. **Apps that offer NEO:** vendor the new `themes/` files. Only NEO's color values changed. No token
+   was added, renamed or removed, and every other theme is identical.
+2. **Errors in NEO share the info color now.** They are still told apart by symbol and wording (✗ and
+   ⓘ), so no state relies on color alone. If your app tells errors apart by color only, add a symbol
+   or a word.
+
+---
+
+**Steel grey.** Dark: `#6d7e98`, with `#040b18` lettering (4.77:1). Light: `#314058`, with white
+lettering (10.5:1). It is the earlier indigo navy at under half the chroma, moved from hue 273 to
+258, because a grey with an indigo cast reads lavender.
+
+**Light-mode rain.** Neon `#39ff14` at 0.26, on the hue of the digital-rain still. The page is now
+`#f9fafc`: still a grey that sets the white panels apart, but lighter, so the rain has more room
+before text over it would drop below 4.5:1. The rain paints only its glyphs.
+
 ## 1.4.0 — 2026-09-24
 
 NEO, a Matrix-themed family, and a digital-rain backdrop

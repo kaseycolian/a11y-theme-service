@@ -14,7 +14,7 @@
    Exit code: 0 if all checks pass, 1 if any fail (handy for CI).
    ============================================================================= */
 import { readFileSync } from 'node:fs';
-import { rate, checkPairs } from './contrast.mjs';
+import { rate, checkPairs, contrastRatio } from './contrast.mjs';
 
 const args = process.argv.slice(2);
 const getFlag = (name) => {
@@ -61,7 +61,8 @@ try {
   console.log(line('AA  UI component (3.0:1)', r.AA_ui));
   console.log(line('AAA normal text  (7.0:1)', r.AAA_normal));
   console.log(line('AAA large text   (4.5:1)', r.AAA_large));
-  const passMin = r.ratio >= reqMin;
+  // The unrounded ratio, like the AA lines above: r.ratio is truncated for display.
+  const passMin = contrastRatio(fg, bg) >= reqMin;
   console.log(`\n  vs --min ${reqMin}: ${passMin ? GREEN('PASS') : RED('FAIL')}\n`);
   process.exit(passMin ? 0 : 1);
 } catch (err) {

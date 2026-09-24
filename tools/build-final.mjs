@@ -18,7 +18,8 @@ import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { contrastRatio, round2 } from './contrast-checker/contrast.mjs';
+import { floor2 } from './contrast-checker/contrast.mjs';
+import { checkPalette } from './palette-checks.mjs';
 import { fullLabel, optionLabel, modeLabel } from './theme-name.mjs';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -59,7 +60,6 @@ const VARMAP = {
   blue:'--accent-blue', onBlue:'--on-blue', purple:'--accent-purple', onPurple:'--on-purple',
 };
 const accents = ['pink', 'green', 'blue', 'purple'];
-const cap = a => a[0].toUpperCase() + a.slice(1);
 
 // Derive finalized metadata from a draft key like "dark-01-rink-classic".
 function meta(draftId, p) {
@@ -81,27 +81,20 @@ function meta(draftId, p) {
 }
 
 // ---------- AA validation (built-ins AND local) ----------
-function checksFor(p) {
-  const c = [];
-  const add = (fg, bg, min) => c.push({ min, ratio: round2(contrastRatio(p[fg], p[bg])) });
-  add('text','bg',4.5); add('text','panel',4.5); add('muted','bg',4.5); add('muted','panel',4.5);
-  for (const a of accents) { add(a,'bg',4.5); add(a,'panel',4.5); add('on'+cap(a),a,4.5); }
-  add('focus','bg',3.0); add('focus','panel',3.0); add('borderStrong','panel',3.0);
-  // --bg-elevated is a real text surface, not just a shade: the dropdown panel
-  // (dropdown.css) and .drop-panel both paint labels, muted secondary text, group
-  // headings and the focus border straight onto it. Left unchecked, a new theme
-  // could pass every other pair and still ship an unreadable open dropdown.
-  add('text','elevated',4.5); add('muted','elevated',4.5);
-  for (const a of accents) add(a,'elevated',4.5);
-  add('focus','elevated',3.0);
-  return c;
-}
+// The pairs and the pass rule live in palette-checks.mjs, shared with
+// build-palettes.mjs (`npm run validate`) so the two can never disagree. It compares
+// the UNROUNDED ratio: WCAG thresholds are exact, so 4.499:1 fails 4.5:1.
 let failures = 0;
 for (const [id, p, origin] of entries) {
   let bad;
-  try { bad = checksFor(p).filter(x => x.ratio < x.min).length; }
+  try { bad = checkPalette(p).filter(x => !x.pass); }
   catch (e) { console.error(`ERROR ${origin} "${id}": ${e.message} (missing/invalid token?)`); failures++; continue; }
-  if (bad) { failures += bad; console.log(`FAIL ${origin} "${id}" — ${bad} AA failure(s)`); }
+  if (bad.length) {
+    failures += bad.length;
+    console.log(`FAIL ${origin} "${id}" — ${bad.length} AA failure(s)`);
+    // Truncated, never rounded, so a near miss reads as the miss it is.
+    for (const x of bad) console.log(`     ${VARMAP[x.fg]} on ${VARMAP[x.bg]}: ${floor2(x.ratio)}:1, needs ${x.min}:1`);
+  }
 }
 console.log(`Building themes (built-ins: ${includeBuiltins ? 'draft-' + srcDraft : 'excluded'}, local: ${Object.keys(LOCAL).length}) — ${failures === 0 ? 'ALL PASS' : failures + ' PROBLEM(S)'}`);
 

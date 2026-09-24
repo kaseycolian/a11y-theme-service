@@ -16,6 +16,9 @@
 
     "validate": "node tools/build-palettes.mjs 3",
 
+    "//test": "Unit tests: the contrast checker (library + CLI), the AA pairs both builders share (tools/palette-checks.mjs), and both builders refusing to write a failing theme. Node's built-in runner finds every *.test.mjs; no dependencies.",
+    "test": "node --test",
+
     "//dev:install-pages-skill": "MAINTAINER ONLY. Links a11y-way-pages/skill into ~/.claude/skills/a11y-way-pages, globally for every repo on this machine, from THIS clone — so you can drive the header/footer skill against the brand site you are editing, which is the reference implementation its docs point at. Leaves the theme-service skill's link untouched. The install-* scripts above deliberately install theme-service ONLY: a theme user never needs this skill.",
     "dev:install-pages-skill": "node install/install.mjs --only a11y-way-pages",
 

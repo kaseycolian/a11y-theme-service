@@ -16,7 +16,8 @@
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { contrastRatio, round2 } from './contrast-checker/contrast.mjs';
+import { floor2 } from './contrast-checker/contrast.mjs';
+import { checkPalette } from './palette-checks.mjs';
 import { fullLabel } from './theme-name.mjs';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -30,32 +31,13 @@ const { palettes: P } = await import(`./palettes/draft-${draft}.mjs`);
 const OUT = join(REPO, 'discovery', `draft-${draft}`);
 
 // ---------- Checks ----------
-const accents = ['pink', 'green', 'blue', 'purple'];
-const cap = a => a[0].toUpperCase() + a.slice(1);
-function checksFor(p) {
-  const c = [];
-  const add = (label, fg, bg, min) => c.push({ label, fg: p[fg], bg: p[bg], min, ratio: round2(contrastRatio(p[fg], p[bg])) });
-  add('text on bg', 'text', 'bg', 4.5);
-  add('text on panel', 'text', 'panel', 4.5);
-  add('muted on bg', 'muted', 'bg', 4.5);
-  add('muted on panel', 'muted', 'panel', 4.5);
-  for (const a of accents) {
-    add(`${a} text on bg`, a, 'bg', 4.5);
-    add(`${a} text on panel`, a, 'panel', 4.5);
-    add(`on-${a} on ${a} fill`, 'on' + cap(a), a, 4.5);
-  }
-  add('focus ring on bg', 'focus', 'bg', 3.0);
-  add('focus ring on panel', 'focus', 'panel', 3.0);
-  add('border-strong on panel', 'borderStrong', 'panel', 3.0);
-  // Elevated is a real text surface: the dropdown panel and .drop-panel paint
-  // labels, muted text, group headings and the focus border onto it. Kept in step
-  // with build-final.mjs so validate can never pass a theme the build refuses.
-  add('text on elevated', 'text', 'elevated', 4.5);
-  add('muted on elevated', 'muted', 'elevated', 4.5);
-  for (const a of accents) add(`${a} text on elevated`, a, 'elevated', 4.5);
-  add('focus ring on elevated', 'focus', 'elevated', 3.0);
-  return c;
-}
+// The pairs and the pass rule live in palette-checks.mjs, shared with build-final.mjs
+// so validate can never pass a theme the build refuses. The discovery data keeps its
+// shape: hex values, a display `ratio` truncated so it never rounds up past the line,
+// and the real verdict in `pass` (which compares the unrounded ratio).
+const checksFor = p => checkPalette(p).map(x => ({
+  label: x.label, fg: p[x.fg], bg: p[x.bg], min: x.min, ratio: floor2(x.ratio), pass: x.pass,
+}));
 
 // ---------- Report ----------
 let failures = 0;
@@ -66,7 +48,7 @@ for (const [id, p] of Object.entries(P)) {
   // page's own review grouping ('Faithful · Dark'), unrelated to the theme's name.
   annotations[id] = { name: p.name, description: p.description || '', cohort: p.cohort,
     mode: p.mode, checks: cs };
-  const bad = cs.filter(x => x.ratio < x.min);
+  const bad = cs.filter(x => !x.pass);
   if (bad.length) {
     failures += bad.length;
     console.log(`\nFAIL  ${id} (${fullLabel(p)}) — ${bad.length} failing`);

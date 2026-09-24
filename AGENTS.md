@@ -26,7 +26,9 @@ creates or edits a theme; nothing here depends on it, and you do not need it to 
 - `VERSION` — the theme-service version (single source of truth; `npm run release` bumps + tags it).
 - `tools/` — `build-final.mjs` (build `themes/`), `build-palettes.mjs` (discovery drafts),
   `release.mjs` (version + tag), `update-from-origin.mjs` (pull origin updates), `palettes/`
-  (`draft-*.mjs` = built-in source; `local.mjs` = a fork's own themes), `contrast-checker/`.
+  (`draft-*.mjs` = built-in source; `local.mjs` = a fork's own themes), `palette-checks.mjs` (the
+  AA pairs every theme must pass, shared by both builders), `contrast-checker/`. Run `npm test`
+  after changing any of them.
 - `discovery/` — palette-selection playground (drafts). Not consumed by apps.
 - `skill/` — the theme-service skill; `skill/references/*.md` are the shared how-to docs.
 - `a11y-way-pages/` — the A11Y Way brand site and its skill. Separate audience, separate entry point

@@ -110,7 +110,8 @@ themes/            The distributable themes. effects.css, components.css, dropdo
 tools/             build-final.mjs (build themes/), build-palettes.mjs (discovery drafts),
                    release.mjs (version + tag), update-from-origin.mjs (pull origin updates),
                    palettes/ (draft-*.mjs = built-in source; local.mjs = YOUR themes),
-                   contrast-checker/ (standalone WCAG library + CLI)
+                   palette-checks.mjs (the AA pairs every theme must pass, shared by both builders),
+                   contrast-checker/ (standalone WCAG library + CLI), *.test.mjs (`npm test`)
 gallery/           The component gallery, ONE copy: gallery.js (markup) + gallery.css (layout).
                    Rendered by the discovery pages (and by the brand site), so a card added once
                    shows up everywhere. See gallery/README.md
@@ -123,7 +124,7 @@ discovery/         Palette-selection playground (draft-1/2/3) — reference for 
 install/           install.mjs (cross-platform) / install.ps1 / install.sh — link the skill(s) + write
                    the machine-local pointer, via the shared write-config.mjs
 package.json       scripts: install-all, install-no-themes, build-themes, build-themes:mine,
-                   update-from-origin, release, validate (no dependencies)
+                   update-from-origin, release, validate, test (no dependencies)
 USAGE.md           How to ask an agent to APPLY the themes to a repo
 CREATING-THEMES.md How to CREATE or EDIT themes (Path 2)
 ARCHITECTURE.md    How it all fits: the layers, token contract, theming mechanism, framework wiring
@@ -159,6 +160,7 @@ component added there appears on both pages; neither can drift from the other.
 npm run build-themes           # build themes/ (built-in + your local.mjs themes)
 npm run build-themes:mine      # build themes/ with ONLY your local themes (exclude built-ins)
 npm run validate               # AA-check the built-in palette source (no write)
+npm test                       # unit tests: contrast checker, the AA pair list, both builders
 npm run release minor -- --note "what changed"   # bump VERSION + CHANGELOG + git tag vX.Y.Z
 ```
 
@@ -169,8 +171,10 @@ upgrade affects them. It prints the bump rule and `X.Y.Z -> X.Y.Z` and asks to c
 pass `--yes` to skip that.
 
 The generators **refuse to write if any pair fails WCAG 2.2 AA** (your own `local.mjs` themes are validated
-too). The standalone checker is in [`tools/contrast-checker/`](tools/contrast-checker/) (library + CLI,
-usable in any project).
+too), and name each failing pair. The pairs are listed once, in
+[`tools/palette-checks.mjs`](tools/palette-checks.mjs), and ratios are compared unrounded, as WCAG
+requires: 4.499:1 does not meet 4.5:1. The standalone checker is in
+[`tools/contrast-checker/`](tools/contrast-checker/) (library + CLI, usable in any project).
 
 ## The A11Y Way brand site (maintainers only)
 

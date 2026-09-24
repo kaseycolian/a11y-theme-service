@@ -4,6 +4,29 @@ All notable changes to the theme-service. Apps record the version they vendored 
 (plus `updating-themes.md`) to migrate. Versioning: minor bump for additive themes/tokens, major for
 breaking token renames/removals or a default-theme change.
 
+## 1.4.2 — 2026-09-24
+
+NEO: a brighter dark-mode rain
+
+### TL;DR
+
+- **Dark-mode rain stands out more.** It falls at 0.17, up from 0.10. Its brightest glyph is now 1.30:1
+  against the page, up from 1.13:1.
+- **To make room, dark NEO's steel grey is one step lighter:** `#798aa4`, up from `#6d7e98`. It has the
+  same hue and the same greyness. This is the blue and the pink slot, which share one color.
+
+### Upgrading
+
+1. **Apps that offer NEO:** vendor the new `themes/` files. Only dark NEO's steel grey and its rain
+   strength changed. No token was added, renamed or removed, and every other theme is identical.
+
+---
+
+**Why the grey moved.** Text over the rain has to reach 4.5:1 against the rain's brightest glyph, and
+the steel grey was the color holding the rain down. At `#798aa4` it passes with the rain at 0.17.
+From there the strong border is the next limit. The grey buttons keep their `#040b18` lettering,
+which now has more contrast than before.
+
 ## 1.4.1 — 2026-09-24
 
 NEO: a steel-grey accent in place of the violet, and a brighter light-mode rain

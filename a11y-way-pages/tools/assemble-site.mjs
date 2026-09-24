@@ -48,6 +48,10 @@ const home = rewrite(readFileSync('a11y-way-pages/site/overview.html', 'utf8'), 
 ]);
 writeFileSync('_site/index.html', home);
 
+// The overview's own script (the live contrast readout). It sits beside overview.html
+// in the repo and beside index.html here, so its bare relative src needs no rewrite.
+cpSync('a11y-way-pages/site/overview-contrast.js', '_site/overview-contrast.js');
+
 // Preview -> _site/preview/index.html (/preview/). One level down from the site root,
 // so its two-up repo links (../../themes/, ../../gallery/) become one-up here, and its
 // ../assets/ already resolves to _site/assets — no rewrite for that one.
@@ -79,7 +83,8 @@ cpSync('a11y-way-pages/assets', '_site/assets', {
 });
 
 // Sanity: the load-bearing files must exist
-for (const f of ['_site/index.html', '_site/preview/index.html', '_site/themes/theme.css', '_site/themes/theme-init.js',
+for (const f of ['_site/index.html', '_site/overview-contrast.js', '_site/preview/index.html',
+                 '_site/themes/theme.css', '_site/themes/theme-init.js',
                  '_site/themes/dropdown.css', '_site/themes/dropdown.js',
                  '_site/gallery/gallery.js', '_site/gallery/gallery.css',
                  '_site/assets/favicon.svg', '_site/assets/favicon-theme.js',

@@ -10,8 +10,8 @@ JSON mirror), so it drops into vanilla JS/CSS, Angular, or React with **no build
 consuming it. Default theme is **Rink Classic** (dark, auto-light by OS).
 The discovery pages (`discovery/draft-N/index.html`) show every theme in real components.
 
-**New here?** Start with the **[Visual Overview](docs/OVERVIEW.md)** — diagrams of what it is, how you
-use it, and the clone / save / update workflow (local + optional GitHub).
+**New here?** Start with the **[Overview](docs/OVERVIEW.md)**: how it works, what you can use it for,
+how to get started, and what it adds to your app.
 
 ---
 

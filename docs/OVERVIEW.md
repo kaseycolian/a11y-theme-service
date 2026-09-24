@@ -1,188 +1,110 @@
-# Theme Service — Visual Overview
+# Theme Service overview
 
-A tour of what this service is, how you work with it, and the workflows you'll hit. The diagrams
-below render as graphics on GitHub; the same diagrams, live and themed, are on
-[overview.html](overview.html).
+The live version of this page, with the themes applied, is at
+**<https://kaseycolian.github.io/theme-service/>**.
 
-🌐 **Live:** the overview is the repo's [GitHub Pages home](https://kaseycolian.github.io/theme-service/);
-the **Preview Themes** nav segment opens the
-[template page](https://kaseycolian.github.io/theme-service/preview/), which shows every theme in real
-components.
+Theme Service is a skill for Claude Code and other AI agents. It walks you through picking colors for
+a theme and checks every color pair against WCAG 2.2 AA. It won't save a theme that fails. Then it
+adds your themes to a new or existing app, with a theme picker.
 
 ---
 
-## What it is
-
-Create WCAG 2.2 compliant themes, then install them into a new or existing app. Use the themes that
-ship here, or use the skill (`AGENTS.md` for other agents) to create your own — a guided process for
-choosing colors that checks contrast as it goes. **A theme that fails WCAG 2.2 AA is never written.**
+## How it works
 
 ```mermaid
 flowchart LR
-  subgraph SRC["Source (committed)"]
-    A["Built-in palettes<br/>tools/palettes/draft-*.mjs"]
-    B["Your palettes<br/>tools/palettes/local.mjs"]
-  end
-  A --> BUILD["npm run build-themes<br/>contrast check — every color pair"]
-  B --> BUILD
-  BUILD -->|"passes"| OUT["themes/ — build output<br/>theme.css · tokens.json · helpers"]
-  BUILD -. "fails WCAG 2.2 AA" .-> STOP["Not written<br/>fix the palette and re-run"]
-  OUT --> APPS["Your app — new or legacy<br/>vendor the CSS + a theme picker"]
-  SKILL["Claude skill / AGENTS.md"] -. "create · validate · install" .-> APPS
-  SKILL -. guides .-> BUILD
+  PICK["1. Pick your colors"] --> CHECK{"2. Check contrast"}
+  CHECK -->|"passes: theme is saved"| APP["3. Add it to your app"]
+  CHECK -. "fails: nothing is saved" .-> PICK
+  BUILTIN["Built-in themes"] -. "or skip step 1" .-> APP
 ```
 
-**What you get:** accessibility handled up front — every color pair is checked before a theme exists.
-On top of that: consistent branding across *all* your apps, driven by plain-English requests to an
-agent, works fully offline, and it's **yours** — fork it, add themes, and keep pulling upstream
-improvements without losing your work.
+1. **Pick your colors.** Bring a palette, describe the look you want, or ask for a whole new style.
+   The skill asks questions and fills in any colors you leave out. Or skip this and use the built-in
+   themes.
+2. **Check contrast.** Text, links, buttons and focus rings are checked on every background, in dark
+   and light. Text and accent colors need 4.5:1, button labels need 4.5:1 on their fill, and focus
+   rings need 3:1. If anything fails, nothing is saved. You adjust the colors and check again.
+3. **Add it to your app.** The skill copies the theme files into your repo and adds a theme picker.
+   Works with plain HTML and CSS, React and Angular. Your app doesn't need a build step.
+
+## What you can use it for
+
+**Create a theme.** Have brand colors, or just an idea? The skill guides you to a full theme that
+passes AA. Your themes live in your own copy of the repo.
+
+> Use the theme-service skill to create a new theme. I'm thinking dark navy with warm orange accents.
+
+**Add themes to an existing app.** Your markup and components stay. The skill replaces hardcoded
+colors with theme variables and adds a theme picker. It asks before changing anything bigger.
+
+> Use the theme-service skill to add themes and a theme picker to this app.
+
+**Start a new app on it.** Build on the themes from day one. You get ready-made buttons, form fields,
+tabs, alerts and a dropdown that work in every theme.
+
+> Set up this new project with the theme-service skill. Use the component classes and add a theme
+> picker.
+
+## Get started
+
+1. Clone the repo:
+
+   ```sh
+   git clone https://github.com/kaseycolian/theme-service.git
+   ```
+
+2. Install the skill. This links the skill into Claude Code and builds the themes. You need Node.
+
+   ```sh
+   cd theme-service
+   npm run install-all
+   ```
+
+3. Open your app in Claude Code and ask for one of the three things above. Name the skill in your
+   request so the agent loads it.
+
+Not using Claude Code? Run `npm run build-themes` instead of `install-all`, then point your agent at
+[`AGENTS.md`](../AGENTS.md).
+
+## It asks before it changes your app
+
+For an existing app, the skill checks with you first. Here's what it asks, and what it does if you
+don't have a preference.
+
+| Question | Default |
+|----------|---------|
+| How much should your components change? Colors only, or a full restyle. | Colors only |
+| Should it use the theme fonts? | Keep your fonts |
+| Where should the background grid go? Page background, header and footer, or both. | Page background |
+| Replace your theme picker, or add to it? Keep your old themes? | Only asked if you have one |
+| Where should the theme picker go? | It suggests a spot, you confirm |
+
+It saves your answers in `THEME-SERVICE.md`, so later updates follow the same choices.
+
+## What gets added to your repo
+
+The skill copies these into `src/theme/` or `assets/theme/`, depending on your stack. Nothing points
+back to this repo, so your app works on any machine.
+
+| File | What it's for |
+|------|---------------|
+| `theme.css` | Colors for every theme. |
+| `effects.css` | The glow and the background grid. |
+| `components.css` | Ready-made buttons, form fields, tabs and alerts. New apps, or if you chose a full restyle. |
+| `theme-init.js` | Applies the saved theme before the page draws, so it doesn't flash. |
+| `theme-select.js` | Fills the theme picker and remembers the choice. Plain HTML apps only; React and Angular apps get a small hook or service instead. |
+| `THEME-SERVICE.md` | The version you're on and the choices you made. Updates read it. |
+
+## Staying up to date
+
+- **Update an app.** Ask: *"Update this repo to the latest theme-service version."* New themes show
+  up in the app's theme picker.
+- **Update your copy of the skill.** Ask: *"Update my theme-service clone from origin."* You get new
+  built-in themes and fixes. Themes you made are kept.
 
 ---
 
-## Two ways in
-
-You never have to create a theme to get value — Path 1 stands alone. Both paths are contrast-checked
-the same way.
-
-```mermaid
-flowchart TD
-  U(("You")) --> Q{"What do you want?"}
-  Q -->|"1"| P1["Path 1 — Use the themes that ship here<br/>Install the skill → apply them to any app<br/>▶ npm run install-all"]
-  Q -->|"2"| P2["Path 2 — Create your own themes<br/>Guided process for choosing colors<br/>▶ npm run build-themes"]
-  P1 --> D1["Your app gets a theme picker,<br/>every theme already passes WCAG 2.2 AA"]
-  P2 --> D2["Your themes join the set —<br/>checked the same way, reusable across apps"]
-```
-
-| Path | Who it's for | Start here |
-|------|--------------|-----------|
-| **1 — Use as-is** | Anyone who wants accessible theming fast | `npm run install-all`, then ask an agent to apply it |
-| **2 — Create / edit** | You want your own brand themes | [CREATING-THEMES.md](../CREATING-THEMES.md) |
-
----
-
-## Workflow A — Install themes into a new or existing app
-
-You ask; the agent does the wiring and confirms the choices that matter before changing anything.
-
-```mermaid
-sequenceDiagram
-  actor You
-  participant Agent as Claude (skill)
-  participant App as Your app repo
-  You->>Agent: "Apply the theme-service to this app"
-  Agent->>Agent: Locate the source (machine-local config)
-  Agent->>You: Confirm — restyle depth? fonts? existing selector? placement?
-  You-->>Agent: Your choices
-  Agent->>App: Vendor theme CSS + map the app's colors to tokens
-  Agent->>App: Add a theme picker (all themes) + persistence
-  Agent->>App: Verify WCAG 2.2 AA, write THEME-SERVICE.md tracking log
-  Agent-->>You: Done — switch themes live, nothing else changed
-```
-
-Later: *"Update this app to the latest theme-service version"* re-syncs it — new themes show up in the
-picker automatically.
-
----
-
-## Workflow B — Clone / save / update, with your own local + GitHub storage
-
-This is the heart of "make it your own." **Your themes live on your machine and persist with a plain
-local commit — GitHub is optional.** You can still pull my updates anytime without losing your themes.
-
-```mermaid
-flowchart TB
-  O["Origin — mine<br/>github.com/kaseycolian/theme-service"]
-  O -->|"clone or fork (once)"| C["Your machine — local clone"]
-
-  subgraph FIRST["Add & save your themes"]
-    C --> A["Add your themes → tools/palettes/local.mjs"]
-    A --> B["npm run build-themes"]
-    B --> D["git commit — saved locally ✔<br/>no GitHub required"]
-  end
-
-  D -. "optional: git push" .-> P["Your own GitHub<br/>backup · sync machines · share"]
-
-  O ==>|"when I ship an update"| E["npm run update-from-origin<br/>fetch + merge — conflict-free<br/>(your local.mjs is never touched)"]
-  E --> F["npm run build-themes<br/>you're asked: include my built-in themes?"]
-  F --> G["git commit — updated locally ✔"]
-  G -. "optional: git push" .-> P
-```
-
-- **Solid arrows = what you do locally.** Everything works with just local git.
-- **Dotted arrows = optional GitHub** — only if you want backup, multi-machine sync, or to share.
-- **Updates never overwrite your themes.** Your themes sit in `local.mjs`, which the origin never
-  edits; the generated `themes/` files aren't committed, so merges don't conflict. During an update
-  you choose whether to also take my built-in themes — and **nothing is ever auto-deleted**.
-
-Storage at a glance:
-
-| Where | What lives there | Committed? |
-|-------|------------------|-----------|
-| **Your machine** (local git) | your clone + `local.mjs` themes + your commits | yes (local) |
-| **Your GitHub** (optional) | a pushed copy for backup / sharing | only if you push |
-| **Origin — mine** | the built-in themes, skill, tools you pull updates from | yes (public) |
-| **`~/.claude/…local.json`** | which repo is *your* source + your install/update history | **never** (machine-only) |
-
----
-
-## Workflow C — Create or edit a theme
-
-Three ways to start. All of them end at the same contrast check, and a palette only becomes a theme if
-it passes.
-
-```mermaid
-flowchart LR
-  START(("Add / edit<br/>a theme")) --> WAY{"How?"}
-  WAY -->|"I have a palette"| W1["Give the colors →<br/>agent fills gaps + checks contrast"]
-  WAY -->|"Guide me"| W2["Describe a vibe →<br/>agent proposes + iterates"]
-  WAY -->|"A whole new style"| W3["Design candidates in a<br/>discovery draft, compare side-by-side"]
-  W1 --> INTO["local.mjs (yours)"]
-  W2 --> INTO
-  W3 --> INTO
-  INTO --> CHECK{"npm run build-themes<br/>contrast check — every color pair"}
-  CHECK -->|"passes"| WRITTEN["Written to themes/<br/>and shown on the template page"]
-  CHECK -. "fails" .-> REFUSED["Nothing written —<br/>adjust the palette and re-run"]
-  REFUSED -. "iterate" .-> INTO
-  WRITTEN --> COMMIT["git commit<br/>(saved locally)"]
-```
-
-Full walkthrough + copy-paste prompts: [CREATING-THEMES.md](../CREATING-THEMES.md).
-
----
-
-## Workflow D — Releasing (origin owner)
-
-When the owner changes themes/skill/tools, one command cuts a versioned, tagged release that forks
-can pull.
-
-```mermaid
-flowchart LR
-  CH["Make changes"] --> R["npm run release minor -- --note '…'"]
-  R --> V["bump VERSION"]
-  R --> CL["CHANGELOG entry"]
-  R --> TG["git tag vX.Y.Z"]
-  V --> PUSH["git push --follow-tags"]
-  CL --> PUSH
-  TG --> PUSH
-  PUSH --> FORKS["Forks update via<br/>update-from-origin"]
-```
-
----
-
-## Key terms
-
-- **Source repo** — the theme-service clone your machine points at (where themes are created/edited).
-  Apps only get *copies*.
-- **Built-in themes** — the origin's pre-installed set (`tools/palettes/draft-*.mjs`).
-- **`local.mjs`** — *your* themes; the origin never touches it, so updates never lose them.
-- **Build output** — `themes/theme.css` and friends: generated by `npm run build-themes`, not
-  committed (so forks update cleanly).
-- **Vendored copy** — the theme files an app keeps for itself after you apply the service.
-- **Tracking log** — `THEME-SERVICE.md` written into each themed app: version + decisions + history.
-- **Machine-local config** — `~/.claude/theme-service.local.json`: your source pointer, built-ins
-  preference, and install/update history. Never committed.
-
----
-
-*See also:* [README](../README.md) · [USAGE](../USAGE.md) (apply) ·
-[CREATING-THEMES](../CREATING-THEMES.md) (create) · [ARCHITECTURE](../ARCHITECTURE.md) (how it fits).
+*More detail:* [README](../README.md) · [USAGE](../USAGE.md) (adding themes to an app) ·
+[CREATING-THEMES](../CREATING-THEMES.md) (making themes) · [ARCHITECTURE](../ARCHITECTURE.md) (how it
+fits together).

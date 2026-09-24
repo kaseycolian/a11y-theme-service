@@ -58,6 +58,8 @@ for (const [id, p] of Object.entries(P)) {
   }
 }
 console.log(`\nDraft ${draft}: ${failures === 0 ? 'ALL PASS' : failures + ' FAILURES'}`);
+// Exit 1 on any failure, report-only runs included, so `npm run validate` can gate CI.
+if (failures) process.exitCode = 1;
 
 // ---------- Emit ----------
 if (process.argv.includes('--write')) {

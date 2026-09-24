@@ -74,7 +74,21 @@ test('build-final still writes a theme that passes', () => {
   assert.ok(existsSync(join(dir, 'themes', 'theme.css')));
 });
 
-test('build-palettes (npm run validate, discovery drafts) refuses the same themes', () => {
+test('npm run validate (build-palettes, report only) exits 1 when a theme fails', () => {
+  const dir = sandbox('validate-fail', 'draft-99.mjs', FAILING);
+  const r = run(dir, 'tools/build-palettes.mjs', '99');
+  assert.equal(r.status, 1, r.stdout + r.stderr);
+  assert.match(r.stdout, /Draft 99: 4 FAILURES/);
+});
+
+test('npm run validate exits 0 when every theme passes', () => {
+  const dir = sandbox('validate-pass', 'draft-98.mjs', { [baseKey]: base });
+  const r = run(dir, 'tools/build-palettes.mjs', '98');
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.match(r.stdout, /Draft 98: ALL PASS/);
+});
+
+test('build-palettes --write (discovery drafts) refuses the same themes', () => {
   const dir = sandbox('palettes-fail', 'draft-99.mjs', FAILING);
   const r = run(dir, 'tools/build-palettes.mjs', '99', '--write');
   assert.equal(r.status, 1, r.stdout + r.stderr);

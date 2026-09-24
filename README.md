@@ -159,7 +159,7 @@ component added there appears on both pages; neither can drift from the other.
 ```sh
 npm run build-themes           # build themes/ (built-in + your local.mjs themes)
 npm run build-themes:mine      # build themes/ with ONLY your local themes (exclude built-ins)
-npm run validate               # AA-check the built-in palette source (no write)
+npm run validate               # AA-check the built-in palette source (no write; exits 1 on a failure)
 npm test                       # unit tests: contrast checker, the AA pair list, both builders
 npm run release minor -- --note "what changed"   # bump VERSION + CHANGELOG + git tag vX.Y.Z
 ```

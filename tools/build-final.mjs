@@ -207,14 +207,21 @@ if (process.argv.includes('--write')) {
 `/* theme-service v${VERSION} — theme-init.js
    Applies the saved (or ?theme= / ?motion=) theme BEFORE first paint, so there's no flash.
    Load in <head> via <script src="theme/theme-init.js"></script> (NOT inline — inline is blocked
-   by Manifest V3 / strict CSP). CSP-safe. */
+   by Manifest V3 / strict CSP). CSP-safe.
+   The choices are saved under the localStorage keys 'theme' and 'motion'. Two sites on one
+   origin (e.g. two GitHub Pages projects) share those keys, so either can name its own on <html>:
+   <html data-theme-storage="my-site-theme" data-motion-storage="my-site-motion">.
+   theme-select.js reads the same attributes. */
 (function () {
   try {
     var p = new URLSearchParams(location.search);
-    var t = p.get('theme') || localStorage.getItem('theme');
-    if (t) document.documentElement.setAttribute('data-theme', t);
-    if ((p.get('motion') || localStorage.getItem('motion')) === 'off')
-      document.documentElement.setAttribute('data-motion', 'off');
+    var root = document.documentElement;
+    var k = root.getAttribute('data-theme-storage') || 'theme';
+    var mk = root.getAttribute('data-motion-storage') || 'motion';
+    var t = p.get('theme') || localStorage.getItem(k);
+    if (t) root.setAttribute('data-theme', t);
+    if ((p.get('motion') || localStorage.getItem(mk)) === 'off')
+      root.setAttribute('data-motion', 'off');
   } catch (e) {}
 })();
 `;
@@ -267,8 +274,12 @@ if (process.argv.includes('--write')) {
   }
   ready(function () {
     var root = document.documentElement;
+    // Same keys theme-init.js reads: <html data-theme-storage> / <html data-motion-storage>
+    // when set, else 'theme' / 'motion'.
+    var key = root.getAttribute('data-theme-storage') || 'theme';
+    var motionKey = root.getAttribute('data-motion-storage') || 'motion';
     var saved = '';
-    try { saved = localStorage.getItem('theme') || ''; } catch (e) {}
+    try { saved = localStorage.getItem(key) || ''; } catch (e) {}
     document.querySelectorAll('select[data-theme-select]').forEach(function (sel) {
       if (!sel.options.length) {
         var groups = {};
@@ -289,8 +300,8 @@ if (process.argv.includes('--write')) {
       sel.value = root.getAttribute('data-theme') || saved || '';
       sel.addEventListener('change', function () {
         var id = sel.value;
-        if (id) { root.setAttribute('data-theme', id); try { localStorage.setItem('theme', id); } catch (e) {} }
-        else { root.removeAttribute('data-theme'); try { localStorage.removeItem('theme'); } catch (e) {} }
+        if (id) { root.setAttribute('data-theme', id); try { localStorage.setItem(key, id); } catch (e) {} }
+        else { root.removeAttribute('data-theme'); try { localStorage.removeItem(key); } catch (e) {} }
       });
       // Opt-in upgrade to the accessible listbox. Order-independent: createDropdown
       // is idempotent, so if dropdown.js auto-init already ran on the empty <select>
@@ -305,8 +316,8 @@ if (process.argv.includes('--write')) {
     document.querySelectorAll('[data-motion-toggle]').forEach(function (cb) {
       cb.checked = root.getAttribute('data-motion') === 'off';
       cb.addEventListener('change', function () {
-        if (cb.checked) { root.setAttribute('data-motion', 'off'); try { localStorage.setItem('motion', 'off'); } catch (e) {} }
-        else { root.removeAttribute('data-motion'); try { localStorage.removeItem('motion'); } catch (e) {} }
+        if (cb.checked) { root.setAttribute('data-motion', 'off'); try { localStorage.setItem(motionKey, 'off'); } catch (e) {} }
+        else { root.removeAttribute('data-motion'); try { localStorage.removeItem(motionKey); } catch (e) {} }
       });
     });
   });

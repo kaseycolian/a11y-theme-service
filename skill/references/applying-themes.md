@@ -326,7 +326,10 @@ You vendored `theme-init.js` and `theme-select.js` in the common setup. Wire the
 ```
 That's the whole integration. `theme-select.js` is generated with the current theme list baked in
 (mirrors `themes.index.json`), persists to `localStorage`, and reflects `?theme=<id>` deep-links.
-No build step needed. **Browser extension note:** the theme files sit inside the package (`theme/…`),
+No build step needed. The choices are saved under the keys `theme` and `motion`. Sites that share an
+origin (two GitHub Pages projects under one account, say) share those keys, so a choice made on one
+changes the other; give each its own with
+`<html data-theme-storage="my-site-theme" data-motion-storage="my-site-motion">`, which both helpers read. **Browser extension note:** the theme files sit inside the package (`theme/…`),
 so they load as `'self'` under the default MV3 CSP; if the app uses a bundler, make sure its build
 copies the `theme/` folder into the output (e.g. an esbuild/webpack copy step).
 

@@ -71,7 +71,7 @@ gallery's seven selects are in the DOM by then.
 main.insertAdjacentHTML('afterbegin', ThemeGallery.SPRITE);   // one sprite for the document
 …
 `<div class="sec-body">${ThemeGallery.html({
-   sfx: p.id, heading: 3, name: `${fullName(p)}, ${p.cohort}`, swatches: accentsOf(p.id).join(','),
+   sfx: p.id, heading: 3, name: `${fullName(p)}, ${modeLabel(p)}`, swatches: accentsOf(p.id).join(','),
  })}</div>`
 ```
 

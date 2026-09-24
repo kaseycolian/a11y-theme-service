@@ -197,40 +197,44 @@
 <script>
 /* Display names are three parts, matching tools/palettes/draft-4.mjs and
    tools/theme-name.mjs: `name` is the family (shared by every variant of it),
-   `description` is what makes this variant different. `cohort` is separate from
-   both — it is this page's own review grouping, and drives .grp-tag + the jump
-   nav below, nothing else. */
+   `description` is what makes this variant different. The page lists them the way
+   the theme selector (theme-select.js) does: families A→Z, and within each, dark
+   before light, each with its No Background twin right after it. */
 const PALETTES = [
-  { id:'dark-01-rink-classic',                 name:'Rink Classic',    description:'',              cohort:'Faithful · Dark',  mode:'dark' },
-  { id:'dark-01-rink-classic-no-background',   name:'Rink Classic',    description:'No Background', cohort:'Faithful · Dark',  mode:'dark' },
-  { id:'dark-02-midnight-arcade',              name:'Midnight Arcade', description:'',              cohort:'Faithful · Dark',  mode:'dark' },
-  { id:'dark-02-midnight-arcade-no-background',name:'Midnight Arcade', description:'No Background', cohort:'Faithful · Dark',  mode:'dark' },
-  { id:'dark-03-hot-neon',                     name:'Hot Neon',        description:'',              cohort:'Faithful · Dark',  mode:'dark' },
-  { id:'dark-03-hot-neon-no-background',       name:'Hot Neon',        description:'No Background', cohort:'Faithful · Dark',  mode:'dark' },
-  { id:'dark-04-synthwave-sunset',             name:'Synthwave Sunset',description:'',              cohort:'Fresh · Dark',     mode:'dark' },
-  { id:'dark-06-acid-arcade',                  name:'Acid Arcade',     description:'',              cohort:'Fresh · Dark',     mode:'dark' },
-  { id:'dark-07-neo',                          name:'NEO',             description:'',              cohort:'Fresh · Dark',     mode:'dark' },
-  { id:'dark-07-neo-no-background',            name:'NEO',             description:'No Background', cohort:'Fresh · Dark',     mode:'dark' },
-  { id:'dark-08-rfg',                          name:'RFG',             description:'',              cohort:'Brand · Dark',     mode:'dark' },
-  { id:'dark-08-rfg-no-background',            name:'RFG',             description:'No Background', cohort:'Brand · Dark',     mode:'dark' },
-  { id:'light-01-rink-classic',                name:'Rink Classic',    description:'',              cohort:'Faithful · Light', mode:'light' },
-  { id:'light-01-rink-classic-no-background',  name:'Rink Classic',    description:'No Background', cohort:'Faithful · Light', mode:'light' },
-  { id:'light-02-midnight-arcade',             name:'Midnight Arcade', description:'',              cohort:'Faithful · Light', mode:'light' },
-  { id:'light-02-midnight-arcade-no-background',name:'Midnight Arcade',description:'No Background', cohort:'Faithful · Light', mode:'light' },
-  { id:'light-03-hot-neon',                    name:'Hot Neon',        description:'',              cohort:'Faithful · Light', mode:'light' },
-  { id:'light-04-synthwave-sunset',            name:'Synthwave Sunset',description:'',              cohort:'Fresh · Light',    mode:'light' },
-  { id:'light-06-acid-arcade',                 name:'Acid Arcade',     description:'',              cohort:'Fresh · Light',    mode:'light' },
-  { id:'light-06-acid-arcade-no-background',   name:'Acid Arcade',     description:'No Background', cohort:'Fresh · Light',    mode:'light' },
-  { id:'light-07-neo',                         name:'NEO',             description:'',              cohort:'Fresh · Light',    mode:'light' },
-  { id:'light-07-neo-no-background',           name:'NEO',             description:'No Background', cohort:'Fresh · Light',    mode:'light' },
-  { id:'light-08-rfg',                         name:'RFG',             description:'',              cohort:'Brand · Light',    mode:'light' },
-  { id:'light-08-rfg-no-background',           name:'RFG',             description:'No Background', cohort:'Brand · Light',    mode:'light' },
-];
+  { id:'dark-01-rink-classic',                 name:'Rink Classic',    description:'',              mode:'dark' },
+  { id:'dark-01-rink-classic-no-background',   name:'Rink Classic',    description:'No Background', mode:'dark' },
+  { id:'dark-02-midnight-arcade',              name:'Midnight Arcade', description:'',              mode:'dark' },
+  { id:'dark-02-midnight-arcade-no-background',name:'Midnight Arcade', description:'No Background', mode:'dark' },
+  { id:'dark-03-hot-neon',                     name:'Hot Neon',        description:'',              mode:'dark' },
+  { id:'dark-03-hot-neon-no-background',       name:'Hot Neon',        description:'No Background', mode:'dark' },
+  { id:'dark-04-synthwave-sunset',             name:'Synthwave Sunset',description:'',              mode:'dark' },
+  { id:'dark-06-acid-arcade',                  name:'Acid Arcade',     description:'',              mode:'dark' },
+  { id:'dark-07-neo',                          name:'NEO',             description:'',              mode:'dark' },
+  { id:'dark-07-neo-no-background',            name:'NEO',             description:'No Background', mode:'dark' },
+  { id:'dark-08-rfg',                          name:'RFG',             description:'',              mode:'dark' },
+  { id:'dark-08-rfg-no-background',            name:'RFG',             description:'No Background', mode:'dark' },
+  { id:'light-01-rink-classic',                name:'Rink Classic',    description:'',              mode:'light' },
+  { id:'light-01-rink-classic-no-background',  name:'Rink Classic',    description:'No Background', mode:'light' },
+  { id:'light-02-midnight-arcade',             name:'Midnight Arcade', description:'',              mode:'light' },
+  { id:'light-02-midnight-arcade-no-background',name:'Midnight Arcade',description:'No Background', mode:'light' },
+  { id:'light-03-hot-neon',                    name:'Hot Neon',        description:'',              mode:'light' },
+  { id:'light-04-synthwave-sunset',            name:'Synthwave Sunset',description:'',              mode:'light' },
+  { id:'light-06-acid-arcade',                 name:'Acid Arcade',     description:'',              mode:'light' },
+  { id:'light-06-acid-arcade-no-background',   name:'Acid Arcade',     description:'No Background', mode:'light' },
+  { id:'light-07-neo',                         name:'NEO',             description:'',              mode:'light' },
+  { id:'light-07-neo-no-background',           name:'NEO',             description:'No Background', mode:'light' },
+  { id:'light-08-rfg',                         name:'RFG',             description:'',              mode:'light' },
+  { id:'light-08-rfg-no-background',           name:'RFG',             description:'No Background', mode:'light' },
+].sort((a, b) =>
+  a.name.localeCompare(b.name, 'en', { sensitivity: 'base' })
+  || (a.mode === b.mode ? 0 : a.mode === 'dark' ? -1 : 1)
+  || (!a.description === !b.description ? 0 : a.description ? 1 : -1));
 
 /* The parts composed, the same way tools/theme-name.mjs does it. The mode is not
-   in here: the cohort above already says "· Dark" / "· Light", and the id is
+   in here: .grp-tag above the name already says "Dark" / "Light", and the id is
    printed underneath. */
 const fullName = (p) => [p.name, p.description].filter(Boolean).join(' · ');
+const modeLabel = (p) => p.mode === 'dark' ? 'Dark' : 'Light';
 
 
 /* The four accents THIS palette actually ships, pulled out of the contrast
@@ -275,7 +279,7 @@ const nav = document.getElementById('jumpNav');
 main.insertAdjacentHTML('afterbegin', ThemeGallery.SPRITE);
 
 let navHTML = '';
-let lastCohort = '';
+let lastName = '';
 const groupsSeen = new Set();
 
 PALETTES.forEach(p => {
@@ -297,7 +301,7 @@ PALETTES.forEach(p => {
         <span class="swatch sw-text"></span>
       </div>
       <div class="names">
-        <span class="grp-tag">${p.cohort}</span>
+        <span class="grp-tag">${modeLabel(p)}</span>
         <h2 class="name">${fullName(p)}</h2>
         <span class="id">${p.id}</span>
       </div>
@@ -320,20 +324,20 @@ PALETTES.forEach(p => {
       // Both parts of the .sec-head naming are needed, not just the <h2>: the
       // names alone repeat (dark and light are each "Rink Classic"), and it is
       // the .grp-tag above them that says which. Reads as
-      // "Typography for Rink Classic, Faithful · Dark".
-      name: `${fullName(p)}, ${p.cohort}`,
+      // "Typography for Rink Classic, Dark".
+      name: `${fullName(p)}, ${modeLabel(p)}`,
       swatches: accentsOf(p.id).join(','),
     })}</div>
   `;
   main.appendChild(section);
 
-  // Nav grouping — by cohort, this page's review buckets, not by theme name.
-  const cohortKey = p.cohort;
-  if (cohortKey !== lastCohort) {
-    navHTML += `<span class="grp">${cohortKey}</span>`;
-    lastCohort = cohortKey;
+  // Nav grouping — by theme name, as the theme selector groups them. Each link says
+  // only what its group label has not: "Dark", "Dark · No Background".
+  if (p.name !== lastName) {
+    navHTML += `<span class="grp">${p.name}</span>`;
+    lastName = p.name;
   }
-  navHTML += `<a href="#${p.id}">${fullName(p)}</a>`;
+  navHTML += `<a href="#${p.id}">${[modeLabel(p), p.description].filter(Boolean).join(' · ')}</a>`;
 });
 nav.innerHTML = navHTML;
 

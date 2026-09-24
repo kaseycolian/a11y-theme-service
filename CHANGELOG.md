@@ -4,6 +4,35 @@ All notable changes to the theme-service. Apps record the version they vendored 
 (plus `updating-themes.md`) to migrate. Versioning: minor bump for additive themes/tokens, major for
 breaking token renames/removals or a default-theme change.
 
+## 1.5.0 — 2026-09-24
+
+RFG, a new theme family, and a theme selector sorted A→Z
+
+### TL;DR
+
+- **New theme family: RFG.** Lime green, neutral grey and blue, in that order, on neutral greys. It
+  comes in dark and light, each with a **No Background** twin: `rfg-dark`, `rfg-dark-no-background`,
+  `rfg-light`, `rfg-light-no-background`. All four pass WCAG 2.2 AA.
+- **The theme selector is sorted.** Automatic comes first, then the themes A→Z. Inside each theme
+  the rows read Dark, Dark · No Background, Light, Light · No Background.
+- **Theme rows no longer show the theme id** as secondary text. Only the Automatic row keeps its
+  "follows your OS" line.
+
+### Upgrading
+
+1. **Apps with the generated selector (`theme-select.js`):** vendor the new `themes/` files. RFG
+   shows up in the list on its own, and the list takes the new order. No token was added, renamed or
+   removed, and every existing theme is identical.
+2. **Apps with a hand-built theme list:** add the four `rfg-*` ids if you want RFG. Nothing else
+   changes.
+
+---
+
+**How RFG is built.** The pink slot is a grey, not a red, so errors are grey here, as in NEO. They
+still carry a ✗ glyph and a word, so the state never rides on color alone. The light-mode accents
+keep their hue and are darkened only as far as 4.5:1 needs. The green buttons are lettered in dark
+grey on dark, because white on that lime is 1.95:1.
+
 ## 1.4.2 — 2026-09-24
 
 NEO: a brighter dark-mode rain

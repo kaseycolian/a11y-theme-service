@@ -4,6 +4,52 @@ All notable changes to the theme-service. Apps record the version they vendored 
 (plus `updating-themes.md`) to migrate. Versioning: minor bump for additive themes/tokens, major for
 breaking token renames/removals or a default-theme change.
 
+## 1.4.0 — 2026-09-24
+
+NEO, a Matrix-themed family, and a digital-rain backdrop
+
+### TL;DR
+
+- **New theme family: NEO.** `neo-dark` and `neo-light`, each with a No Background variant, so 20
+  built-in themes. Black and code green with a violet and an indigo navy, themed on The Matrix.
+- **New backdrop: rain.** Falling columns of glyphs in place of the grid, chosen per theme. Text sits
+  on it, so the build checks every text, accent, focus and border color over its brightest glyph.
+  It stops when motion is off.
+- **Headings can take any accent, per level.** Every existing theme keeps pink, green, blue, purple.
+- **`npm run build-themes` builds from the highest-numbered draft**, the rule the Pages workflow and
+  the tests already used. Before, it was pinned to draft 3.
+
+### Upgrading
+
+1. **Apps:** vendor the new `themes/` files. Existing themes look the same. Headings and the
+   backdrop read new tokens with fallbacks, so an older `theme.css` next to the new CSS still
+   renders the old look.
+2. **Apps that offer NEO:** include the "Reduce motion" control (`data-motion-toggle`). The rain
+   moves, and WCAG 2.2.2 needs a way to stop it. Under a CSP that restricts `img-src`, allow `data:`,
+   or the rain is not drawn (nothing else is affected).
+3. **Your own themes** (`tools/palettes/local.mjs`): nothing to do. New optional fields: `headings`,
+   `backdrop`, `rainColor`.
+
+---
+
+**NEO.** Dark: a black page with near-black panels (`#000c02`, raised `#001800`), code-green text
+`#59f380`, green `#35da65`, violet `#925aff`, steel indigo `#6c7ab5`. Light: a cool grey page
+`#f4f6f9` with white panels, green `#117e16`, violet `#321a5f`, indigo navy `#2e3976`. H1 to H3 are
+green. Errors are violet rather than red; they still carry a ✗ and a word, so no state relies on
+color alone.
+
+**Rain backdrop.** A palette sets `backdrop: 'rain'`, and `rainColor` (default: its green accent)
+falls at its `grid` strength. `tools/rain.mjs` generates the glyph tiles into `effects.css`
+(`--fx-rain`), and `rain.test.mjs` fails if the two drift apart. Two layers fall at different
+speeds, stepped to about 16 repaints a second. `prefers-reduced-motion` and `data-motion="off"` hold
+it still. New tokens on every theme: `--fx-backdrop-image`, `-color`, `-mask` and `-anim`, which are
+`initial` (the grid) unless the theme rains. `tokens.json` records each theme's `backdrop`.
+
+**Heading tokens.** `--accent-h1` to `--accent-h4`, set on every theme from the optional `headings`
+palette field. `.t-h1` to `.t-h4` read them, and so do the gallery's app headings.
+
+**Build.** `npm run validate` checks draft 4. There is a new review page at `discovery/draft-4/`.
+
 ## 1.3.0 — 2026-09-24
 
 Stricter contrast checks and a one-skill install

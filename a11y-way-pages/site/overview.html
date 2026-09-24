@@ -47,10 +47,11 @@
   @media (max-width: 430px)  { html { scroll-padding-top: 152px; } }
 
   /* ---- Contrast rules for everything below ---------------------------------
-     Text only ever sits on a surface the theme build validates it against:
+     Text only ever sits on a surface the theme builder validates it against:
      --bg, --bg-panel or --bg-elevated (tools/build-final.mjs checks --text,
-     --text-muted and every accent on all three at 4.5:1, and each --on-* on its
-     accent). Cards are SOLID --bg-panel, never translucent, so the page grid
+     --text-muted and every accent on all three at 4.5:1, each --on-* on its
+     accent, and --focus-ring and --border-strong on all three at 3:1).
+     Cards are SOLID --bg-panel, never translucent, so the page grid
      never sits behind diagram text. Anything that carries meaning as a graphic
      (arrows, badges, chip borders) uses --text-muted, an accent or
      --border-strong; --border is unvalidated and only ever decorative. */
@@ -157,6 +158,20 @@
   .ov-pair-body { display: flex; flex-direction: column; }
   .ov-pair-name { font-weight: 700; }
   .ov-pair-need { font-size: 14px; color: var(--text-muted); }
+  /* "Needs N:1" links to the WCAG criterion it comes from, in a new tab. Same
+     treatment as the footer's new-tab link: the arrow is aria-hidden decoration,
+     so the warning is real (clipped) text. That text has no leading punctuation:
+     clipping blockifies it and the name algorithm adds its own space, so the name
+     reads "Needs 4.5:1 under WCAG 1.4.3, opens in a new tab". min-height keeps the
+     target at 24px+ (WCAG 2.5.8). */
+  .ov-src { display: inline-flex; align-items: center; gap: 4px; min-height: 24px;
+            color: var(--accent-blue); text-decoration: underline; text-underline-offset: 3px;
+            text-decoration-thickness: 1px; }
+  .ov-src:hover { text-decoration-thickness: 2px; }
+  .ov-src svg { flex: none; width: 10px; height: 10px; fill: none; stroke: currentColor;
+                stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .ov-live > .ov-live-note { margin: 16px 0 0; }
+  .ov-live-note strong { color: var(--text); }
   .ov-pair-result { display: flex; flex-direction: column; align-items: flex-end; }
   /* display:flex would otherwise beat the UA's [hidden] rule and leave an empty
      slot when the script hasn't run. */
@@ -377,28 +392,32 @@
         <li class="ov-pair" data-contrast-fg="--text" data-contrast-bg="--bg" data-contrast-min="4.5">
           <span class="ov-swatch ov-swatch--text" aria-hidden="true">Aa</span>
           <span class="ov-pair-body"><span class="ov-pair-name">Text on background</span>
-            <span class="ov-pair-need">Needs 4.5:1</span></span>
+            <span class="ov-pair-need"><a class="ov-src" href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener">Needs 4.5:1<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 1.5h6v6"/><path d="M10.5 1.5 1.5 10.5"/></svg> <span class="ov-vh">under WCAG 1.4.3, opens in a new tab</span></a></span></span>
           <span class="ov-pair-result" data-contrast-out hidden></span>
         </li>
         <li class="ov-pair" data-contrast-fg="--text-muted" data-contrast-bg="--bg-panel" data-contrast-min="4.5">
           <span class="ov-swatch ov-swatch--muted" aria-hidden="true">Aa</span>
           <span class="ov-pair-body"><span class="ov-pair-name">Muted text on a panel</span>
-            <span class="ov-pair-need">Needs 4.5:1</span></span>
+            <span class="ov-pair-need"><a class="ov-src" href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener">Needs 4.5:1<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 1.5h6v6"/><path d="M10.5 1.5 1.5 10.5"/></svg> <span class="ov-vh">under WCAG 1.4.3, opens in a new tab</span></a></span></span>
           <span class="ov-pair-result" data-contrast-out hidden></span>
         </li>
         <li class="ov-pair" data-contrast-fg="--on-blue" data-contrast-bg="--accent-blue" data-contrast-min="4.5">
           <span class="ov-swatch ov-swatch--button" aria-hidden="true">Aa</span>
           <span class="ov-pair-body"><span class="ov-pair-name">Button label on its color</span>
-            <span class="ov-pair-need">Needs 4.5:1</span></span>
+            <span class="ov-pair-need"><a class="ov-src" href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener">Needs 4.5:1<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 1.5h6v6"/><path d="M10.5 1.5 1.5 10.5"/></svg> <span class="ov-vh">under WCAG 1.4.3, opens in a new tab</span></a></span></span>
           <span class="ov-pair-result" data-contrast-out hidden></span>
         </li>
         <li class="ov-pair" data-contrast-fg="--focus-ring" data-contrast-bg="--bg" data-contrast-min="3">
           <span class="ov-swatch ov-swatch--focus" aria-hidden="true"><i></i></span>
           <span class="ov-pair-body"><span class="ov-pair-name">Focus ring on background</span>
-            <span class="ov-pair-need">Needs 3:1</span></span>
+            <span class="ov-pair-need"><a class="ov-src" href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html" target="_blank" rel="noopener">Needs 3:1<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 1.5h6v6"/><path d="M10.5 1.5 1.5 10.5"/></svg> <span class="ov-vh">under WCAG 1.4.11, opens in a new tab</span></a></span></span>
           <span class="ov-pair-result" data-contrast-out hidden></span>
         </li>
       </ul>
+      <p class="ov-live-note"><strong>Why every text pair needs 4.5:1:</strong> WCAG lets large text
+      (24px, or 18.66px bold) get by with 3:1. The theme builder skips that exception. Every text pair,
+      including button labels on their fill, has to reach 4.5:1, because a color can end up at any
+      size in your app.</p>
     </div>
   </section>
 

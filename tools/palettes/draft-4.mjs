@@ -31,9 +31,10 @@
    check requires. Everything that far lighter is about equally distant from
    the original, so chroma decides the look, per the owner's direction for each. That
    floor is set by the brightest surface text sits on, so dark NEO keeps its surfaces
-   low: black page, #000c02 panels, #001800 raised surfaces, and rain no brighter than
-   those. Against it: steel grey #6d7e98 (light NEO's #314058 lifted at the same hue and
-   chroma), lettered in #040b18.
+   low: black page, #000c02 panels, #001800 raised surfaces. Against them: steel grey
+   #798aa4 (light NEO's #314058 lifted at the same hue and chroma, a shade above that
+   floor so the rain's brightest glyph can sit higher and the rain fall at 0.17), lettered
+   in #040b18.
    Like every other theme, each accent is one color for all its uses — text, headings,
    solid buttons — with its on-color lettering the button.
    Light NEO's greens are a cool emerald, hue 150: the pure code green (143) held the most
@@ -56,8 +57,8 @@ const neoDark = {
   mode: 'dark', name: 'NEO', cohort: 'Fresh · Dark', headings: { h1: 'green', h3: 'green' }, backdrop: 'rain',
   bg:'#000000', panel:'#000c02', elevated:'#001800', text:'#59f380', muted:'#29a54c',
   border:'#074410', borderStrong:'#197b39', focus:'#59f380',
-  pink:'#6d7e98', onPink:'#040b18', green:'#35da65', onGreen:'#001800',
-  blue:'#6d7e98', onBlue:'#040b18', purple:'#c9fbd4', onPurple:'#001800',
+  pink:'#798aa4', onPink:'#040b18', green:'#35da65', onGreen:'#001800',
+  blue:'#798aa4', onBlue:'#040b18', purple:'#c9fbd4', onPurple:'#001800',
 };
 const neoLight = {
   mode: 'light', name: 'NEO', cohort: 'Fresh · Light', headings: { h1: 'green', h3: 'green' }, backdrop: 'rain', rainColor: '#39ff14',
@@ -72,13 +73,13 @@ export const palettes = {
 
   // ===== NEO — the rain backdrop (tools/rain.mjs) in both modes, as strong as it can be
   // while every text, accent, focus and border color still passes over its brightest
-  // glyph (palette-checks.mjs): on dark, a glyph head as bright as the raised surface and
-  // no brighter (0.10), which is what lets the blue go as deep as it does; on
+  // glyph (palette-checks.mjs): on dark, 0.17, with the steel grey held a shade above its
+  // floor so the rain can show (the strong border is the next limit); on
   // light, neon-green glyphs on the cool grey page (0.26), as strong as the accent green
   // allows. Dark rains in its green accent; light in neon #39ff14, the most chroma for the
   // least darkening, so at the same contrast it reads green where the accent only greys.
   // Each has a no-background twin.
-  'dark-07-neo':                   { ...neoDark, grid: 0.10 },
+  'dark-07-neo':                   { ...neoDark, grid: 0.17 },
   'dark-07-neo-no-background':     { ...neoDark, grid: 0, description: 'No Background' },
   'light-07-neo':                  { ...neoLight, grid: 0.26 },
   'light-07-neo-no-background':    { ...neoLight, grid: 0, description: 'No Background' },

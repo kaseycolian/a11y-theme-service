@@ -494,10 +494,10 @@
         </div>
       </div>`),
 
-      /* ================= App recreations =================
+      /* ================= Integrated Examples =================
          The tokens doing real work, not posing as a swatch sheet. Both frames
          are miniatures of the two apps this theme system was extracted from. */
-      cat('apps', 'App recreations', 'The palette doing real work, not posing as a swatch sheet.', `
+      cat('apps', 'Integrated Examples', 'The palette doing real work, not posing as a swatch sheet.', `
       <div class="cat-grid wide">
         <div class="block">
           <div class="block-title">URL Maker — from chrome-extension-url-maker</div>

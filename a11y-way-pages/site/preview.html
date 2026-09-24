@@ -61,8 +61,11 @@
   /* ---- page head + category index ---------------------------------------- */
 
   .page-head { display: flex; flex-direction: column; gap: 18px; }
-  .page-title { font-size: 26px; margin: 0; }
-  .page-lead { color: var(--text-muted); max-width: 68ch; line-height: 1.55; margin: 0; }
+  /* The title takes the theme's H1 accent, size and tracking, and the lead the body text
+     color, matching overview.html, so both pages open the same way in every theme. */
+  .page-title { font-size: clamp(28px, 4.2vw, 40px); line-height: 1.15; letter-spacing: -.01em;
+                margin: 0; color: var(--accent-h1, var(--accent-pink)); }
+  .page-lead { max-width: 68ch; line-height: 1.55; margin: 0; }
   /* Inline paths in the lead. Size in em so it tracks the paragraph, and --font-mono
      so it uses the theme's type stack instead of the browser's default monospace,
      which renders a step too small next to body text. Color is inherited, so this

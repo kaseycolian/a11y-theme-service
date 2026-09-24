@@ -60,7 +60,7 @@
 }
 .cat-title {
   margin: 0; font-size: var(--gal-title-size); font-weight: 800; letter-spacing: .18em;
-  text-transform: uppercase; color: var(--accent-green);
+  text-transform: uppercase; color: var(--accent-h2, var(--accent-green));
   text-shadow: var(--tglow-green-sm);
 }
 .cat-note { margin: 0; font-size: 12px; color: var(--text-muted); }

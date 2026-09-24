@@ -9,17 +9,18 @@
    Run:  node tools/build-final.mjs --write             # built-ins + local (default)
          node tools/build-final.mjs --write --no-builtin # ONLY your local themes
          node tools/build-final.mjs 3 --write            # explicit source draft for built-ins
+                                                         # (default: the highest-numbered draft)
 
    Whether built-ins are included: --no-builtin / --with-builtin override the machine-
    local preference (`includeBuiltinThemes` in ~/.claude/theme-service.local.json,
    default true). VERSION is read from the repo's VERSION file (bump it via release.mjs).
    ============================================================================= */
-import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
+import { writeFileSync, mkdirSync, readFileSync, existsSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { floor2 } from './contrast-checker/contrast.mjs';
-import { checkPalette } from './palette-checks.mjs';
+import { checkPalette, HEADING_LEVELS, headingAccents, backdrop, backdropVars } from './palette-checks.mjs';
 import { fullLabel, optionLabel, modeLabel } from './theme-name.mjs';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -30,7 +31,11 @@ const VERSION = (() => {
 })();
 
 // ---------- Which built-in draft, and whether to include built-ins ----------
-const srcDraft = process.argv.find(a => /^\d+$/.test(a)) || '3';
+// Default = the highest-numbered tools/palettes/draft-N.mjs: the same rule the Pages
+// workflow and the tests use, so a local build ships what gets published.
+const latestDraft = () => String(Math.max(...readdirSync(join(REPO, 'tools', 'palettes'))
+  .map(f => /^draft-(\d+)\.mjs$/.exec(f)?.[1]).filter(Boolean).map(Number)));
+const srcDraft = process.argv.find(a => /^\d+$/.test(a)) || latestDraft();
 function localConfig() {
   const p = join(homedir(), '.claude', 'theme-service.local.json');
   try { return existsSync(p) ? JSON.parse(readFileSync(p, 'utf8')) : {}; } catch { return {}; }
@@ -60,6 +65,8 @@ const VARMAP = {
   blue:'--accent-blue', onBlue:'--on-blue', purple:'--accent-purple', onPurple:'--on-purple',
 };
 const accents = ['pink', 'green', 'blue', 'purple'];
+// For naming a failed pair: the tokens, plus the rain's brightest glyph over the page.
+const NAMES = { ...VARMAP, rainBg: '--bg under the rain' };
 
 // Derive finalized metadata from a draft key like "dark-01-rink-classic".
 function meta(draftId, p) {
@@ -93,7 +100,7 @@ for (const [id, p, origin] of entries) {
     failures += bad.length;
     console.log(`FAIL ${origin} "${id}" — ${bad.length} AA failure(s)`);
     // Truncated, never rounded, so a near miss reads as the miss it is.
-    for (const x of bad) console.log(`     ${VARMAP[x.fg]} on ${VARMAP[x.bg]}: ${floor2(x.ratio)}:1, needs ${x.min}:1`);
+    for (const x of bad) console.log(`     ${NAMES[x.fg]} on ${NAMES[x.bg]}: ${floor2(x.ratio)}:1, needs ${x.min}:1`);
   }
 }
 console.log(`Building themes (built-ins: ${includeBuiltins ? 'draft-' + srcDraft : 'excluded'}, local: ${Object.keys(LOCAL).length}) — ${failures === 0 ? 'ALL PASS' : failures + ' PROBLEM(S)'}`);
@@ -109,7 +116,16 @@ for (const [draftId, p, origin] of entries) {
   }
   const tokens = {};
   for (const [k, v] of Object.entries(VARMAP)) tokens[v] = p[k];
-  themes[mt.id] = { ...mt, colorScheme: p.mode, glow: p.mode === 'light' ? '0.35' : '1', grid: p.grid, origin, tokens };
+  // Emitted for EVERY theme, defaults included, so a nested [data-theme] resets them
+  // rather than inheriting its parent's. An invalid `headings` was already counted as
+  // a failure above, so this only has to not throw; the write is refused.
+  const levels = (() => { try { return headingAccents(p); } catch { return HEADING_LEVELS; } })();
+  for (const [lvl, a] of Object.entries(levels)) tokens['--accent-' + lvl] = p[a];
+  // An invalid `backdrop` was counted as a failure above; the write is refused, so
+  // this only has to not throw.
+  const bd = (() => { try { return backdrop(p); } catch { return 'grid'; } })();
+  themes[mt.id] = { ...mt, colorScheme: p.mode, glow: p.mode === 'light' ? '0.35' : '1', grid: p.grid,
+    backdrop: bd, backdropVars: backdropVars({ ...p, backdrop: bd }), origin, tokens };
   origins[mt.id] = `${origin} "${draftId}"`;
 }
 /* The family heading is just the shared `name` — every variant of a family carries
@@ -138,7 +154,8 @@ if (process.argv.includes('--write')) {
   const block = (sel, t, indent = '') => {
     const lines = Object.entries(t.tokens).map(([v, val]) => `${indent}  ${v}: ${val};`);
     const gridLine = t.grid !== undefined ? `\n${indent}  --fx-grid-opacity: ${t.grid};` : '';
-    return `${indent}${sel} {\n${indent}  color-scheme: ${t.colorScheme};\n${indent}  --glow-strength: ${t.glow};${gridLine}\n${lines.join('\n')}\n${indent}}`;
+    const bdLines = Object.entries(t.backdropVars).map(([v, val]) => `\n${indent}  ${v}: ${val};`).join('');
+    return `${indent}${sel} {\n${indent}  color-scheme: ${t.colorScheme};\n${indent}  --glow-strength: ${t.glow};${gridLine}${bdLines}\n${lines.join('\n')}\n${indent}}`;
   };
 
   let css = `/* =============================================================================
@@ -172,7 +189,7 @@ if (process.argv.includes('--write')) {
       // kept so a consumer that just wants a string does not have to join them itself.
       [t.id, { name: t.name, group: t.group, description: t.description, label: t.label,
         family: t.family, mode: t.mode, origin: t.origin, colorScheme: t.colorScheme, glowStrength: Number(t.glow),
-        ...(t.grid !== undefined ? { gridOpacity: t.grid } : {}), tokens: t.tokens }])),
+        ...(t.grid !== undefined ? { gridOpacity: t.grid } : {}), backdrop: t.backdrop, tokens: t.tokens }])),
   };
   writeFileSync(join(REPO, 'themes/tokens.json'), JSON.stringify(tokensJson, null, 2) + '\n');
 

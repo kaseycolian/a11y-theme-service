@@ -64,7 +64,7 @@
      rendered, so its option rows are an input rather than markup in the body
      below. Default = the built-in theme families, for the preview page. The
      discovery page passes its own palette's four accents instead, because a
-     fixed set of hexes would look identical in all 16 sections and prove
+     fixed set of hexes would look identical in all 20 sections and prove
      nothing. */
   var BUILTIN_SWATCH_OPTIONS = [
     '<option value="rink" data-dropdown-swatch="#ff2ec4,#5bff3a,#3ceaff,#b57fff" selected>Rink Classic</option>',
@@ -72,6 +72,7 @@
     '<option value="hot" data-dropdown-swatch="#ff3ec8,#6bff45,#22e0ff,#cf7bff">Hot Neon</option>',
     '<option value="synthwave" data-dropdown-swatch="#ff5d8f,#ffb03a,#4ad8ff,#c17bff">Synthwave Sunset</option>',
     '<option value="acid" data-dropdown-swatch="#ff4de0,#c6ff2e,#38f0ff,#b98cff">Acid Arcade</option>',
+    '<option value="neo" data-dropdown-swatch="#925aff,#35da65,#6c7ab5,#c9fbd4">NEO</option>',
   ].join('\n              ');
 
   /* ---------------------------------------------------------------------------
@@ -140,7 +141,7 @@
 
        sfx      suffix for every id / for / radio name and the in-page anchors.
                 '' on a page with one gallery; the palette id in discovery, where
-                16 copies share one document and duplicate ids would break both
+                20 copies share one document and duplicate ids would break both
                 <label for> and the dropdown's aria-labelledby.
        heading  rank for .cat-title. 2 where the page <h1> is the page title
                 (preview), 3 where an <h2> already names the palette (discovery).
@@ -174,7 +175,7 @@
 
        Naming the region depends on how many galleries share the document:
 
-         name given (discovery, 16 copies)  aria-label="Typography for Rink Classic"
+         name given (discovery, 20 copies)  aria-label="Typography for Rink Classic"
          no name  (preview, one copy)       aria-labelledby -> its own heading
 
        Pointing at the heading is the better of the two — the accessible name is

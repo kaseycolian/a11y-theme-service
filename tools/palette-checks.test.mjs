@@ -10,7 +10,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync } from 'node:fs';
 import { contrastRatio, round2 } from './contrast-checker/contrast.mjs';
-import { PAIRS, checkPalette } from './palette-checks.mjs';
+import { PAIRS, checkPalette, headingAccents, rainUnder, backdropVars } from './palette-checks.mjs';
 
 // The built-ins that ship: the highest-numbered draft, the same rule the Pages
 // workflow uses to pick what to build.
@@ -99,4 +99,58 @@ test('a missing or invalid token throws instead of passing', () => {
   const [, base] = Object.entries(BUILTINS)[0];
   assert.throws(() => checkPalette({ ...base, borderStrong: undefined }));
   assert.throws(() => checkPalette({ ...base, text: 'not-a-color' }));
+});
+
+test('each heading level names one of the four accents, and keeps the neon order when omitted', () => {
+  const base = Object.values(BUILTINS).find(p => p.headings === undefined);
+  assert.ok(base, 'needs a built-in that leaves headings unset');
+  assert.deepEqual(headingAccents(base), { h1: 'pink', h2: 'green', h3: 'blue', h4: 'purple' });
+  // Only the levels named change.
+  assert.deepEqual(headingAccents({ ...base, headings: { h1: 'green', h3: 'green' } }),
+    { h1: 'green', h2: 'green', h3: 'green', h4: 'purple' });
+  // A color is not an accent name: a heading must reuse a checked accent.
+  assert.throws(() => checkPalette({ ...base, headings: { h1: 'red' } }));
+  assert.throws(() => checkPalette({ ...base, headings: { h3: '#00ff41' } }));
+  assert.throws(() => checkPalette({ ...base, headings: { h5: 'green' } }), /unknown level/);
+});
+
+test('rain adds its checks only when it is on, against its brightest glyph over the page', () => {
+  const base = Object.values(BUILTINS).find(p => p.mode === 'dark' && p.backdrop === undefined);
+  assert.ok(base, 'needs a dark built-in on the default grid backdrop');
+  const labels = p => checkPalette(p).map(x => x.label).filter(l => l.endsWith('on rain'));
+  assert.deepEqual(labels(base), [], 'grid: no rain pairs');
+  assert.deepEqual(labels({ ...base, backdrop: 'rain', grid: 0 }), [], 'rain at 0 is off');
+  assert.equal(labels({ ...base, backdrop: 'rain', grid: 0.1 }).length, 8);
+
+  // CSS opacity is an sRGB blend; each channel rounds away from the page so the check
+  // is never kinder than the paint. White over black at half strength: 127.5 -> 128.
+  assert.equal(rainUnder({ bg: '#000000', green: '#ffffff', grid: 0.5 }), '#808080');
+  assert.equal(rainUnder({ bg: '#ffffff', green: '#000000', grid: 0.5 }), '#7f7f7f');
+  // Omitted strength is the 0.22 effects.css falls back to.
+  assert.equal(rainUnder({ bg: '#000000', green: '#ffffff' }), rainUnder({ bg: '#000000', green: '#ffffff', grid: 0.22 }));
+});
+
+test('rain strong enough to wash out the text fails, and names what failed', () => {
+  const base = Object.values(BUILTINS).find(p => p.mode === 'dark' && p.backdrop === undefined);
+  const bad = failing({ ...base, backdrop: 'rain', grid: 1 });
+  assert.ok(bad.includes('muted on rain'), `expected muted on rain among ${bad}`);
+  assert.throws(() => checkPalette({ ...base, backdrop: 'snow' }));
+});
+
+test('backdropVars: rain sets the four effect tokens; anything else resets them to the grid', () => {
+  const base = Object.values(BUILTINS).find(p => p.backdrop === undefined);
+  assert.deepEqual(Object.values(backdropVars(base)), ['initial', 'initial', 'initial', 'initial']);
+  assert.deepEqual(Object.values(backdropVars({ ...base, backdrop: 'rain', grid: 0 })), ['initial', 'initial', 'initial', 'initial']);
+  assert.deepEqual(backdropVars({ ...base, backdrop: 'rain', grid: 0.1 }), {
+    '--fx-backdrop-image': 'none', '--fx-backdrop-color': base.green,
+    '--fx-backdrop-mask': 'var(--fx-rain)', '--fx-backdrop-anim': 'fx-rain',
+  });
+});
+
+test('rainColor, when set, is what rains and what is checked', () => {
+  const base = Object.values(BUILTINS).find(p => p.mode === 'dark' && p.backdrop === undefined);
+  const rainy = { ...base, backdrop: 'rain', grid: 0.1, rainColor: '#ffffff' };
+  assert.equal(backdropVars(rainy)['--fx-backdrop-color'], '#ffffff');
+  assert.equal(rainUnder(rainy), rainUnder({ bg: base.bg, green: '#ffffff', grid: 0.1 }));
+  assert.throws(() => checkPalette({ ...rainy, rainColor: 'green' }));
 });

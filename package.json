@@ -14,7 +14,7 @@
     "//release": "Bump VERSION + prepend CHANGELOG.md + tag vX.Y.Z. Commit feature work FIRST — it refuses on a dirty tree. Usage: npm run release <patch|minor|major> -- --note \"what changed\"   (--note is required; the -- is what passes it through npm. Flags: --allow-dirty, --yes)",
     "release": "node tools/release.mjs",
 
-    "validate": "node tools/build-palettes.mjs 3",
+    "validate": "node tools/build-palettes.mjs 4",
 
     "//test": "Unit tests: the contrast checker (library + CLI), the AA pairs both builders share (tools/palette-checks.mjs), and both builders refusing to write a failing theme. Node's built-in runner finds every *.test.mjs; no dependencies.",
     "test": "node --test",

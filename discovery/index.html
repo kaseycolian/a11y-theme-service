@@ -44,8 +44,26 @@
   component gallery, all WCAG&nbsp;AA&nbsp;2.2 validated. Drafts are kept side by side so you can compare.</p>
 
   <div class="drafts">
+    <a class="card" href="draft-4/index.html">
+      <div class="row"><h2>Draft 4</h2><span class="tag current">Current</span><span class="tag">20 palettes</span></div>
+      <p>Adds <strong>NEO</strong>, a family themed on The Matrix: true black with code-green text on
+      dark, pale green-tinted paper with deep green text on light. The accents are the code rain and the lead
+      glyph, sampled from stills of the films, and the original poster's title violet and an indigo
+      navy, and
+      each mode has a <strong>(No Background)</strong>
+      variant. Every draft-3 palette is carried over unchanged.</p>
+      <div class="swrow">
+        <span class="sw" style="background:#000000"></span>
+        <span class="sw" style="background:#925aff"></span>
+        <span class="sw" style="background:#35da65"></span>
+        <span class="sw" style="background:#6c7ab5"></span>
+        <span class="sw" style="background:#c9fbd4"></span>
+        <span class="sw" style="background:#59f380"></span>
+      </div>
+    </a>
+
     <a class="card" href="draft-3/index.html">
-      <div class="row"><h2>Draft 3</h2><span class="tag current">Current</span><span class="tag">16 palettes</span></div>
+      <div class="row"><h2>Draft 3</h2><span class="tag frozen">Previous</span><span class="tag">16 palettes</span></div>
       <p>Background-strength variations. Dark-01/02/03 gain a more pronounced grid (~40% of draft-1)
       and a <strong>(No Background)</strong> variant; light-01/02/06 keep their checkerboard and add a
       <strong>(No Background)</strong> variant (solid bg). Grid strength is now a per-theme token
@@ -92,7 +110,7 @@
   </div>
 
   <p class="foot">
-    Regenerate palettes from source: <code>node tools/build-palettes.mjs 3 --write</code> (validates AA, refuses to write on failure).<br>
+    Regenerate palettes from source: <code>node tools/build-palettes.mjs 4 --write</code> (validates AA, refuses to write on failure).<br>
     Standalone WCAG contrast checker lives in <code>tools/contrast-checker/</code>.
   </p>
 </div>

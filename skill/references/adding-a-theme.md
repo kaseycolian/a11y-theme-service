@@ -19,6 +19,16 @@ blue, onBlue, purple, onPurple` (see any entry in `tools/palettes/draft-2.mjs`).
 few colors, derive the rest in-family (deep base + light text for dark; light paper + deep saturated
 accents + white `on*` for light).
 
+Optional `headings` picks which accent each heading level uses, e.g. `{ h1: 'green', h3: 'green' }`;
+levels left out keep the neon order (h1 `pink`, h2 `green`, h3 `blue`, h4 `purple`). Pink is also the
+error color and blue the link color, so when the user wants different heading colors, set `headings`
+rather than moving their accents between slots (see NEO in `draft-4.mjs`, all-green h1–h3).
+
+Optional `backdrop: 'rain'` swaps the grid for falling code (NEO), in `rainColor` (default: the green
+accent), at the palette's `grid` strength. Text sits on it, so the build checks text, muted, every
+accent, the focus ring and the strong border over the brightest glyph; if that fails, lower `grid` or
+darken the failing color. The rain animates, so a consuming app needs the motion toggle (WCAG 2.2.2).
+
 ## Option 2 — Guided recommendation (socratic)
 Walk the same process used to design the originals: ask for a vibe/color story (1–2 sentences),
 mode(s), and any must-have hues; propose a coherent palette; iterate. Default to the retro-neon
@@ -37,7 +47,7 @@ discovery→finalize flow; it supports either brand-consistent variants or a del
    - **Fork user / adding to your own set:** put it in `tools/palettes/local.mjs` (the origin never
      touches it, so it survives updates). This is the default for anyone who isn't the origin owner.
    - **Origin owner / new candidate round (Option 3):** add to the built-in draft `build-final.mjs`
-     sources (`draft-3.mjs`), or create a new `tools/palettes/draft-<n>.mjs` to explore.
+     sources (the highest-numbered `draft-N.mjs`), or create a new `tools/palettes/draft-<n>.mjs` to explore.
    Use the key shape `<mode>-NN-<family>` with a clear `label`/`group`. Optional per-theme background
    strength via a `grid` field (0 = off, 0.22 = subdued default, ~0.40 = pronounced). Add a
    `-no-background` suffix to a key for a grid-off variant.

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" data-motion="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Theme Service — Palette Discovery · Draft 4</title>
+
+<!-- Palette token files (each defines [data-palette="…"]) -->
+<link rel="stylesheet" href="palettes/dark-01-rink-classic.css">
+<link rel="stylesheet" href="palettes/dark-01-rink-classic-no-background.css">
+<link rel="stylesheet" href="palettes/dark-02-midnight-arcade.css">
+<link rel="stylesheet" href="palettes/dark-02-midnight-arcade-no-background.css">
+<link rel="stylesheet" href="palettes/dark-03-hot-neon.css">
+<link rel="stylesheet" href="palettes/dark-03-hot-neon-no-background.css">
+<link rel="stylesheet" href="palettes/dark-04-synthwave-sunset.css">
+<link rel="stylesheet" href="palettes/dark-06-acid-arcade.css">
+<link rel="stylesheet" href="palettes/dark-07-neo.css">
+<link rel="stylesheet" href="palettes/dark-07-neo-no-background.css">
+<link rel="stylesheet" href="palettes/light-01-rink-classic.css">
+<link rel="stylesheet" href="palettes/light-01-rink-classic-no-background.css">
+<link rel="stylesheet" href="palettes/light-02-midnight-arcade.css">
+<link rel="stylesheet" href="palettes/light-02-midnight-arcade-no-background.css">
+<link rel="stylesheet" href="palettes/light-03-hot-neon.css">
+<link rel="stylesheet" href="palettes/light-04-synthwave-sunset.css">
+<link rel="stylesheet" href="palettes/light-06-acid-arcade.css">
+<link rel="stylesheet" href="palettes/light-06-acid-arcade-no-background.css">
+<link rel="stylesheet" href="palettes/light-07-neo.css">
+<link rel="stylesheet" href="palettes/light-07-neo-no-background.css">
+
+<!-- THE SHIPPED component CSS, not a copy of it. These files derive their tokens
+     on `:root, [data-palette]`, so each section below recomputes every glow and
+     gradient from its own palette while an app gets the same rules off :root.
+     This page therefore shows exactly what a consuming app gets — no fork to
+     re-sync, and no rescoping step when a draft is finalized. -->
+<link rel="stylesheet" href="../../themes/effects.css">
+<link rel="stylesheet" href="../../themes/components.css">
+<link rel="stylesheet" href="../../themes/dropdown.css">
+
+<!-- The component gallery, shared verbatim with a11y-way-pages/site/preview.html: the markup
+     for every card below comes from gallery/gallery.js. See gallery/README.md. -->
+<link rel="stylesheet" href="../../gallery/gallery.css">
+
+<style>
+  /* ---- Neutral page chrome (deliberately NOT one of the palettes, so themed
+         sections stand on their own). ---- */
+  :root {
+    --chrome-bg: #0c0d12;
+    --chrome-panel: #15171f;
+    --chrome-border: #262a36;
+    --chrome-text: #e7e9f2;
+    --chrome-muted: #9aa0b4;
+    --chrome-accent: #6ee7ff;
+    font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--chrome-bg); color: var(--chrome-text); }
+
+  header.top {
+    position: sticky; top: 0; z-index: 100;
+    background: color-mix(in srgb, var(--chrome-bg) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--chrome-border);
+    padding: 12px 20px;
+  }
+  .top-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .top h1 { font-size: 17px; margin: 0; letter-spacing: 0.5px; }
+  .top h1 span { color: var(--chrome-accent); }
+  .top .sub { color: var(--chrome-muted); font-size: 12.5px; margin: 2px 0 0; max-width: 62ch; }
+  .top-controls { margin-left: auto; display: flex; gap: 18px; align-items: center; }
+  .ctl { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--chrome-muted); cursor: pointer; user-select: none; }
+  .ctl input { width: 40px; height: 22px; }
+  /* Minimal chrome switch */
+  .ctl { position: relative; }
+  .ctl .sw { width: 40px; height: 22px; border-radius: 999px; background: #2b2f3d; border: 1px solid var(--chrome-border); position: relative; transition: background .15s; flex: 0 0 auto; }
+  .ctl .sw::after { content:""; position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:#c7ccda; transition: transform .15s; }
+  .ctl input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .ctl input:checked + .sw { background: var(--chrome-accent); }
+  .ctl input:checked + .sw::after { transform: translateX(18px); background:#06202a; }
+  .ctl input:focus-visible + .sw { outline: 3px solid var(--chrome-accent); outline-offset: 2px; }
+
+  nav.jump { display: flex; gap: 20px; margin-top: 12px; flex-wrap: wrap; align-items: baseline; }
+  nav.jump .grp { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--chrome-muted); margin-right: 4px; }
+  nav.jump a { color: var(--chrome-text); text-decoration: none; font-size: 12.5px; padding: 3px 9px; border: 1px solid var(--chrome-border); border-radius: 999px; }
+  nav.jump a:hover { border-color: var(--chrome-accent); color: var(--chrome-accent); }
+  nav.jump a:focus-visible { outline: 3px solid var(--chrome-accent); outline-offset: 2px; }
+
+  main { padding: 24px 20px 80px; display: flex; flex-direction: column; gap: 40px; max-width: 1120px; margin: 0 auto; }
+
+  /* Themed section shell */
+  section.palette { scroll-margin-top: 150px; border-radius: 16px; overflow: hidden; border: 1px solid var(--chrome-border); }
+  .sec-head {
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    padding: 16px 20px; border-bottom: 1px solid var(--border);
+  }
+  .sec-head .names { display: flex; flex-direction: column; gap: 2px; }
+  .sec-head .grp-tag { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); }
+  /* An <h2>: the page is h1, each palette h2, each category h3, the select
+     sub-head h4. Styled down to 18px rather than left at the UA's h2 size. */
+  .sec-head .name { margin: 0; font-size: 18px; font-weight: 800; color: var(--text); }
+  .sec-head .id { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+  .sec-head .spacer { margin-left: auto; }
+  .aa-badge {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700;
+    padding: 4px 10px; border-radius: 999px;
+    border: 1px solid var(--accent-green); color: var(--accent-green);
+    background: color-mix(in srgb, var(--accent-green) 12%, transparent);
+    cursor: pointer;
+  }
+  .aa-badge.fail { border-color: var(--accent-pink); color: var(--accent-pink); background: color-mix(in srgb, var(--accent-pink) 12%, transparent); }
+
+  .contrast-detail { display: none; padding: 0 20px 16px; }
+  main.show-contrast .contrast-detail { display: block; }
+  .contrast-detail table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .contrast-detail th, .contrast-detail td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--border); color: var(--text); }
+  .contrast-detail th { color: var(--text-muted); font-weight: 600; }
+  .contrast-detail .r-pass { color: var(--accent-green); font-weight: 700; }
+  .contrast-detail .r-fail { color: var(--accent-pink); font-weight: 700; }
+  .contrast-detail .chip-c { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: middle; margin-right: 4px; border: 1px solid color-mix(in srgb, var(--text) 30%, transparent); }
+
+  /* ---- Themed gallery body ------------------------------------------------
+     Everything from .sec-body down is the palette's, and every card in it is
+     rendered by gallery/gallery.js and laid out by gallery/gallery.css — the
+     SAME template a11y-way-pages/site/preview.html shows. A component designed on either page
+     appears on the other with no second edit; see gallery/README.md.
+
+     The page chrome above (header, nav, contrast tables) stays on the neutral
+     --chrome-* palette. */
+  .sec-body {
+    padding: 24px 22px; display: flex; flex-direction: column;
+    gap: var(--gal-section-gap);
+
+    /* Density knobs from gallery.css. Its defaults suit ONE gallery on a page;
+       this document stacks 20, so cards run a little tighter here — a step down
+       from the defaults, not the cramped setting they used to be. */
+    --gal-section-gap: 38px;
+    --gal-cat-gap: 17px;
+    --gal-grid-gap: 16px;
+    --gal-col-min: 250px;
+    --gal-col-min-wide: 430px;
+    --gal-card-pad: 14px;
+    --gal-card-gap: 11px;
+    --gal-title-size: 13px;
+  }
+
+  /* Discovery-only: when the toggle kills motion, kill it for the page CHROME
+     too, not just the token-driven components. themes/effects.css deliberately
+     ships no blanket !important reset — a consuming app's own animations are
+     none of its business — so this belongs here rather than in the shared file. */
+  [data-motion="off"] *,
+  [data-motion="off"] *::before,
+  [data-motion="off"] *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-row">
+    <div>
+      <h1>Theme Service — <span>Palette Discovery · Draft 4</span></h1>
+      <p class="sub"><a href="../index.html" style="color:var(--chrome-accent)">← all drafts</a> · Adds <strong>NEO</strong>, a family themed on The Matrix: true black with code-green text on dark, pale green-tinted paper with deep green text on light. The accents are the code rain and the lead glyph, sampled from stills of the films, and the original poster's title violet and an indigo navy. Dark and light each have a <strong>(No Background)</strong> variant. Every draft-3 palette is carried over unchanged, colors and WCAG&nbsp;AA&nbsp;2.2 results included.</p>
+    </div>
+    <div class="top-controls">
+      <label class="ctl"><input type="checkbox" id="motionToggle"><span class="sw"></span>Disable animations</label>
+      <label class="ctl"><input type="checkbox" id="contrastToggle"><span class="sw"></span>Show contrast ratios</label>
+    </div>
+  </div>
+  <nav class="jump" id="jumpNav"></nav>
+</header>
+
+<main id="main"></main>
+
+<script src="data/contrast.js"></script>
+<!-- The shipped dropdown, not a copy of it: the panel stays a DOM descendant of
+     its section even while promoted to the top layer, so it keeps that palette. -->
+<script src="../../themes/dropdown.js"></script>
+<!-- The gallery template, shared with a11y-way-pages/site/preview.html. Before the inline
+     script below, which calls ThemeGallery.html() per palette while the document
+     is still parsing — so every [data-dropdown] it stamps out exists before
+     dropdown.js's DOMContentLoaded pass runs and enhances them. -->
+<script src="../../gallery/gallery.js"></script>
+<script>
+/* Display names are three parts, matching tools/palettes/draft-4.mjs and
+   tools/theme-name.mjs: `name` is the family (shared by every variant of it),
+   `description` is what makes this variant different. `cohort` is separate from
+   both — it is this page's own review grouping, and drives .grp-tag + the jump
+   nav below, nothing else. */
+const PALETTES = [
+  { id:'dark-01-rink-classic',                 name:'Rink Classic',    description:'',              cohort:'Faithful · Dark',  mode:'dark' },
+  { id:'dark-01-rink-classic-no-background',   name:'Rink Classic',    description:'No Background', cohort:'Faithful · Dark',  mode:'dark' },
+  { id:'dark-02-midnight-arcade',              name:'Midnight Arcade', description:'',              cohort:'Faithful · Dark',  mode:'dark' },
+  { id:'dark-02-midnight-arcade-no-background',name:'Midnight Arcade', description:'No Background', cohort:'Faithful · Dark',  mode:'dark' },
+  { id:'dark-03-hot-neon',                     name:'Hot Neon',        description:'',              cohort:'Faithful · Dark',  mode:'dark' },
+  { id:'dark-03-hot-neon-no-background',       name:'Hot Neon',        description:'No Background', cohort:'Faithful · Dark',  mode:'dark' },
+  { id:'dark-04-synthwave-sunset',             name:'Synthwave Sunset',description:'',              cohort:'Fresh · Dark',     mode:'dark' },
+  { id:'dark-06-acid-arcade',                  name:'Acid Arcade',     description:'',              cohort:'Fresh · Dark',     mode:'dark' },
+  { id:'dark-07-neo',                          name:'NEO',             description:'',              cohort:'Fresh · Dark',     mode:'dark' },
+  { id:'dark-07-neo-no-background',            name:'NEO',             description:'No Background', cohort:'Fresh · Dark',     mode:'dark' },
+  { id:'light-01-rink-classic',                name:'Rink Classic',    description:'',              cohort:'Faithful · Light', mode:'light' },
+  { id:'light-01-rink-classic-no-background',  name:'Rink Classic',    description:'No Background', cohort:'Faithful · Light', mode:'light' },
+  { id:'light-02-midnight-arcade',             name:'Midnight Arcade', description:'',              cohort:'Faithful · Light', mode:'light' },
+  { id:'light-02-midnight-arcade-no-background',name:'Midnight Arcade',description:'No Background', cohort:'Faithful · Light', mode:'light' },
+  { id:'light-03-hot-neon',                    name:'Hot Neon',        description:'',              cohort:'Faithful · Light', mode:'light' },
+  { id:'light-04-synthwave-sunset',            name:'Synthwave Sunset',description:'',              cohort:'Fresh · Light',    mode:'light' },
+  { id:'light-06-acid-arcade',                 name:'Acid Arcade',     description:'',              cohort:'Fresh · Light',    mode:'light' },
+  { id:'light-06-acid-arcade-no-background',   name:'Acid Arcade',     description:'No Background', cohort:'Fresh · Light',    mode:'light' },
+  { id:'light-07-neo',                         name:'NEO',             description:'',              cohort:'Fresh · Light',    mode:'light' },
+  { id:'light-07-neo-no-background',           name:'NEO',             description:'No Background', cohort:'Fresh · Light',    mode:'light' },
+];
+
+/* The parts composed, the same way tools/theme-name.mjs does it. The mode is not
+   in here: the cohort above already says "· Dark" / "· Light", and the id is
+   printed underneath. */
+const fullName = (p) => [p.name, p.description].filter(Boolean).join(' · ');
+
+
+/* The four accents THIS palette actually ships, pulled out of the contrast
+   report rather than duplicated here. Handed to the gallery as its `swatches`
+   input so the swatch dropdown shows the palette it is sitting in — the whole
+   point of a palette page, since one hardcoded set of hexes would look identical
+   in all 20 sections. */
+function accentsOf(id) {
+  const data = window.CONTRAST && window.CONTRAST[id];
+  const find = (name) => {
+    const c = data && data.checks.find((x) => x.label === `${name} text on bg`);
+    return c ? c.fg : '#888';
+  };
+  return ['pink', 'green', 'blue', 'purple'].map(find);
+}
+
+function contrastTable(id) {
+  const data = window.CONTRAST && window.CONTRAST[id];
+  if (!data) return '';
+  const rows = data.checks.map(c => {
+    const pass = c.ratio >= c.min;
+    return `<tr>
+      <td>${c.label}</td>
+      <td><span class="chip-c" style="background:${c.fg}"></span>${c.fg}</td>
+      <td><span class="chip-c" style="background:${c.bg}"></span>${c.bg}</td>
+      <td>${c.min.toFixed(1)}:1</td>
+      <td class="${pass ? 'r-pass' : 'r-fail'}">${c.ratio.toFixed(2)}:1 ${pass ? '✓' : '✗'}</td>
+    </tr>`;
+  }).join('');
+  return `<div class="contrast-detail"><table>
+    <thead><tr><th>Pair</th><th>Foreground</th><th>Background</th><th>AA min</th><th>Measured</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>`;
+}
+
+/* Render sections + nav */
+const main = document.getElementById('main');
+const nav = document.getElementById('jumpNav');
+
+/* One symbol library for the whole document, from the shared template: <symbol>
+   resolves by id, so all 20 galleries point their <use> at these three and each
+   copy still paints in its own palette (the icons inherit currentColor). */
+main.insertAdjacentHTML('afterbegin', ThemeGallery.SPRITE);
+
+let navHTML = '';
+let lastCohort = '';
+const groupsSeen = new Set();
+
+PALETTES.forEach(p => {
+  const data = window.CONTRAST && window.CONTRAST[p.id];
+  const total = data ? data.checks.length : 0;
+  const failed = data ? data.checks.filter(c => c.ratio < c.min).length : 0;
+  const pass = failed === 0;
+
+  const section = document.createElement('section');
+  section.className = 'palette surface fx-grid';
+  section.id = p.id;
+  section.setAttribute('data-palette', p.id);
+  section.innerHTML = `
+    <div class="sec-head">
+      <div class="swatches" aria-hidden="true">
+        <span class="swatch sw-bg"></span><span class="swatch sw-panel"></span>
+        <span class="swatch sw-pink"></span><span class="swatch sw-green"></span>
+        <span class="swatch sw-blue"></span><span class="swatch sw-purple"></span>
+        <span class="swatch sw-text"></span>
+      </div>
+      <div class="names">
+        <span class="grp-tag">${p.cohort}</span>
+        <h2 class="name">${fullName(p)}</h2>
+        <span class="id">${p.id}</span>
+      </div>
+      <div class="spacer"></div>
+      <button class="aa-badge ${pass ? '' : 'fail'}" data-aa aria-expanded="false">
+        ${pass ? '✓' : '✗'} WCAG AA · ${total - failed}/${total}
+      </button>
+    </div>
+    ${contrastTable(p.id)}
+    <div class="sec-body">${ThemeGallery.html({
+      // Every id/name in the gallery is suffixed with the palette id: this markup
+      // is stamped out 20 times into one document, and a duplicate id would break
+      // both <label for> and the dropdown's aria-labelledby.
+      sfx: p.id,
+      // The page is h1, each palette h2 — so a category is h3 here (preview.html,
+      // with one gallery under its page title, passes 2).
+      heading: 3,
+      // Same reason as sfx, for the region's accessible name: without the theme
+      // spelled out, this document offers sixteen regions called "Typography".
+      // Both parts of the .sec-head naming are needed, not just the <h2>: the
+      // names alone repeat (dark and light are each "Rink Classic"), and it is
+      // the .grp-tag above them that says which. Reads as
+      // "Typography for Rink Classic, Faithful · Dark".
+      name: `${fullName(p)}, ${p.cohort}`,
+      swatches: accentsOf(p.id).join(','),
+    })}</div>
+  `;
+  main.appendChild(section);
+
+  // Nav grouping — by cohort, this page's review buckets, not by theme name.
+  const cohortKey = p.cohort;
+  if (cohortKey !== lastCohort) {
+    navHTML += `<span class="grp">${cohortKey}</span>`;
+    lastCohort = cohortKey;
+  }
+  navHTML += `<a href="#${p.id}">${fullName(p)}</a>`;
+});
+nav.innerHTML = navHTML;
+
+/* ---- Interactions ---- */
+// Motion toggle → data-motion on <html>
+document.getElementById('motionToggle').addEventListener('change', e => {
+  document.documentElement.setAttribute('data-motion', e.target.checked ? 'off' : '');
+});
+// Contrast detail toggle
+document.getElementById('contrastToggle').addEventListener('change', e => {
+  main.classList.toggle('show-contrast', e.target.checked);
+});
+// Per-section AA badge also reveals its own contrast table
+main.addEventListener('click', e => {
+  const badge = e.target.closest('[data-aa]');
+  if (badge) {
+    main.classList.add('show-contrast');
+    document.getElementById('contrastToggle').checked = true;
+    badge.closest('section').querySelector('.contrast-detail').scrollIntoView({ block: 'nearest' });
+    return;
+  }
+  // No dropdown handler here any more: the select examples are enhanced by
+  // themes/dropdown.js, which owns its own open/close, outside-click and key
+  // handling. The hand-rolled .drop-toggle listener this replaced was the last
+  // thing on the page driving the legacy .drop component.
+  // Tabs
+  const tab = e.target.closest('.tab');
+  if (tab) {
+    tab.parentElement.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', 'false'));
+    tab.setAttribute('aria-selected', 'true');
+    return;
+  }
+  // Chip toggles
+  const chip = e.target.closest('.chip-toggle');
+  if (chip) {
+    chip.setAttribute('aria-pressed', chip.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+  }
+});
+</script>
+</body>
+</html>

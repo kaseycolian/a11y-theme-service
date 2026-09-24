@@ -131,7 +131,7 @@
 .app-head { padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; }
 .app-title {
   font-size: 14px; font-weight: 800; font-style: italic; text-transform: uppercase;
-  letter-spacing: 1px; color: var(--accent-pink); text-shadow: var(--tglow-pink);
+  letter-spacing: 1px; color: var(--accent-h1, var(--accent-pink)); text-shadow: var(--tglow-h1);
 }
 .app-body { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
 .app-foot { padding: 12px 14px; display: flex; gap: 10px; justify-content: flex-end; }
@@ -143,9 +143,9 @@
   background: var(--bg-panel);
   border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
 }
-.app-preview h1 { font-size: 17px; color: var(--accent-pink); text-shadow: var(--tglow-pink); margin: 0 0 6px; }
-.app-preview h2 { font-size: 14px; color: var(--accent-green); text-shadow: var(--tglow-green); margin: 10px 0 4px; }
-.app-preview h3 { font-size: 13px; color: var(--accent-blue); text-shadow: var(--tglow-blue); margin: 8px 0 4px; }
+.app-preview h1 { font-size: 17px; color: var(--accent-h1, var(--accent-pink)); text-shadow: var(--tglow-h1); margin: 0 0 6px; }
+.app-preview h2 { font-size: 14px; color: var(--accent-h2, var(--accent-green)); text-shadow: var(--tglow-h2); margin: 10px 0 4px; }
+.app-preview h3 { font-size: 13px; color: var(--accent-h3, var(--accent-blue)); text-shadow: var(--tglow-h3); margin: 8px 0 4px; }
 .app-preview p { font-size: 13px; color: var(--text); margin: 0 0 6px; line-height: 1.5; }
 .app-preview a { color: var(--accent-blue); text-shadow: var(--tglow-blue); }
 .app-preview pre {

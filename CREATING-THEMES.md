@@ -80,9 +80,11 @@ manual workflow, if you want to drive it yourself:
 
 1. **Add the palette.** If you're a **fork user**, put it in `tools/palettes/local.mjs` (the origin
    never touches it). If you **own the origin**, add it to the built-in draft the finalizer sources
-   (`tools/palettes/draft-3.mjs`) — or start a new `draft-N.mjs` for a fresh side-by-side exploration.
+   (the highest-numbered `tools/palettes/draft-N.mjs`) — or start a new `draft-N.mjs` for a fresh side-by-side exploration.
    Reuse the token shape from existing entries; set a clear `label`/`group`. Optional per-theme
-   background strength via `grid` (0 = off, 0.22 = subdued, ~0.40 = pronounced).
+   background strength via `grid` (0 = off, 0.22 = subdued, ~0.40 = pronounced), and which accent each
+   heading level uses via `headings` (default: h1 pink, h2 green, h3 blue, h4 purple). The backdrop can
+   be falling code instead of the grid via `backdrop: 'rain'` (color: `rainColor`).
 2. **Validate AA.** `npm run validate` (built-ins) or just build — `build-final.mjs` validates every
    pair (built-in **and** local) and refuses to write on any failure. Watch the ceilings (deep
    purple/green as *small* text on dark, and any accent as small text on light, are bounded — use

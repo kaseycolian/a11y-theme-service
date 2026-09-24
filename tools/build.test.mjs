@@ -7,7 +7,7 @@
    ============================================================================= */
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { cpSync, mkdtempSync, rmSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
+import { cpSync, mkdtempSync, rmSync, writeFileSync, existsSync, readdirSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -72,6 +72,46 @@ test('build-final still writes a theme that passes', () => {
   assert.equal(r.status, 0, r.stdout + r.stderr);
   assert.match(r.stdout, /ALL PASS/);
   assert.ok(existsSync(join(dir, 'themes', 'theme.css')));
+});
+
+test('build-final emits --accent-h1 … h4 on every theme: the named accents, else the neon order', () => {
+  assert.equal(base.headings, undefined, 'fixture must leave headings unset');
+  assert.notEqual(base.pink, base.green);
+  assert.notEqual(base.blue, base.green);
+  const dir = sandbox('final-heading', 'local.mjs', {
+    'light-01-plain':  { ...base, name: 'Plain' },
+    'light-02-headed': { ...base, name: 'Headed', headings: { h1: 'green', h3: 'green' } },
+  });
+  const r = run(dir, 'tools/build-final.mjs', '--no-builtin', '--write');
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  const css = readFileSync(join(dir, 'themes', 'theme.css'), 'utf8');
+  const block = id => css.match(new RegExp(`\\[data-theme="${id}"\\] \\{[^}]*\\}`))?.[0] ?? '';
+  const expect = { plain: [base.pink, base.green, base.blue, base.purple],
+                   headed: [base.green, base.green, base.green, base.purple] };
+  for (const [name, colors] of Object.entries(expect)) {
+    colors.forEach((c, i) => assert.match(block(`${name}-light`), new RegExp(`--accent-h${i + 1}: ${c};`)));
+  }
+});
+
+test('build-final emits the rain for a rain theme, and resets it on every other', () => {
+  const dir = sandbox('final-rain', 'local.mjs', {
+    'light-01-plain':  { ...base, name: 'Plain' },
+    'light-02-rainy':  { ...base, name: 'Rainy', backdrop: 'rain', grid: 0.01 },
+  });
+  const r = run(dir, 'tools/build-final.mjs', '--no-builtin', '--write');
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  const css = readFileSync(join(dir, 'themes', 'theme.css'), 'utf8');
+  const block = id => css.match(new RegExp(`\\[data-theme="${id}"\\] \\{[^}]*\\}`))?.[0] ?? '';
+  assert.match(block('rainy-light'), /--fx-backdrop-image: none;/);
+  assert.match(block('rainy-light'), new RegExp(`--fx-backdrop-color: ${base.green};`));
+  assert.match(block('rainy-light'), /--fx-backdrop-mask: var\(--fx-rain\);/);
+  assert.match(block('rainy-light'), /--fx-backdrop-anim: fx-rain;/);
+  for (const v of ['image', 'color', 'mask', 'anim']) {
+    assert.match(block('plain-light'), new RegExp(`--fx-backdrop-${v}: initial;`));
+  }
+  const tokens = JSON.parse(readFileSync(join(dir, 'themes', 'tokens.json'), 'utf8'));
+  assert.equal(tokens.themes['rainy-light'].backdrop, 'rain');
+  assert.equal(tokens.themes['plain-light'].backdrop, 'grid');
 });
 
 test('npm run validate (build-palettes, report only) exits 1 when a theme fails', () => {

@@ -14,6 +14,7 @@
    Tested by palette-checks.test.mjs; build.test.mjs runs both builders end to end.
    ============================================================================= */
 import { contrastRatio } from './contrast-checker/contrast.mjs';
+import { PEAK_ALPHA } from './rain.mjs';
 
 const ACCENTS = ['pink', 'green', 'blue', 'purple'];
 const cap = a => a[0].toUpperCase() + a.slice(1);
@@ -48,15 +49,92 @@ export const PAIRS = [
   ['border-strong on elevated', 'borderStrong', 'elevated', 3.0],
 ];
 
+/** The accent each heading level uses (.t-h1 … .t-h4), emitted as --accent-h1 … --accent-h4.
+ *  Optional palette field `headings`, e.g. { h1: 'green', h3: 'green' }; a level left
+ *  out keeps the neon hierarchy every theme started with, pink → green → blue → purple.
+ *  Each level names one of the four accents rather than carrying a color of its own, so
+ *  it needs no pair here: that accent is already checked on every surface. It exists
+ *  because the accents have other jobs too — pink is the error color, blue the link
+ *  color — and a theme that wants its headings in another accent must not have to
+ *  recolor its errors or its links to get them. */
+export const HEADING_LEVELS = { h1: 'pink', h2: 'green', h3: 'blue', h4: 'purple' };
+export function headingAccents(p) {
+  const h = p.headings ?? {};
+  for (const lvl of Object.keys(h)) {
+    if (!(lvl in HEADING_LEVELS)) throw new Error(`headings: unknown level "${lvl}"; use ${Object.keys(HEADING_LEVELS).join(', ')}`);
+  }
+  return Object.fromEntries(Object.entries(HEADING_LEVELS).map(([lvl, def]) => {
+    const a = h[lvl] ?? def;
+    if (!ACCENTS.includes(a)) throw new Error(`headings.${lvl} must be one of ${ACCENTS.join(', ')}; got "${a}"`);
+    return [lvl, a];
+  }));
+}
+
+/** The page backdrop (effects.css .fx-grid). Optional palette field `backdrop`: 'grid',
+ *  the crossing neon lines (default), or 'rain', falling glyphs (tools/rain.mjs) in
+ *  `rainColor` (default: the theme's green). Either way its strength is the palette's
+ *  `grid` (0 = off; omitted, the 0.22 effects.css falls back to). Text sits straight on
+ *  the page, so for rain the brightest point of it — one head glyph, rainColor at that
+ *  strength over --bg, blended in sRGB as CSS opacity is — is checked as a surface of its
+ *  own. The grid's 1px lines at a few percent are not. */
+export const BACKDROPS = ['grid', 'rain'];
+export const GRID_DEFAULT = 0.22;
+export function backdrop(p) {
+  const b = p.backdrop ?? 'grid';
+  if (!BACKDROPS.includes(b)) throw new Error(`backdrop must be one of ${BACKDROPS.join(', ')}; got "${b}"`);
+  if (p.rainColor !== undefined && !/^#[0-9a-f]{6}$/i.test(p.rainColor)) throw new Error(`rainColor must be a #rrggbb color; got "${p.rainColor}"`);
+  return b;
+}
+export const raining = p => backdrop(p) === 'rain' && (p.grid ?? GRID_DEFAULT) > 0;
+const rainColor = p => p.rainColor ?? p.green;
+
+/** The brightest rain glyph over the page. Each channel rounds AWAY from --bg, so the
+ *  hex it is checked as is never kinder than what the browser paints. */
+export function rainUnder(p) {
+  const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const a = (p.grid ?? GRID_DEFAULT) * PEAK_ALPHA, bg = rgb(p.bg), fg = rgb(rainColor(p));
+  return '#' + bg.map((b, i) => {
+    const v = b + (fg[i] - b) * a;
+    return (fg[i] > b ? Math.ceil(v) : Math.floor(v)).toString(16).padStart(2, '0');
+  }).join('');
+}
+
+/** The backdrop's custom properties, identical from both builders. A theme without rain
+ *  resets all four to `initial`, which makes effects.css fall back to the grid, so a
+ *  nested theme never inherits another's rain. */
+export function backdropVars(p) {
+  const on = raining(p);
+  return {
+    '--fx-backdrop-image': on ? 'none' : 'initial',
+    '--fx-backdrop-color': on ? rainColor(p) : 'initial',
+    '--fx-backdrop-mask': on ? 'var(--fx-rain)' : 'initial',
+    '--fx-backdrop-anim': on ? 'fx-rain' : 'initial',
+  };
+}
+
+const rainPairs = p => (raining(p) ? [
+  ['text on rain', 'text', 'rainBg', 4.5],
+  ['muted on rain', 'muted', 'rainBg', 4.5],
+  ...ACCENTS.map(a => [`${a} text on rain`, a, 'rainBg', 4.5]),
+  ['focus ring on rain', 'focus', 'rainBg', 3.0],
+  ['border-strong on rain', 'borderStrong', 'rainBg', 3.0],
+] : []);
+
+/** A palette key's value; `rainBg` is the brightest rain glyph over the page. */
+export const tokenValue = (p, k) => (k === 'rainBg' ? rainUnder(p) : p[k]);
+
 /**
- * Check one palette against every pair. `ratio` is the exact, unrounded value and
- * `pass` compares it as-is. Throws on a missing or invalid token, which both
- * builders report as a problem rather than letting it through.
+ * Check one palette against every pair, plus the rain pairs when it rains. `ratio` is
+ * the exact, unrounded value and `pass` compares it as-is. Throws on a missing or
+ * invalid token (or `headings`, `backdrop`), which both builders report as a problem
+ * rather than letting it through.
  * @returns {Array<{label:string, fg:string, bg:string, min:number, ratio:number, pass:boolean}>}
  */
 export function checkPalette(p) {
-  return PAIRS.map(([label, fg, bg, min]) => {
-    const ratio = contrastRatio(p[fg], p[bg]);
+  headingAccents(p);
+  backdrop(p);
+  return [...PAIRS, ...rainPairs(p)].map(([label, fg, bg, min]) => {
+    const ratio = contrastRatio(tokenValue(p, fg), tokenValue(p, bg));
     return { label, fg, bg, min, ratio, pass: ratio >= min };
   });
 }

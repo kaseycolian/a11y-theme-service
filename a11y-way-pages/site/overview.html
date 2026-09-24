@@ -74,6 +74,7 @@
   .page-title { font-size: clamp(28px, 4.2vw, 40px); line-height: 1.15; letter-spacing: -.01em;
                 margin: 0 0 16px; }
   .page-lead { font-size: 18px; line-height: 1.6; margin: 0; }
+  .page-lead + .page-lead { margin-top: 14px; }
   .ov-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin: 26px 0 0; }
   /* Hover never changes a text or fill color — only glow, border and underline —
      so every state keeps the validated pair. */
@@ -336,11 +337,17 @@
 
 <main id="main">
   <div class="ov-intro">
-    <h1 class="page-title">Create accessible color themes and add them to your apps</h1>
-    <p class="page-lead">Theme Service is a skill for Claude Code and other AI agents. It walks you
-    through picking colors for a theme and checks every color pair against WCAG&nbsp;2.2&nbsp;AA. It
-    won't save a theme that fails. Then it adds your themes to a new or existing app, with a theme
-    picker.</p>
+    <h1 class="page-title">Accessible Color Themes by Default</h1>
+    <p class="page-lead">A11y shouldn't be a side project of the development process. It should be a
+    default part of development, built into every component from the start.</p>
+    <p class="page-lead">Theme Service is a skill for Claude Code and other AI agents to add
+    WCAG&nbsp;2.2 compliant color themes to new or existing apps.</p>
+    <p class="page-lead">Use the pre-built themes or step through a guided process to create new themes.
+    The color contrast is checked throughout the process, assuring WCAG&nbsp;2.2&nbsp;AA compliance is
+    met. It won't create a theme that fails the contrast check.</p>
+    <p class="page-lead">Then use the skill to add the themes to your project with theme selector so your
+    users can choose their preferred theme. The agent will ask you a few questions along the way to help
+    know how you want the themes installed.</p>
     <p class="ov-ctas">
       <a class="ov-cta ov-cta--primary" href="#start">Get started</a>
       <a class="ov-cta ov-cta--secondary" href="preview.html">Preview the themes</a>

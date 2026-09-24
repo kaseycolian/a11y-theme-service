@@ -76,7 +76,9 @@
      checked on the page, panel and elevated surfaces, so this adds no contrast pair. */
   .page-title { font-size: clamp(28px, 4.2vw, 40px); line-height: 1.15; letter-spacing: -.01em;
                 margin: 0 0 16px; color: var(--accent-h1, var(--accent-pink)); }
-  .page-lead { font-size: 18px; line-height: 1.6; margin: 0; }
+  /* Prose that describes or introduces is muted, as on the component library: the lead,
+     card copy, step copy and file notes. Titles, labels and prompts stay --text. */
+  .page-lead { font-size: 18px; line-height: 1.6; margin: 0; color: var(--text-muted); }
   .page-lead + .page-lead { margin-top: 14px; }
   .ov-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin: 26px 0 0; }
   /* Hover never changes a text or fill color — only glow, border and underline —
@@ -104,7 +106,7 @@
   .ov-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius);
              padding: 22px; }
   .ov-card h3 { font-size: 19px; line-height: 1.3; margin: 0; color: var(--accent-h3, var(--accent-blue)); }
-  .ov-card p { margin: 0; }
+  .ov-card p { margin: 0; color: var(--text-muted); }
 
   /* ---- How it works: three steps ----
      A real <ol>, so the order is announced; role="list" in the markup keeps
@@ -203,7 +205,7 @@
                background: var(--bg); border-left: 3px solid var(--use-accent, var(--accent-blue));
                border-radius: var(--radius-sm); }
   .ov-prompt-label { font-size: 13px; font-weight: 700; color: var(--text-muted); }
-  .ov-prompt-text { font-family: var(--font-mono); font-size: 14px; line-height: 1.5; }
+  .ov-prompt-text { font-family: var(--font-mono); font-size: 14px; line-height: 1.5; color: var(--text); }
 
   /* ---- Get started ---- */
   .ov-start { list-style: none; margin: 0; }
@@ -215,7 +217,7 @@
   .ov-start .ov-num { width: 40px; height: 40px; background: var(--bg-panel);
                       border-color: var(--accent-blue); color: var(--accent-blue); box-shadow: var(--bglow-blue); }
   .ov-start h3 { font-size: 18px; margin: 7px 0 6px; color: var(--accent-h3, var(--accent-blue)); }
-  .ov-start p { max-width: 68ch; }
+  .ov-start p { max-width: 68ch; color: var(--text-muted); }
   .ov-code { margin: 10px 0 0; padding: 12px 14px; background: var(--bg); border: 1px solid var(--border);
              border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 15px;
              line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
@@ -227,14 +229,15 @@
             gap: 10px 24px; padding: 16px 22px; }
   .ov-ask + .ov-ask { border-top: 1px solid var(--border); }
   .ov-ask-q { flex: 1 1 300px; }
-  .ov-ask-q strong { display: block; }
+  .ov-ask-q strong { display: block; color: var(--text); }
   .ov-ask-q span { display: block; color: var(--text-muted); font-size: 15px; }
   .ov-default { flex: none; display: inline-flex; gap: 6px; padding: 5px 13px; border-radius: var(--radius-pill);
                 border: 1px solid var(--border-strong); font-size: 14px; }
   .ov-default b { color: var(--text-muted); font-weight: 600; }
 
   /* ---- What gets added ---- */
-  .ov-tree-root { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0; }
+  .ov-tree-root { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0;
+                  color: var(--text); }
   .ov-tree-root svg { width: 22px; height: 22px; color: var(--accent-purple); }
   .ov-tree-root > code { font-size: 16px; font-weight: 700; }
   .ov-tree-root span { color: var(--text-muted); font-size: 15px; }
@@ -250,7 +253,7 @@
   .ov-file:last-child::after { bottom: auto; height: 23px; }
   .ov-file dt code { background: none; border: 0; padding: 0; font-size: 15px; font-weight: 700;
                      color: var(--accent-blue); }
-  .ov-file dd { margin: 0; font-size: 15px; }
+  .ov-file dd { margin: 0; font-size: 15px; color: var(--text-muted); }
   .ov-tag { display: inline-block; margin: 0 0 4px; padding: 0 9px; border-radius: var(--radius-pill);
             border: 1px solid var(--border-strong); font-size: 13px; color: var(--text-muted); }
   @media (max-width: 560px) {

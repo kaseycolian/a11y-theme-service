@@ -101,15 +101,16 @@
      different palettes, and showing the dark accents against a "Light" row would
      misrepresent what picking it does. */
   var BUILTIN_THEME_OPTIONS = [
-    ['Hot Neon', [
-      ['Dark',  '',              'hot-neon-dark',                HOT_DARK,   true],
-      ['Dark',  'No Background', 'hot-neon-dark-no-background',  HOT_DARK,   false],
-      ['Light', '',              'hot-neon-light',               HOT_LIGHT,  false],
-    ]],
+    // A→Z by family, as the real selector (theme-select.js) lists them.
     ['Acid Arcade', [
       ['Dark',  '',              'acid-arcade-dark',                ACID_DARK,  false],
       ['Light', '',              'acid-arcade-light',               ACID_LIGHT, false],
       ['Light', 'No Background', 'acid-arcade-light-no-background', ACID_LIGHT, false],
+    ]],
+    ['Hot Neon', [
+      ['Dark',  '',              'hot-neon-dark',                HOT_DARK,   true],
+      ['Dark',  'No Background', 'hot-neon-dark-no-background',  HOT_DARK,   false],
+      ['Light', '',              'hot-neon-light',               HOT_LIGHT,  false],
     ]],
   ];
 
@@ -127,8 +128,8 @@
         var full = [name, group, description].filter(Boolean).join(' · ');
         // No ${q} on the value: option values are scoped to their own <select>, so
         // unlike the element ids they do not collide across 16 stamped-out copies.
+        // No data-dropdown-secondary: the real selector shows no id under a theme row.
         return '<option value="' + esc(id) + '" data-dropdown-swatch="' + esc(swatch) + '"' +
-               ' data-dropdown-secondary="' + esc(id) + '"' +
                ' data-dropdown-full-label="' + esc(full) + '"' +
                (selected ? ' selected' : '') + '>' + esc(row) + '</option>';
       }).join('\n                ');

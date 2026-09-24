@@ -227,15 +227,25 @@ if (process.argv.includes('--write')) {
 `;
   writeFileSync(join(REPO, 'themes/theme-init.js'), themeInit);
 
-  // Each entry carries enough to render a RICH picker: a family group heading, the
-  // theme's own four accents as a swatch strip, and its id as secondary text (the
-  // value you'd put in data-theme). dropdown.js reads the data-dropdown-* attributes; a
-  // plain <select> ignores them and just shows the label, so both stay supported.
+  // Each entry carries enough to render a RICH picker: a family group heading and the
+  // theme's own four accents as a swatch strip. dropdown.js reads the data-dropdown-*
+  // attributes; a plain <select> ignores them and just shows the label, so both stay
+  // supported. Only Automatic carries secondary text ("follows your OS"): a theme row's
+  // own label and its group heading already say which theme it is.
+  //
+  // Order: Automatic first, then the families A→Z by name. Within a family, dark before
+  // light and each with-background variant before its No Background twin — so every
+  // group reads Dark, Dark · No Background, Light, Light · No Background, whatever
+  // order the palette sources list them in.
   const swatchOf = t => accents.map(a => t.tokens[VARMAP[a]]).join(',');
+  const byFamily = (a, b) =>
+    a.name.localeCompare(b.name, 'en', { sensitivity: 'base' })
+    || (a.mode === b.mode ? 0 : a.mode === 'dark' ? -1 : 1)
+    || (a.noBg === b.noBg ? 0 : a.noBg ? 1 : -1);
   const selectList = [{
     id: '', label: `Auto (${defFam.name})`, group: 'Automatic',
     secondary: 'follows your OS', swatch: swatchOf(themes[defDark]),
-  }].concat(Object.values(themes).map(t => ({
+  }].concat(Object.values(themes).sort(byFamily).map(t => ({
     id: t.id,
     /* The row says only what its group heading has not already said — "Dark",
        "Dark · No Background" under a "Hot Neon" heading, rather than repeating
@@ -248,7 +258,6 @@ if (process.argv.includes('--write')) {
        dropdown.js reads it from data-dropdown-full-label; anything without one
        falls back to the option text, so plain dropdowns are unaffected. */
     full: t.label,
-    secondary: t.id,
     swatch: swatchOf(t),
   })));
   const themeSelect =
@@ -258,12 +267,13 @@ if (process.argv.includes('--write')) {
    Markup you provide:  <select data-theme-select aria-label="Theme"></select>
                         <input type="checkbox" data-motion-toggle> Reduce motion  (optional)
 
-   Options are grouped by theme name (<optgroup>), so each row carries only what the
-   heading has not said — "Dark", "Dark · No Background". They also carry
-   data-dropdown-swatch (the theme's four accents), data-dropdown-secondary (its id)
-   and data-dropdown-full-label (the composed "Hot Neon · Dark · No Background", used
-   for the closed trigger and type-ahead). A plain <select> ignores all three; add
-   data-dropdown AND load dropdown.js to render them.
+   Options are grouped by theme name (<optgroup>), Automatic first and then A→Z, so
+   each row carries only what the heading has not said — "Dark", "Dark · No
+   Background". They also carry data-dropdown-swatch (the theme's four accents) and
+   data-dropdown-full-label (the composed "Hot Neon · Dark · No Background", used for
+   the closed trigger and type-ahead); Automatic alone adds data-dropdown-secondary
+   ("follows your OS"). A plain <select> ignores all three; add data-dropdown AND
+   load dropdown.js to render them.
 
    For React/Angular, prefer the framework's own provider (see the skill) instead of this file. */
 (function () {

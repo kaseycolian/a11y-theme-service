@@ -16,6 +16,8 @@
 <link rel="stylesheet" href="palettes/dark-06-acid-arcade.css">
 <link rel="stylesheet" href="palettes/dark-07-neo.css">
 <link rel="stylesheet" href="palettes/dark-07-neo-no-background.css">
+<link rel="stylesheet" href="palettes/dark-08-rfg.css">
+<link rel="stylesheet" href="palettes/dark-08-rfg-no-background.css">
 <link rel="stylesheet" href="palettes/light-01-rink-classic.css">
 <link rel="stylesheet" href="palettes/light-01-rink-classic-no-background.css">
 <link rel="stylesheet" href="palettes/light-02-midnight-arcade.css">
@@ -26,6 +28,8 @@
 <link rel="stylesheet" href="palettes/light-06-acid-arcade-no-background.css">
 <link rel="stylesheet" href="palettes/light-07-neo.css">
 <link rel="stylesheet" href="palettes/light-07-neo-no-background.css">
+<link rel="stylesheet" href="palettes/light-08-rfg.css">
+<link rel="stylesheet" href="palettes/light-08-rfg-no-background.css">
 
 <!-- THE SHIPPED component CSS, not a copy of it. These files derive their tokens
      on `:root, [data-palette]`, so each section below recomputes every glow and
@@ -169,7 +173,7 @@
   <div class="top-row">
     <div>
       <h1>Theme Service — <span>Palette Discovery · Draft 4</span></h1>
-      <p class="sub"><a href="../index.html" style="color:var(--chrome-accent)">← all drafts</a> · Adds <strong>NEO</strong>, a family themed on The Matrix: true black with code-green text on dark, pale green-tinted paper with deep green text on light. The accents are the code rain and the lead glyph, sampled from stills of the films, and a steel grey. Dark and light each have a <strong>(No Background)</strong> variant. Every draft-3 palette is carried over unchanged, colors and WCAG&nbsp;AA&nbsp;2.2 results included.</p>
+      <p class="sub"><a href="../index.html" style="color:var(--chrome-accent)">← all drafts</a> · Adds <strong>NEO</strong>, a family themed on The Matrix: true black with code-green text on dark, pale green-tinted paper with deep green text on light. The accents are the code rain and the lead glyph, sampled from stills of the films, and a steel grey. Dark and light each have a <strong>(No Background)</strong> variant. Also adds <strong>RFG</strong>, a lime-green brand family on neutral greys, with the same two variants in each mode. Every draft-3 palette is carried over unchanged, colors and WCAG&nbsp;AA&nbsp;2.2 results included.</p>
     </div>
     <div class="top-controls">
       <label class="ctl"><input type="checkbox" id="motionToggle"><span class="sw"></span>Disable animations</label>
@@ -207,6 +211,8 @@ const PALETTES = [
   { id:'dark-06-acid-arcade',                  name:'Acid Arcade',     description:'',              cohort:'Fresh · Dark',     mode:'dark' },
   { id:'dark-07-neo',                          name:'NEO',             description:'',              cohort:'Fresh · Dark',     mode:'dark' },
   { id:'dark-07-neo-no-background',            name:'NEO',             description:'No Background', cohort:'Fresh · Dark',     mode:'dark' },
+  { id:'dark-08-rfg',                          name:'RFG',             description:'',              cohort:'Brand · Dark',     mode:'dark' },
+  { id:'dark-08-rfg-no-background',            name:'RFG',             description:'No Background', cohort:'Brand · Dark',     mode:'dark' },
   { id:'light-01-rink-classic',                name:'Rink Classic',    description:'',              cohort:'Faithful · Light', mode:'light' },
   { id:'light-01-rink-classic-no-background',  name:'Rink Classic',    description:'No Background', cohort:'Faithful · Light', mode:'light' },
   { id:'light-02-midnight-arcade',             name:'Midnight Arcade', description:'',              cohort:'Faithful · Light', mode:'light' },
@@ -217,6 +223,8 @@ const PALETTES = [
   { id:'light-06-acid-arcade-no-background',   name:'Acid Arcade',     description:'No Background', cohort:'Fresh · Light',    mode:'light' },
   { id:'light-07-neo',                         name:'NEO',             description:'',              cohort:'Fresh · Light',    mode:'light' },
   { id:'light-07-neo-no-background',           name:'NEO',             description:'No Background', cohort:'Fresh · Light',    mode:'light' },
+  { id:'light-08-rfg',                         name:'RFG',             description:'',              cohort:'Brand · Light',    mode:'light' },
+  { id:'light-08-rfg-no-background',           name:'RFG',             description:'No Background', cohort:'Brand · Light',    mode:'light' },
 ];
 
 /* The parts composed, the same way tools/theme-name.mjs does it. The mode is not
@@ -229,7 +237,7 @@ const fullName = (p) => [p.name, p.description].filter(Boolean).join(' · ');
    report rather than duplicated here. Handed to the gallery as its `swatches`
    input so the swatch dropdown shows the palette it is sitting in — the whole
    point of a palette page, since one hardcoded set of hexes would look identical
-   in all 20 sections. */
+   in all 24 sections. */
 function accentsOf(id) {
   const data = window.CONTRAST && window.CONTRAST[id];
   const find = (name) => {
@@ -262,7 +270,7 @@ const main = document.getElementById('main');
 const nav = document.getElementById('jumpNav');
 
 /* One symbol library for the whole document, from the shared template: <symbol>
-   resolves by id, so all 20 galleries point their <use> at these three and each
+   resolves by id, so all 24 galleries point their <use> at these three and each
    copy still paints in its own palette (the icons inherit currentColor). */
 main.insertAdjacentHTML('afterbegin', ThemeGallery.SPRITE);
 
@@ -301,7 +309,7 @@ PALETTES.forEach(p => {
     ${contrastTable(p.id)}
     <div class="sec-body">${ThemeGallery.html({
       // Every id/name in the gallery is suffixed with the palette id: this markup
-      // is stamped out 20 times into one document, and a duplicate id would break
+      // is stamped out 24 times into one document, and a duplicate id would break
       // both <label for> and the dropdown's aria-labelledby.
       sfx: p.id,
       // The page is h1, each palette h2 — so a category is h3 here (preview.html,

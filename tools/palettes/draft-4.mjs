@@ -1,6 +1,7 @@
-/* Draft 4 palettes — adds NEO, a family themed on The Matrix (the original film first).
+/* Draft 4 palettes — adds NEO, a family themed on The Matrix (the original film first),
+   and RFG, a lime-green brand family (see its note below the NEO palettes).
    Every draft-3 palette is carried over verbatim, so their colors and AA results are
-   unchanged; the only new entries are NEO's four variants.
+   unchanged; the only new entries are NEO's and RFG's four variants each.
 
    NEO is black and green with one steel grey, and no red or violet, with the accent slots
    re-hued the way Synthwave Sunset re-hues its "green" to orange:
@@ -68,6 +69,48 @@ const neoLight = {
   blue:'#314058', onBlue:'#ffffff', purple:'#001800', onPurple:'#ffffff',
 };
 
+/* RFG — a lime-green brand family on neutral greys: green first, then grey, then blue.
+   The source palette is a lime green #98c93d (the main color: primary buttons, active
+   links, every focus ring), a blue #5c95ff and a sky blue #49c6e5, over greys #2a2a2a,
+   #353535, #4c4d4f, #ececec and whites #f8f8f8, #ffffff.
+     green  → lime #98c93d        (H1, primary buttons, success)
+     pink   → a source grey       (H2 via `headings`, errors, radios, pressed chips)
+     blue   → blue #5c95ff        (links, H3)
+     purple → sky blue #49c6e5    (H4, badges, warnings)
+   The pink slot is a neutral grey, not a red: the owner wants the family to read green,
+   grey, blue. So errors are grey here, as in NEO; they still carry a ✗ glyph and a word,
+   so the state never rides on hue alone. The grey is a source color used exactly in both
+   modes: #ececec on dark, #353535 on light, the far end of each mode's range from its
+   page, so it reads as an accent and not as muted text.
+   Dark: #2a2a2a page, #353535 panels, #f8f8f8 text. The lime, the sky blue and #ececec
+   pass on those surfaces as given, so they are used exactly; every accent is lettered in
+   the #2a2a2a page grey. (White lettering on the lime is 1.95:1 and fails, so the buttons
+   get dark lettering.) The blue falls short on the panels and the raised surface, so it
+   keeps its hue and is lifted only as far as the check requires (#78a8fe). The raised
+   surface #3d3e40 sits between #353535 and the deep grey #4c4d4f, which is too light for
+   the lime (4.35:1). The deep grey is the hairline border.
+   Light: #f8f8f8 page, white panels, deep grey #4c4d4f text. The lime and both blues are
+   too light to read on white (the lime is 1.95:1), so each keeps its hue in OKLCH and is
+   darkened only as far as 4.5:1 over the page requires: green #597d01, blue #386ed5, sky
+   blue #077d95, all lettered in white, as is the #353535 grey. The focus ring needs only
+   3:1, so it stays a brighter green (#719d06).
+   Neutral muted and strong-border greys (#717274, #8f9092 light; #a7a9ab, #86888a dark)
+   are each as close to the surfaces as their checks allow. */
+const rfgDark = {
+  mode: 'dark', name: 'RFG', cohort: 'Brand · Dark', headings: { h1: 'green', h2: 'pink', h3: 'blue' },
+  bg:'#2a2a2a', panel:'#353535', elevated:'#3d3e40', text:'#f8f8f8', muted:'#a7a9ab',
+  border:'#4c4d4f', borderStrong:'#86888a', focus:'#98c93d',
+  pink:'#ececec', onPink:'#2a2a2a', green:'#98c93d', onGreen:'#2a2a2a',
+  blue:'#78a8fe', onBlue:'#2a2a2a', purple:'#49c6e5', onPurple:'#2a2a2a',
+};
+const rfgLight = {
+  mode: 'light', name: 'RFG', cohort: 'Brand · Light', headings: { h1: 'green', h2: 'pink', h3: 'blue' },
+  bg:'#f8f8f8', panel:'#ffffff', elevated:'#ffffff', text:'#4c4d4f', muted:'#717274',
+  border:'#e0e0e0', borderStrong:'#8f9092', focus:'#719d06',
+  pink:'#353535', onPink:'#ffffff', green:'#597d01', onGreen:'#ffffff',
+  blue:'#386ed5', onBlue:'#ffffff', purple:'#077d95', onPurple:'#ffffff',
+};
+
 export const palettes = {
   ...d3,
 
@@ -83,4 +126,10 @@ export const palettes = {
   'dark-07-neo-no-background':     { ...neoDark, grid: 0, description: 'No Background' },
   'light-07-neo':                  { ...neoLight, grid: 0.26 },
   'light-07-neo-no-background':    { ...neoLight, grid: 0, description: 'No Background' },
+
+  // ===== RFG — the subtle default grid, with a flat no-background twin.
+  'dark-08-rfg':                 { ...rfgDark, grid: 0.22 },
+  'dark-08-rfg-no-background':   { ...rfgDark, grid: 0, description: 'No Background' },
+  'light-08-rfg':                { ...rfgLight, grid: 0.22 },
+  'light-08-rfg-no-background':  { ...rfgLight, grid: 0, description: 'No Background' },
 };

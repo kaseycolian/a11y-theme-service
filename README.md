@@ -135,8 +135,8 @@ CHANGELOG.md  VERSION   (VERSION is the single source of truth; `npm run release
 
 ## The themes
 
-Six families, each in dark + light, several with a grid-off "(No Background)" variant:
-`rink-classic`, `midnight-arcade`, `hot-neon`, `synthwave-sunset`, `acid-arcade`, `neo`. Default is
+Seven families, each in dark + light, several with a grid-off "(No Background)" variant:
+`rink-classic`, `midnight-arcade`, `hot-neon`, `synthwave-sunset`, `acid-arcade`, `neo`, `rfg`. Default is
 **Rink Classic**. Theme ids are `<family>-<mode>` (e.g. `synthwave-sunset-dark`) and
 `<family>-<mode>-no-background` for the grid-off variants.
 

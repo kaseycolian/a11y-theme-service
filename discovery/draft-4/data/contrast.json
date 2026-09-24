@@ -4766,5 +4766,933 @@
         "pass": true
       }
     ]
+  },
+  "dark-08-rfg": {
+    "name": "RFG",
+    "description": "",
+    "cohort": "Brand · Dark",
+    "mode": "dark",
+    "checks": [
+      {
+        "label": "text on bg",
+        "fg": "#f8f8f8",
+        "bg": "#2a2a2a",
+        "min": 4.5,
+        "ratio": 13.51,
+        "pass": true
+      },
+      {
+        "label": "text on panel",
+        "fg": "#f8f8f8",
+        "bg": "#353535",
+        "min": 4.5,
+        "ratio": 11.54,
+        "pass": true
+      },
+      {
+        "label": "muted on bg",
+        "fg": "#a7a9ab",
+        "bg": "#2a2a2a",
+        "min": 4.5,
+        "ratio": 6.08,
+        "pass": true
+      },
+      {
+        "label": "muted on panel",
+        "fg": "#a7a9ab",
+        "bg": "#353535",
+        "min": 4.5,
+        "ratio": 5.2,
+        "pass": true
+      },
+      {
+        "label": "pink text on bg",
+        "fg": "#ececec",
+        "bg": "#2a2a2a",
+        "min": 4.5,
+        "ratio": 12.14,
+        "pass": true
+      },
+      {
+        "label": "pink text on panel",
+        "fg": "#ececec",
+        "bg": "#353535",
+        "min": 4.5,
+        "ratio": 10.38,
+        "pass": true
+      },
+      {
+        "label": "on-pink on pink fill",
+        "fg": "#2a2a2a",
+        "bg": "#ececec",
+        "min": 4.5,
+        "ratio": 12.14,
+        "pass": true
+      },
+      {
+        "label": "green text on bg",
+        "fg": "#98c93d",
+        "bg": "#2a2a2a",
+        "min": 4.5,
+        "ratio": 7.35,
+        "pass": true
+      },
+      {
+        "label": "green text on panel",
+        "fg": "#98c93d",
+        "bg": "#353535",
+        "min": 4.5,
+        "ratio": 6.28,
+        "pass": true
+      },
+      {
+        "label": "on-green on green fill",
+        "fg": "#2a2a2a",
+        "bg": "#98c93d",
+        "min": 4.5,
+        "ratio": 7.35,
+        "pass": true
+      },
+      {
+        "label": "blue text on bg",
+        "fg": "#78a8fe",
+        "bg": "#2a2a2a",
+        "min": 4.5,
+        "ratio": 6.03,
+        "pass": true
+      },
+      {
+        "label": "blue text on panel",
+        "fg": "#78a8fe",
+        "bg": "#353535",
+        "min": 4.5,
+        "ratio": 5.15,
+        "pass": true
+      },
+      {
+        "label": "on-blue on blue fill",
+        "fg": "#2a2a2a",
+        "bg": "#78a8fe",
+        "min": 4.5,
+        "ratio": 6.03,
+        "pass": true
+      },
+      {
+        "label": "purple text on bg",
+        "fg": "#49c6e5",
+        "bg": "#2a2a2a",
+        "min": 4.5,
+        "ratio": 7.17,
+        "pass": true
+      },
+      {
+        "label": "purple text on panel",
+        "fg": "#49c6e5",
+        "bg": "#353535",
+        "min": 4.5,
+        "ratio": 6.12,
+        "pass": true
+      },
+      {
+        "label": "on-purple on purple fill",
+        "fg": "#2a2a2a",
+        "bg": "#49c6e5",
+        "min": 4.5,
+        "ratio": 7.17,
+        "pass": true
+      },
+      {
+        "label": "focus ring on bg",
+        "fg": "#98c93d",
+        "bg": "#2a2a2a",
+        "min": 3,
+        "ratio": 7.35,
+        "pass": true
+      },
+      {
+        "label": "focus ring on panel",
+        "fg": "#98c93d",
+        "bg": "#353535",
+        "min": 3,
+        "ratio": 6.28,
+        "pass": true
+      },
+      {
+        "label": "border-strong on bg",
+        "fg": "#86888a",
+        "bg": "#2a2a2a",
+        "min": 3,
+        "ratio": 4.03,
+        "pass": true
+      },
+      {
+        "label": "border-strong on panel",
+        "fg": "#86888a",
+        "bg": "#353535",
+        "min": 3,
+        "ratio": 3.44,
+        "pass": true
+      },
+      {
+        "label": "text on elevated",
+        "fg": "#f8f8f8",
+        "bg": "#3d3e40",
+        "min": 4.5,
+        "ratio": 10.08,
+        "pass": true
+      },
+      {
+        "label": "muted on elevated",
+        "fg": "#a7a9ab",
+        "bg": "#3d3e40",
+        "min": 4.5,
+        "ratio": 4.54,
+        "pass": true
+      },
+      {
+        "label": "pink text on elevated",
+        "fg": "#ececec",
+        "bg": "#3d3e40",
+        "min": 4.5,
+        "ratio": 9.06,
+        "pass": true
+      },
+      {
+        "label": "green text on elevated",
+        "fg": "#98c93d",
+        "bg": "#3d3e40",
+        "min": 4.5,
+        "ratio": 5.48,
+        "pass": true
+      },
+      {
+        "label": "blue text on elevated",
+        "fg": "#78a8fe",
+        "bg": "#3d3e40",
+        "min": 4.5,
+        "ratio": 4.5,
+        "pass": true
+      },
+      {
+        "label": "purple text on elevated",
+        "fg": "#49c6e5",
+        "bg": "#3d3e40",
+        "min": 4.5,
+        "ratio": 5.34,
+        "pass": true
+      },
+      {
+        "label": "focus ring on elevated",
+        "fg": "#98c93d",
+        "bg": "#3d3e40",
+        "min": 3,
+        "ratio": 5.48,
+        "pass": true
+      },
+      {
+        "label": "border-strong on elevated",
+        "fg": "#86888a",
+        "bg": "#3d3e40",
+        "min": 3,
+        "ratio": 3,
+        "pass": true
+      }
+    ]
+  },
+  "dark-08-rfg-no-background": {
+    "name": "RFG",
+    "description": "No Background",
+    "cohort": "Brand · Dark",
+    "mode": "dark",
+    "checks": [
+      {
+        "label": "text on bg",
+        "fg": "#f8f8f8",
+        "bg": "#2a2a2a",
+        "min": 4.5,
+        "ratio": 13.51,
+        "pass": true
+      },
+      {
+        "label": "text on panel",
+        "fg": "#f8f8f8",
+        "bg": "#353535",
+        "min": 4.5,
+        "ratio": 11.54,
+        "pass": true
+      },
+      {
+        "label": "muted on bg",
+        "fg": "#a7a9ab",
+        "bg": "#2a2a2a",
+        "min": 4.5,
+        "ratio": 6.08,
+        "pass": true
+      },
+      {
+        "label": "muted on panel",
+        "fg": "#a7a9ab",
+        "bg": "#353535",
+        "min": 4.5,
+        "ratio": 5.2,
+        "pass": true
+      },
+      {
+        "label": "pink text on bg",
+        "fg": "#ececec",
+        "bg": "#2a2a2a",
+        "min": 4.5,
+        "ratio": 12.14,
+        "pass": true
+      },
+      {
+        "label": "pink text on panel",
+        "fg": "#ececec",
+        "bg": "#353535",
+        "min": 4.5,
+        "ratio": 10.38,
+        "pass": true
+      },
+      {
+        "label": "on-pink on pink fill",
+        "fg": "#2a2a2a",
+        "bg": "#ececec",
+        "min": 4.5,
+        "ratio": 12.14,
+        "pass": true
+      },
+      {
+        "label": "green text on bg",
+        "fg": "#98c93d",
+        "bg": "#2a2a2a",
+        "min": 4.5,
+        "ratio": 7.35,
+        "pass": true
+      },
+      {
+        "label": "green text on panel",
+        "fg": "#98c93d",
+        "bg": "#353535",
+        "min": 4.5,
+        "ratio": 6.28,
+        "pass": true
+      },
+      {
+        "label": "on-green on green fill",
+        "fg": "#2a2a2a",
+        "bg": "#98c93d",
+        "min": 4.5,
+        "ratio": 7.35,
+        "pass": true
+      },
+      {
+        "label": "blue text on bg",
+        "fg": "#78a8fe",
+        "bg": "#2a2a2a",
+        "min": 4.5,
+        "ratio": 6.03,
+        "pass": true
+      },
+      {
+        "label": "blue text on panel",
+        "fg": "#78a8fe",
+        "bg": "#353535",
+        "min": 4.5,
+        "ratio": 5.15,
+        "pass": true
+      },
+      {
+        "label": "on-blue on blue fill",
+        "fg": "#2a2a2a",
+        "bg": "#78a8fe",
+        "min": 4.5,
+        "ratio": 6.03,
+        "pass": true
+      },
+      {
+        "label": "purple text on bg",
+        "fg": "#49c6e5",
+        "bg": "#2a2a2a",
+        "min": 4.5,
+        "ratio": 7.17,
+        "pass": true
+      },
+      {
+        "label": "purple text on panel",
+        "fg": "#49c6e5",
+        "bg": "#353535",
+        "min": 4.5,
+        "ratio": 6.12,
+        "pass": true
+      },
+      {
+        "label": "on-purple on purple fill",
+        "fg": "#2a2a2a",
+        "bg": "#49c6e5",
+        "min": 4.5,
+        "ratio": 7.17,
+        "pass": true
+      },
+      {
+        "label": "focus ring on bg",
+        "fg": "#98c93d",
+        "bg": "#2a2a2a",
+        "min": 3,
+        "ratio": 7.35,
+        "pass": true
+      },
+      {
+        "label": "focus ring on panel",
+        "fg": "#98c93d",
+        "bg": "#353535",
+        "min": 3,
+        "ratio": 6.28,
+        "pass": true
+      },
+      {
+        "label": "border-strong on bg",
+        "fg": "#86888a",
+        "bg": "#2a2a2a",
+        "min": 3,
+        "ratio": 4.03,
+        "pass": true
+      },
+      {
+        "label": "border-strong on panel",
+        "fg": "#86888a",
+        "bg": "#353535",
+        "min": 3,
+        "ratio": 3.44,
+        "pass": true
+      },
+      {
+        "label": "text on elevated",
+        "fg": "#f8f8f8",
+        "bg": "#3d3e40",
+        "min": 4.5,
+        "ratio": 10.08,
+        "pass": true
+      },
+      {
+        "label": "muted on elevated",
+        "fg": "#a7a9ab",
+        "bg": "#3d3e40",
+        "min": 4.5,
+        "ratio": 4.54,
+        "pass": true
+      },
+      {
+        "label": "pink text on elevated",
+        "fg": "#ececec",
+        "bg": "#3d3e40",
+        "min": 4.5,
+        "ratio": 9.06,
+        "pass": true
+      },
+      {
+        "label": "green text on elevated",
+        "fg": "#98c93d",
+        "bg": "#3d3e40",
+        "min": 4.5,
+        "ratio": 5.48,
+        "pass": true
+      },
+      {
+        "label": "blue text on elevated",
+        "fg": "#78a8fe",
+        "bg": "#3d3e40",
+        "min": 4.5,
+        "ratio": 4.5,
+        "pass": true
+      },
+      {
+        "label": "purple text on elevated",
+        "fg": "#49c6e5",
+        "bg": "#3d3e40",
+        "min": 4.5,
+        "ratio": 5.34,
+        "pass": true
+      },
+      {
+        "label": "focus ring on elevated",
+        "fg": "#98c93d",
+        "bg": "#3d3e40",
+        "min": 3,
+        "ratio": 5.48,
+        "pass": true
+      },
+      {
+        "label": "border-strong on elevated",
+        "fg": "#86888a",
+        "bg": "#3d3e40",
+        "min": 3,
+        "ratio": 3,
+        "pass": true
+      }
+    ]
+  },
+  "light-08-rfg": {
+    "name": "RFG",
+    "description": "",
+    "cohort": "Brand · Light",
+    "mode": "light",
+    "checks": [
+      {
+        "label": "text on bg",
+        "fg": "#4c4d4f",
+        "bg": "#f8f8f8",
+        "min": 4.5,
+        "ratio": 7.96,
+        "pass": true
+      },
+      {
+        "label": "text on panel",
+        "fg": "#4c4d4f",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 8.46,
+        "pass": true
+      },
+      {
+        "label": "muted on bg",
+        "fg": "#717274",
+        "bg": "#f8f8f8",
+        "min": 4.5,
+        "ratio": 4.53,
+        "pass": true
+      },
+      {
+        "label": "muted on panel",
+        "fg": "#717274",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "pink text on bg",
+        "fg": "#353535",
+        "bg": "#f8f8f8",
+        "min": 4.5,
+        "ratio": 11.54,
+        "pass": true
+      },
+      {
+        "label": "pink text on panel",
+        "fg": "#353535",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 12.26,
+        "pass": true
+      },
+      {
+        "label": "on-pink on pink fill",
+        "fg": "#ffffff",
+        "bg": "#353535",
+        "min": 4.5,
+        "ratio": 12.26,
+        "pass": true
+      },
+      {
+        "label": "green text on bg",
+        "fg": "#597d01",
+        "bg": "#f8f8f8",
+        "min": 4.5,
+        "ratio": 4.53,
+        "pass": true
+      },
+      {
+        "label": "green text on panel",
+        "fg": "#597d01",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "on-green on green fill",
+        "fg": "#ffffff",
+        "bg": "#597d01",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "blue text on bg",
+        "fg": "#386ed5",
+        "bg": "#f8f8f8",
+        "min": 4.5,
+        "ratio": 4.53,
+        "pass": true
+      },
+      {
+        "label": "blue text on panel",
+        "fg": "#386ed5",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "on-blue on blue fill",
+        "fg": "#ffffff",
+        "bg": "#386ed5",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "purple text on bg",
+        "fg": "#077d95",
+        "bg": "#f8f8f8",
+        "min": 4.5,
+        "ratio": 4.51,
+        "pass": true
+      },
+      {
+        "label": "purple text on panel",
+        "fg": "#077d95",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.79,
+        "pass": true
+      },
+      {
+        "label": "on-purple on purple fill",
+        "fg": "#ffffff",
+        "bg": "#077d95",
+        "min": 4.5,
+        "ratio": 4.79,
+        "pass": true
+      },
+      {
+        "label": "focus ring on bg",
+        "fg": "#719d06",
+        "bg": "#f8f8f8",
+        "min": 3,
+        "ratio": 3.02,
+        "pass": true
+      },
+      {
+        "label": "focus ring on panel",
+        "fg": "#719d06",
+        "bg": "#ffffff",
+        "min": 3,
+        "ratio": 3.21,
+        "pass": true
+      },
+      {
+        "label": "border-strong on bg",
+        "fg": "#8f9092",
+        "bg": "#f8f8f8",
+        "min": 3,
+        "ratio": 3,
+        "pass": true
+      },
+      {
+        "label": "border-strong on panel",
+        "fg": "#8f9092",
+        "bg": "#ffffff",
+        "min": 3,
+        "ratio": 3.19,
+        "pass": true
+      },
+      {
+        "label": "text on elevated",
+        "fg": "#4c4d4f",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 8.46,
+        "pass": true
+      },
+      {
+        "label": "muted on elevated",
+        "fg": "#717274",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "pink text on elevated",
+        "fg": "#353535",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 12.26,
+        "pass": true
+      },
+      {
+        "label": "green text on elevated",
+        "fg": "#597d01",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "blue text on elevated",
+        "fg": "#386ed5",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "purple text on elevated",
+        "fg": "#077d95",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.79,
+        "pass": true
+      },
+      {
+        "label": "focus ring on elevated",
+        "fg": "#719d06",
+        "bg": "#ffffff",
+        "min": 3,
+        "ratio": 3.21,
+        "pass": true
+      },
+      {
+        "label": "border-strong on elevated",
+        "fg": "#8f9092",
+        "bg": "#ffffff",
+        "min": 3,
+        "ratio": 3.19,
+        "pass": true
+      }
+    ]
+  },
+  "light-08-rfg-no-background": {
+    "name": "RFG",
+    "description": "No Background",
+    "cohort": "Brand · Light",
+    "mode": "light",
+    "checks": [
+      {
+        "label": "text on bg",
+        "fg": "#4c4d4f",
+        "bg": "#f8f8f8",
+        "min": 4.5,
+        "ratio": 7.96,
+        "pass": true
+      },
+      {
+        "label": "text on panel",
+        "fg": "#4c4d4f",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 8.46,
+        "pass": true
+      },
+      {
+        "label": "muted on bg",
+        "fg": "#717274",
+        "bg": "#f8f8f8",
+        "min": 4.5,
+        "ratio": 4.53,
+        "pass": true
+      },
+      {
+        "label": "muted on panel",
+        "fg": "#717274",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "pink text on bg",
+        "fg": "#353535",
+        "bg": "#f8f8f8",
+        "min": 4.5,
+        "ratio": 11.54,
+        "pass": true
+      },
+      {
+        "label": "pink text on panel",
+        "fg": "#353535",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 12.26,
+        "pass": true
+      },
+      {
+        "label": "on-pink on pink fill",
+        "fg": "#ffffff",
+        "bg": "#353535",
+        "min": 4.5,
+        "ratio": 12.26,
+        "pass": true
+      },
+      {
+        "label": "green text on bg",
+        "fg": "#597d01",
+        "bg": "#f8f8f8",
+        "min": 4.5,
+        "ratio": 4.53,
+        "pass": true
+      },
+      {
+        "label": "green text on panel",
+        "fg": "#597d01",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "on-green on green fill",
+        "fg": "#ffffff",
+        "bg": "#597d01",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "blue text on bg",
+        "fg": "#386ed5",
+        "bg": "#f8f8f8",
+        "min": 4.5,
+        "ratio": 4.53,
+        "pass": true
+      },
+      {
+        "label": "blue text on panel",
+        "fg": "#386ed5",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "on-blue on blue fill",
+        "fg": "#ffffff",
+        "bg": "#386ed5",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "purple text on bg",
+        "fg": "#077d95",
+        "bg": "#f8f8f8",
+        "min": 4.5,
+        "ratio": 4.51,
+        "pass": true
+      },
+      {
+        "label": "purple text on panel",
+        "fg": "#077d95",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.79,
+        "pass": true
+      },
+      {
+        "label": "on-purple on purple fill",
+        "fg": "#ffffff",
+        "bg": "#077d95",
+        "min": 4.5,
+        "ratio": 4.79,
+        "pass": true
+      },
+      {
+        "label": "focus ring on bg",
+        "fg": "#719d06",
+        "bg": "#f8f8f8",
+        "min": 3,
+        "ratio": 3.02,
+        "pass": true
+      },
+      {
+        "label": "focus ring on panel",
+        "fg": "#719d06",
+        "bg": "#ffffff",
+        "min": 3,
+        "ratio": 3.21,
+        "pass": true
+      },
+      {
+        "label": "border-strong on bg",
+        "fg": "#8f9092",
+        "bg": "#f8f8f8",
+        "min": 3,
+        "ratio": 3,
+        "pass": true
+      },
+      {
+        "label": "border-strong on panel",
+        "fg": "#8f9092",
+        "bg": "#ffffff",
+        "min": 3,
+        "ratio": 3.19,
+        "pass": true
+      },
+      {
+        "label": "text on elevated",
+        "fg": "#4c4d4f",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 8.46,
+        "pass": true
+      },
+      {
+        "label": "muted on elevated",
+        "fg": "#717274",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "pink text on elevated",
+        "fg": "#353535",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 12.26,
+        "pass": true
+      },
+      {
+        "label": "green text on elevated",
+        "fg": "#597d01",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "blue text on elevated",
+        "fg": "#386ed5",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.81,
+        "pass": true
+      },
+      {
+        "label": "purple text on elevated",
+        "fg": "#077d95",
+        "bg": "#ffffff",
+        "min": 4.5,
+        "ratio": 4.79,
+        "pass": true
+      },
+      {
+        "label": "focus ring on elevated",
+        "fg": "#719d06",
+        "bg": "#ffffff",
+        "min": 3,
+        "ratio": 3.21,
+        "pass": true
+      },
+      {
+        "label": "border-strong on elevated",
+        "fg": "#8f9092",
+        "bg": "#ffffff",
+        "min": 3,
+        "ratio": 3.19,
+        "pass": true
+      }
+    ]
   }
 }

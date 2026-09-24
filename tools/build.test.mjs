@@ -137,3 +137,26 @@ test('build-palettes --write (discovery drafts) refuses the same themes', () => 
   assert.match(r.stderr, /Refusing to write/);
   assert.equal(existsSync(join(dir, 'discovery', 'draft-99')), false, 'nothing may be written');
 });
+
+test('theme-select.js lists Automatic first, then families A→Z, each Dark → Light with its No Background twin after it, and no id text', () => {
+  // Deliberately out of order: light before dark, a twin before its theme, Z before A.
+  const p = (mode, name, extra = {}) => ({ ...base, mode, name, ...extra });
+  const dir = sandbox('select-order', 'local.mjs', {
+    'light-02-zeta-no-background': p('light', 'Zeta', { grid: 0, description: 'No Background' }),
+    'light-02-zeta':               p('light', 'Zeta'),
+    'dark-02-zeta':                p('dark', 'Zeta'),
+    'light-01-alpha':              p('light', 'alpha'),
+    'dark-01-alpha-no-background': p('dark', 'alpha', { grid: 0, description: 'No Background' }),
+    'dark-01-alpha':               p('dark', 'alpha'),
+  });
+  const r = run(dir, 'tools/build-final.mjs', '--no-builtin', '--write');
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  const src = readFileSync(join(dir, 'themes', 'theme-select.js'), 'utf8');
+  const list = JSON.parse(/var THEMES = (\[.*\]);/.exec(src)[1]);
+  assert.deepEqual(list.map(t => t.id), ['',
+    'alpha-dark', 'alpha-dark-no-background', 'alpha-light',
+    'zeta-dark', 'zeta-light', 'zeta-light-no-background']);
+  assert.equal(list[0].group, 'Automatic');
+  assert.equal(list[0].secondary, 'follows your OS');
+  assert.ok(list.slice(1).every(t => !('secondary' in t)), 'theme rows carry no secondary text');
+});

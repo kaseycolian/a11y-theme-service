@@ -45,7 +45,7 @@ the palette files (`tools/palettes/draft-*.mjs` built-in + `local.mjs` yours).
    root element. All transitions, press effects, and glow pulses stop.
 
 Available theme ids: `rink-classic-{dark,light}`, `midnight-arcade-{dark,light}`,
-`hot-neon-{dark,light}`, `synthwave-sunset-{dark,light}`, `acid-arcade-{dark,light}`.
+`hot-neon-{dark,light}`, `synthwave-sunset-{dark,light}`, `acid-arcade-{dark,light}`, `neo-{dark,light}`, `rfg-{dark,light}`.
 
 ## Theme selector (vanilla / extensions)
 
@@ -69,12 +69,14 @@ scripts, which silently leaves the dropdown empty):
 persists the choice. React/Angular use their own provider instead — see the skill's
 `applying-themes.md`.
 
-Options are emitted **grouped by theme name** (`<optgroup>`), so each row states only what its
-heading has not — `Dark`, `Dark · No Background` — rather than repeating the name down the list.
-Each carries `data-dropdown-swatch` (that theme's four accents), `data-dropdown-secondary` (its id)
-and `data-dropdown-full-label` (the composed `Hot Neon · Dark · No Background`, for the closed
-trigger and type-ahead). A plain `<select>` ignores all three and just shows the row text — so the
-snippet above is unchanged. To render them, add `data-dropdown` and load `dropdown.js`:
+Options are emitted **grouped by theme name** (`<optgroup>`): Automatic first, then the themes
+A→Z. Each row states only what its heading has not — `Dark`, `Dark · No Background`, `Light`,
+`Light · No Background`, in that order — rather than repeating the name down the list. Each
+carries `data-dropdown-swatch` (that theme's four accents) and `data-dropdown-full-label` (the
+composed `Hot Neon · Dark · No Background`, for the closed trigger and type-ahead); the Automatic
+row also carries `data-dropdown-secondary` ("follows your OS"). A plain `<select>` ignores all
+three and just shows the row text — so the snippet above is unchanged. To render them, add
+`data-dropdown` and load `dropdown.js`:
 
 ```html
 <span id="theme-cap">Theme</span>

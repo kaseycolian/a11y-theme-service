@@ -4,6 +4,27 @@ All notable changes to the theme-service. Apps record the version they vendored 
 (plus `updating-themes.md`) to migrate. Versioning: minor bump for additive themes/tokens, major for
 breaking token renames/removals or a default-theme change.
 
+## 1.7.1 — 2026-09-25
+
+Rebecca: a forget-me-not sky blue in place of green
+
+### TL;DR
+
+- **Rebecca has no green any more.** The green slot (success notices, "✓ Ready", checkboxes,
+  switches, the green buttons) now holds a forget-me-not sky blue, the blue of the flowers in its
+  backdrop: `#74c8fd` on dark, `#096591` on light. The true green clashed with the purples.
+- **It stays distinct.** Sky blue sits further from Rebecca's orchid, purple and periwinkle than
+  purple and periwinkle sit from each other, in normal vision and under simulated red-green color
+  blindness. Success still carries a ✓ and a word, so it never rides on color alone.
+- **Every other theme is unchanged.** All pairs pass WCAG 2.2 AA.
+
+### Upgrading
+
+1. **Apps that offer Rebecca:** vendor the new `theme.css` (and `tokens.json` if you read it). Only
+   Rebecca's `--accent-green` and `--on-green` values changed. No token was added, renamed or
+   removed.
+2. **Everyone else:** nothing to do.
+
 ## 1.7.0 — 2026-09-25
 
 An optional label accent, and purple labels for Rebecca

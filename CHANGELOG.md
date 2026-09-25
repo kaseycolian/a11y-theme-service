@@ -4,6 +4,35 @@ All notable changes to the theme-service. Apps record the version they vendored 
 (plus `updating-themes.md`) to migrate. Versioning: minor bump for additive themes/tokens, major for
 breaking token renames/removals or a default-theme change.
 
+## 1.7.0 — 2026-09-25
+
+An optional label accent, and purple labels for Rebecca
+
+### TL;DR
+
+- **New optional palette field: `labels`.** A theme can name the accent its field labels use, the
+  way `headings` names its heading colors, e.g. `labels: 'purple'`. Left out, labels stay green.
+- **New token: `--accent-label`.** Every theme sets it (green unless the palette names another
+  accent). `.field-label` and the dropdown's group headings use it, so labels can move off green
+  without recoloring success states.
+- **Rebecca's labels are purple** in both modes. Green now appears only on success, checkboxes and
+  switches.
+- **The gallery's category titles** glow in their own H2 color, not a fixed green.
+
+### Upgrading
+
+1. **Vendor `theme.css`, `effects.css`, `components.css` and `dropdown.css` together.** Mixed
+   versions are safe: a stylesheet without the new token falls back to green, so every theme except
+   Rebecca looks exactly as before either way.
+2. **Apps that map their own labels onto the tokens:** use `var(--accent-label, var(--accent-green))`
+   for form labels and small uppercase group labels, so they follow each theme's choice.
+
+---
+
+**For theme authors.** `labels` must be one of `pink`, `green`, `blue`, `purple`; anything else
+refuses the build. It adds no contrast pairs, because the accent it names is already checked on
+every surface.
+
 ## 1.6.0 — 2026-09-25
 
 Rebecca, a new theme family in Rebecca Purple, and a flowers backdrop

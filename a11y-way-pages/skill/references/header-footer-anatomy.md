@@ -62,17 +62,27 @@ reading order (SC 2.4.3). Reference markup: `a11y-way-pages/site/overview.html` 
 | Motion | `.motion` (uses shipped `.switch`) | A real `<label>` wrapping a real checkbox with `[data-motion-toggle]`. Keeps the 44×24 switch geometry. |
 | Theme console | `.theme-console` > `.tc-cap` + `.tc-lamps` + `<select data-theme-select>` | A `<div>`, **not** a `<label>` — once `dropdown.js` enhances it the real control is a `<button>`, which a wrapping label would neither name nor focus. `.tc-cap` is the accessible name via `aria-labelledby`, so below 620px it is **clipped, not `display:none`** — a name pointing at a hidden element resolves to nothing. The `<select>` also carries `data-dropdown-swatch-style="dots"`, which swaps the dropdown's default swatch strip for circles matching the `.tc-lamps` next to it — **copy that attribute**, it lives in `themes/dropdown.css`, not in `site-header.css`, so a header without it silently falls back to strips. |
 
-Breakpoints: **1080px** two-row grid (`brand | nav` / `motion | theme`), **620px** the rail switches
-to a wrapping flex row, the brand lockup stacks (wordmark over tag) and both the console's cap and
-the nav's `.seg-tail` are clipped, **430px** one step down in type and gutters.
+Breakpoints: **1080px** two-row grid (`brand | nav` / `motion | theme`), **700px** the brand
+lockup stacks (wordmark over tag), **620px** the rail switches to a wrapping flex row and both the
+console's cap and the nav's `.seg-tail` are clipped, **430px** one step down in type and gutters.
 
-**The lockup's type ladder** lives on two selectors and steps at those same widths. The wordmark's
+**The stack breakpoint follows the tag's length, so re-measure it whenever the tag changes.** In the
+two-row grid, the row lockup (wordmark · tag, side by side) has to fit beside the nav, or the nav
+overflows leftward under it (see below). With "WCAG 2.2 Themes" and the Verdana fallback, that
+collision ran 621–683px, so the lockup stacks from 700px. A shorter tag can bring this back down
+toward 620. A longer one must push it up. Keep it on its own boundary, not the nav's.
+
+The tag is mixed case in the row lockup and goes to capitals only when the lockup stacks, the same
+as the sibling component-library site. The capitals come from `text-transform`, not the markup, so a
+screen reader still reads a word instead of spelling it out letter by letter.
+
+**The lockup's type ladder** lives on two selectors and steps at the brand's widths. The wordmark's
 size is on `.brand-name` — `.brand-title` has no `font-size` of its own and inherits it, as does
 `.brand-dot`, so the separator can never fall out of scale with the words it separates. The tag
 carries its own size because it is a different face. The wordmark stays the larger of the two at
 every step:
 
-| | ≥621px | ≤620px | ≤430px |
+| | ≥701px | ≤700px | ≤430px |
 |---|---|---|---|
 | wordmark (`.brand-name`) | 17px | 16px | 15px |
 | tag (`.brand-tag`) | 13.5px | 13px | 12px |
@@ -130,7 +140,8 @@ Three things hold that layout together, and all three are load-bearing:
 wordmark, so the tag beside the name is the only thing that says which site you are on — it has to
 survive the width where a visitor has the least other context. Stacking is what pays for it: the
 lockup then takes the width of its longer line instead of the sum of both, and it costs no height
-because the nav pills already make that row 36px tall. Below 620px the page nav also sheds its
+because the nav pills already make that row 36px tall. Below 620px (a separate boundary from the
+stack at 700px) the page nav also sheds its
 redundant word (`Preview Themes` → `Preview`) via `.seg-tail`, which is **clipped, not removed**, so
 the link's accessible name stays `Preview Themes` at every width.
 

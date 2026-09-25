@@ -33,7 +33,8 @@ History log so a later session can revisit it.
 
 Propose what you found. Confirm the exact casing — "The A11Y Way" and "The A11y Way" are different
 strings and both appear in the wild. The header shows a short tag beside the name (the source uses
-"Themes"); ask what this site's is if it isn't obvious.
+"WCAG 2.2 Themes"; its sibling uses "WCAG 2.2 Components"); ask what this site's is if it isn't
+obvious.
 
 **The tag is not decoration — it is the differentiator, and it is never dropped for space.** Sibling
 A11Y Way sites share a mark and a wordmark, so the tag is the only thing in the header that answers
@@ -41,7 +42,8 @@ A11Y Way sites share a mark and a wordmark, so the tag is the only thing in the 
 source header used to hide the tag at 620px and the whole wordmark at 400px, which left every sibling
 site showing an identical mark on a phone; it now stacks the lockup instead and keeps both lines to
 320px. **Give this site a tag that is distinct from its siblings' at a glance** — prefer a different
-word, not a longer version of the same one.
+word, not a longer version of the same one. A shared prefix is fine ("WCAG 2.2 …") as long as the
+last word, the one that names the product, differs.
 
 **If the repo has a constants module, use it** rather than hardcoding the name into the markup — that
 module exists precisely so the visible brand and the tab title can't drift.
@@ -301,7 +303,7 @@ Do all of it. `page-a11y-checklist.md` is the gate.
    `node tools/contrast-checker/cli.mjs "<fg>" "<bg>" --min 4.5` in the source repo.
    When measuring live in a browser, **wait for CSS transitions to settle** after switching themes —
    `getComputedStyle` mid-transition returns interpolated colors and will report false failures.
-4. **Every size** — 320, 360, 414, 430, 431, 620, 768, 900, 1080, 1440, 2560px: no horizontal scroll,
+4. **Every size** — 320, 360, 414, 430, 431, 620, 621, 700, 701, 768, 900, 1080, 1440, 2560px: no horizontal scroll,
    nothing clipped or overlapping, and the header's row count only ever falls as the viewport grows.
    Then 200% and 400% zoom. Re-walk the narrow end with `--font-ui` forced to its last fallback —
    the fallback face is wider, so a header that fits on your machine can overlap on a phone.

@@ -19,10 +19,10 @@
 
    Nothing in the brand zone is ever hidden for space. The A11Y Way ships more
    than one site off this header, and they share a mark and a wordmark — the
-   descriptor beside the wordmark ("Themes" here) is the only thing that says
-   which one you are looking at, so it has to survive the width where a visitor
-   has the least other context. Below 620px the lockup stacks instead, which
-   costs no height because the nav pills already make that row 28px tall.
+   descriptor beside the wordmark ("WCAG 2.2 Themes" here) is the only thing
+   that says which one you are looking at, so it has to survive the width where
+   a visitor has the least other context. Below 700px the lockup stacks instead,
+   which costs no height because the nav pills already make that row 28px tall.
    Down to 320px the phone rules only step type and gutters down.
 
    Every value is a theme token, so the header re-skins with the page it sits on.
@@ -127,7 +127,7 @@
    it separates. The tag carries its own size because it is a different face.
    Both step twice, and the wordmark stays the larger of the two at every step:
 
-       wordmark   17px  ->  16px (<=620)  ->  15px (<=430)
+       wordmark   17px  ->  16px (<=700)  ->  15px (<=430)
        tag        13.5  ->  13            ->  12
 
    The steps are deliberately shallow. The rail's vertical gutter is fluid now
@@ -399,7 +399,52 @@ a.pagenav-seg:focus-visible { outline: 3px solid var(--focus-ring); outline-offs
   .theme-console .dropdown-swatch > span { width: 6px; height: 6px; }
 }
 
-/* Phones: the lockup stacks, and the console's cap is the first thing to go. */
+/* The lockup stacks — one boundary above the phone layout, on its own.
+
+   700px, not 620px, because the tag grew. "WCAG 2.2 Themes" costs the row lockup
+   ~74px over the old "Themes", and in the two-row grid above the nav is pinned
+   right in a 1fr track: when the brand crowds it, it overflows LEFTWARD under the
+   brand with no scrollbar to report it. Measured with the Verdana fallback, that
+   collision ran from 621px to 683px. Stacked, the brand is the width of its longer
+   line instead of the sum of both, which clears it with room to spare.
+
+   Brand only. The nav's compact step and the flex-wrap layout stay at 620px, so no
+   two zones step on the same boundary (see the 430px block below for why that
+   rule exists). Re-measure this number if the tag or the wordmark changes. */
+@media (max-width: 700px) {
+  .brand { gap: 9px; }
+
+  /* The lockup goes vertical. The wordmark is the half of the identity the two
+     A11Y Way sites SHARE; the descriptor is the half that differs — so on a
+     phone the descriptor is the last thing that should go, not the first.
+     Stacked, the brand takes the width of its longer line instead of the sum of
+     both, which is what buys the room to keep it. The two lines total ~26px:
+     the mark's own height, and inside the 28px .pagenav-seg already sets for
+     this row, so the header does not get taller. align-items must be restated —
+     the row lockup aligns on the baseline, and in a column that property is
+     suddenly the horizontal axis, which would centre the two lines on
+     each other instead of ranging them left. */
+  .brand-name {
+    flex-direction: column; align-items: flex-start;
+    gap: 2px; line-height: 1.05;
+    font-size: 16px;   /* wordmark, step 2 of the ladder up top */
+  }
+  /* A separator between two things side by side. Stacked, the line break is the
+     separator, and a leftover dot reads as a bullet. */
+  .brand-dot { display: none; }
+  /* The second line takes the console cap's voice — mono, small, tracked out,
+     muted (.tc-cap below) — so the header has ONE treatment for small labels
+     rather than two, and the descriptor reads as a deliberate sub-line of the
+     wordmark rather than as a word that wrapped. */
+  /* Tracking eases as the size grows — .16em was tuned for a 10px cap, and at
+     13px the same ratio reads loose rather than deliberate. It also buys back a
+     little of the width the larger wordmark costs. */
+  .brand-tag {
+    font-size: 13px; letter-spacing: .13em; text-transform: uppercase;
+  }
+}
+
+/* Phones: the nav compacts, and the console's cap is the first thing to go. */
 @media (max-width: 620px) {
   /* Flex-WRAP, not the grid above, and this is the one place the header stops
      using a breakpoint to decide a layout.
@@ -477,37 +522,6 @@ a.pagenav-seg:focus-visible { outline: 3px solid var(--focus-ring); outline-offs
   /* flex-shrink is 0 on the nav (above), so it keeps its content width and the
      line breaks instead of the pill being crushed. This is what makes the wrap
      happen at all — a shrinkable nav would just get narrower and clip. */
-
-  .brand { gap: 9px; }
-
-  /* The lockup goes vertical. The wordmark is the half of the identity the two
-     A11Y Way sites SHARE; the descriptor is the half that differs — so on a
-     phone the descriptor is the last thing that should go, not the first.
-     Stacked, the brand takes the width of its longer line instead of the sum of
-     both, which is what buys the room to keep it. The two lines total ~26px:
-     the mark's own height, and inside the 28px .pagenav-seg already sets for
-     this row, so the header does not get taller. align-items must be restated —
-     the row lockup aligns on the baseline, and in a column that property is
-     suddenly the horizontal axis, which would centre the two lines on
-     each other instead of ranging them left. */
-  .brand-name {
-    flex-direction: column; align-items: flex-start;
-    gap: 2px; line-height: 1.05;
-    font-size: 16px;   /* wordmark, step 2 of the ladder up top */
-  }
-  /* A separator between two things side by side. Stacked, the line break is the
-     separator, and a leftover dot reads as a bullet. */
-  .brand-dot { display: none; }
-  /* The second line takes the console cap's voice — mono, small, tracked out,
-     muted (.tc-cap below) — so the header has ONE treatment for small labels
-     rather than two, and the descriptor reads as a deliberate sub-line of the
-     wordmark rather than as a word that wrapped. */
-  /* Tracking eases as the size grows — .16em was tuned for a 10px cap, and at
-     13px the same ratio reads loose rather than deliberate. It also buys back a
-     little of the width the larger wordmark costs. */
-  .brand-tag {
-    font-size: 13px; letter-spacing: .13em; text-transform: uppercase;
-  }
 
   /* The nav's compact values cover this WHOLE range, rather than stepping again
      at 430 the way the brand does. Two steps landing on one boundary is what

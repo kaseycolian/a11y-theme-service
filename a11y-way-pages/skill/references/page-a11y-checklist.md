@@ -63,7 +63,7 @@ for.
 
 ## Sizes and engines
 
-- [ ] **No horizontal scroll** at 320, 360, 414, 430, 431, 620, 768, 900, 1080, 1440, 2560px.
+- [ ] **No horizontal scroll** at 320, 360, 414, 430, 431, 620, 621, 700, 701, 768, 900, 1080, 1440, 2560px.
       414 and 430/431 are there on purpose: 414 is a real iPhone width, and 430/431 straddles the
       header's type step. **Walk the widths in order and watch the header's row count only ever go
       DOWN as the viewport grows** — a step that adds size faster than the viewport gains it makes a

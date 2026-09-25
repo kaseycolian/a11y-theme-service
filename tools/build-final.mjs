@@ -65,8 +65,8 @@ const VARMAP = {
   blue:'--accent-blue', onBlue:'--on-blue', purple:'--accent-purple', onPurple:'--on-purple',
 };
 const accents = ['pink', 'green', 'blue', 'purple'];
-// For naming a failed pair: the tokens, plus the rain's brightest glyph over the page.
-const NAMES = { ...VARMAP, rainBg: '--bg under the rain' };
+// For naming a failed pair: the tokens, plus the backdrop pattern's brightest point over the page.
+const NAMES = { ...VARMAP, backdropBg: '--bg under the backdrop' };
 
 // Derive finalized metadata from a draft key like "dark-01-rink-classic".
 function meta(draftId, p) {

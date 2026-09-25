@@ -10,7 +10,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync } from 'node:fs';
 import { contrastRatio, round2 } from './contrast-checker/contrast.mjs';
-import { PAIRS, checkPalette, headingAccents, rainUnder, backdropVars } from './palette-checks.mjs';
+import { PAIRS, checkPalette, headingAccents, rainUnder, backdropUnder, backdropVars } from './palette-checks.mjs';
 
 // The built-ins that ship: the highest-numbered draft, the same rule the Pages
 // workflow uses to pick what to build.
@@ -137,13 +137,24 @@ test('rain strong enough to wash out the text fails, and names what failed', () 
   assert.throws(() => checkPalette({ ...base, backdrop: 'snow' }));
 });
 
-test('backdropVars: rain sets the four effect tokens; anything else resets them to the grid', () => {
+test('backdropVars: a pattern sets the six effect tokens; anything else resets them to the grid', () => {
   const base = Object.values(BUILTINS).find(p => p.backdrop === undefined);
-  assert.deepEqual(Object.values(backdropVars(base)), ['initial', 'initial', 'initial', 'initial']);
-  assert.deepEqual(Object.values(backdropVars({ ...base, backdrop: 'rain', grid: 0 })), ['initial', 'initial', 'initial', 'initial']);
+  const off = Array(6).fill('initial');
+  assert.deepEqual(Object.values(backdropVars(base)), off);
+  assert.deepEqual(Object.values(backdropVars({ ...base, backdrop: 'rain', grid: 0 })), off);
+  assert.deepEqual(Object.values(backdropVars({ ...base, backdrop: 'flowers', grid: 0 })), off);
   assert.deepEqual(backdropVars({ ...base, backdrop: 'rain', grid: 0.1 }), {
     '--fx-backdrop-image': 'none', '--fx-backdrop-color': base.green,
-    '--fx-backdrop-mask': 'var(--fx-rain)', '--fx-backdrop-anim': 'fx-rain',
+    '--fx-backdrop-mask': 'var(--fx-rain)', '--fx-backdrop-mask-size': 'var(--fx-rain-size)',
+    '--fx-backdrop-anim': 'fx-rain', '--fx-backdrop-timing': 'var(--fx-rain-timing)',
+  });
+  // The flowers' mask falls back to nothing, so an old effects.css draws no backdrop
+  // rather than a solid wash of the color.
+  assert.deepEqual(backdropVars({ ...base, backdrop: 'flowers', grid: 0.1 }), {
+    '--fx-backdrop-image': 'none', '--fx-backdrop-color': base.purple,
+    '--fx-backdrop-mask': 'var(--fx-flowers, linear-gradient(transparent, transparent))',
+    '--fx-backdrop-mask-size': 'var(--fx-flowers-size)',
+    '--fx-backdrop-anim': 'fx-flowers', '--fx-backdrop-timing': 'var(--fx-flowers-timing)',
   });
 });
 
@@ -153,4 +164,28 @@ test('rainColor, when set, is what rains and what is checked', () => {
   assert.equal(backdropVars(rainy)['--fx-backdrop-color'], '#ffffff');
   assert.equal(rainUnder(rainy), rainUnder({ bg: base.bg, green: '#ffffff', grid: 0.1 }));
   assert.throws(() => checkPalette({ ...rainy, rainColor: 'green' }));
+});
+
+test('flowers add their checks only when on, against their most opaque point over the page', () => {
+  const base = Object.values(BUILTINS).find(p => p.mode === 'dark' && p.backdrop === undefined);
+  const labels = p => checkPalette(p).map(x => x.label).filter(l => l.endsWith('on flowers'));
+  assert.deepEqual(labels(base), [], 'grid: no flower pairs');
+  assert.deepEqual(labels({ ...base, backdrop: 'flowers', grid: 0 }), [], 'flowers at 0 are off');
+  assert.equal(labels({ ...base, backdrop: 'flowers', grid: 0.1 }).length, 8);
+  // Same blend as the rain, in the flowers' own color: the purple unless set.
+  const flowery = { ...base, backdrop: 'flowers', grid: 0.3 };
+  assert.equal(backdropUnder(flowery), rainUnder({ bg: base.bg, green: base.purple, grid: 0.3 }));
+  // Strong enough to wash out the text, they fail and say so.
+  assert.ok(failing({ ...base, backdrop: 'flowers', grid: 1, backdropColor: base.muted })
+    .includes('muted on flowers'));
+});
+
+test('backdropColor, when set, is the pattern color for rain and flowers alike', () => {
+  const base = Object.values(BUILTINS).find(p => p.mode === 'dark' && p.backdrop === undefined);
+  for (const backdrop of ['rain', 'flowers']) {
+    const p = { ...base, backdrop, grid: 0.1, backdropColor: '#ffffff', rainColor: '#000000' };
+    assert.equal(backdropVars(p)['--fx-backdrop-color'], '#ffffff', `${backdrop}: backdropColor wins`);
+    assert.equal(backdropUnder(p), rainUnder({ bg: base.bg, green: '#ffffff', grid: 0.1 }));
+  }
+  assert.throws(() => checkPalette({ ...base, backdrop: 'flowers', backdropColor: 'purple' }));
 });

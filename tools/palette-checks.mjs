@@ -14,7 +14,8 @@
    Tested by palette-checks.test.mjs; build.test.mjs runs both builders end to end.
    ============================================================================= */
 import { contrastRatio } from './contrast-checker/contrast.mjs';
-import { PEAK_ALPHA } from './rain.mjs';
+import { PEAK_ALPHA as RAIN_PEAK } from './rain.mjs';
+import { PEAK_ALPHA as FLOWERS_PEAK } from './flowers.mjs';
 
 const ACCENTS = ['pink', 'green', 'blue', 'purple'];
 const cap = a => a[0].toUpperCase() + a.slice(1);
@@ -71,60 +72,90 @@ export function headingAccents(p) {
 }
 
 /** The page backdrop (effects.css .fx-grid). Optional palette field `backdrop`: 'grid',
- *  the crossing neon lines (default), or 'rain', falling glyphs (tools/rain.mjs) in
- *  `rainColor` (default: the theme's green). Either way its strength is the palette's
- *  `grid` (0 = off; omitted, the 0.22 effects.css falls back to). Text sits straight on
- *  the page, so for rain the brightest point of it — one head glyph, rainColor at that
- *  strength over --bg, blended in sRGB as CSS opacity is — is checked as a surface of its
- *  own. The grid's 1px lines at a few percent are not. */
-export const BACKDROPS = ['grid', 'rain'];
+ *  the crossing neon lines (default); 'rain', falling glyphs (tools/rain.mjs); or
+ *  'flowers', drifting blossoms (tools/flowers.mjs). Rain and flowers are PATTERNS:
+ *  tiles painted in one color, `backdropColor` (default: the theme's green for rain,
+ *  its purple for flowers; rain also still takes the older `rainColor`). Whichever it
+ *  is, its strength is the palette's `grid` (0 = off; omitted, the 0.22 effects.css
+ *  falls back to). Text sits straight on the page, so for a pattern its brightest point
+ *  — its most opaque pixel, the color at that strength over --bg, blended in sRGB as CSS
+ *  opacity is — is checked as a surface of its own. The grid's 1px lines at a few
+ *  percent are not. */
+export const BACKDROPS = ['grid', 'rain', 'flowers'];
 export const GRID_DEFAULT = 0.22;
+/* Each pattern's tiles and pace live in effects.css, generated beside each other by its
+   tool; a theme only points at them. The flowers' mask falls back to a transparent image,
+   so a theme.css this new over an effects.css too old to carry the tiles draws no
+   backdrop, rather than a solid wash of its color. */
+const PATTERNS = {
+  rain: { peak: RAIN_PEAK, color: p => p.backdropColor ?? p.rainColor ?? p.green,
+    mask: 'var(--fx-rain)', size: 'var(--fx-rain-size)', anim: 'fx-rain', timing: 'var(--fx-rain-timing)' },
+  flowers: { peak: FLOWERS_PEAK, color: p => p.backdropColor ?? p.purple,
+    mask: 'var(--fx-flowers, linear-gradient(transparent, transparent))', size: 'var(--fx-flowers-size)',
+    anim: 'fx-flowers', timing: 'var(--fx-flowers-timing)' },
+};
 export function backdrop(p) {
   const b = p.backdrop ?? 'grid';
   if (!BACKDROPS.includes(b)) throw new Error(`backdrop must be one of ${BACKDROPS.join(', ')}; got "${b}"`);
-  if (p.rainColor !== undefined && !/^#[0-9a-f]{6}$/i.test(p.rainColor)) throw new Error(`rainColor must be a #rrggbb color; got "${p.rainColor}"`);
+  for (const k of ['backdropColor', 'rainColor']) {
+    if (p[k] !== undefined && !/^#[0-9a-f]{6}$/i.test(p[k])) throw new Error(`${k} must be a #rrggbb color; got "${p[k]}"`);
+  }
   return b;
 }
-export const raining = p => backdrop(p) === 'rain' && (p.grid ?? GRID_DEFAULT) > 0;
-const rainColor = p => p.rainColor ?? p.green;
+/** The pattern a palette shows ('rain' or 'flowers'), or null: the grid, or strength 0. */
+export const pattern = p => {
+  const b = backdrop(p);
+  return b in PATTERNS && (p.grid ?? GRID_DEFAULT) > 0 ? b : null;
+};
+export const raining = p => pattern(p) === 'rain';
 
-/** The brightest rain glyph over the page. Each channel rounds AWAY from --bg, so the
- *  hex it is checked as is never kinder than what the browser paints. */
-export function rainUnder(p) {
+/** The pattern's brightest point over the page. Each channel rounds AWAY from --bg, so
+ *  the hex it is checked as is never kinder than what the browser paints. */
+export function backdropUnder(p) {
+  const P = PATTERNS[backdrop(p)];
+  if (!P) throw new Error(`backdrop "${backdrop(p)}" is not a pattern`);
   const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
-  const a = (p.grid ?? GRID_DEFAULT) * PEAK_ALPHA, bg = rgb(p.bg), fg = rgb(rainColor(p));
+  const a = (p.grid ?? GRID_DEFAULT) * P.peak, bg = rgb(p.bg), fg = rgb(P.color(p));
   return '#' + bg.map((b, i) => {
     const v = b + (fg[i] - b) * a;
     return (fg[i] > b ? Math.ceil(v) : Math.floor(v)).toString(16).padStart(2, '0');
   }).join('');
 }
+/** The brightest rain glyph over the page, for any palette, raining or not. */
+export const rainUnder = p => backdropUnder({ ...p, backdrop: 'rain' });
 
-/** The backdrop's custom properties, identical from both builders. A theme without rain
- *  resets all four to `initial`, which makes effects.css fall back to the grid, so a
- *  nested theme never inherits another's rain. */
+/** The backdrop's custom properties, identical from both builders. A theme without a
+ *  pattern resets all six to `initial`, which makes effects.css fall back to the grid,
+ *  so a nested theme never inherits another's rain or flowers. */
 export function backdropVars(p) {
-  const on = raining(p);
+  const on = pattern(p), P = PATTERNS[on];
   return {
     '--fx-backdrop-image': on ? 'none' : 'initial',
-    '--fx-backdrop-color': on ? rainColor(p) : 'initial',
-    '--fx-backdrop-mask': on ? 'var(--fx-rain)' : 'initial',
-    '--fx-backdrop-anim': on ? 'fx-rain' : 'initial',
+    '--fx-backdrop-color': on ? P.color(p) : 'initial',
+    '--fx-backdrop-mask': on ? P.mask : 'initial',
+    '--fx-backdrop-mask-size': on ? P.size : 'initial',
+    '--fx-backdrop-anim': on ? P.anim : 'initial',
+    '--fx-backdrop-timing': on ? P.timing : 'initial',
   };
 }
 
-const rainPairs = p => (raining(p) ? [
-  ['text on rain', 'text', 'rainBg', 4.5],
-  ['muted on rain', 'muted', 'rainBg', 4.5],
-  ...ACCENTS.map(a => [`${a} text on rain`, a, 'rainBg', 4.5]),
-  ['focus ring on rain', 'focus', 'rainBg', 3.0],
-  ['border-strong on rain', 'borderStrong', 'rainBg', 3.0],
-] : []);
+const patternPairs = p => {
+  const on = pattern(p);
+  return on ? [
+    [`text on ${on}`, 'text', 'backdropBg', 4.5],
+    [`muted on ${on}`, 'muted', 'backdropBg', 4.5],
+    ...ACCENTS.map(a => [`${a} text on ${on}`, a, 'backdropBg', 4.5]),
+    [`focus ring on ${on}`, 'focus', 'backdropBg', 3.0],
+    [`border-strong on ${on}`, 'borderStrong', 'backdropBg', 3.0],
+  ] : [];
+};
 
-/** A palette key's value; `rainBg` is the brightest rain glyph over the page. */
-export const tokenValue = (p, k) => (k === 'rainBg' ? rainUnder(p) : p[k]);
+/** A palette key's value; `backdropBg` is the pattern's brightest point over the page. */
+export const tokenValue = (p, k) => (k === 'backdropBg' ? backdropUnder(p) : p[k]);
 
 /**
- * Check one palette against every pair, plus the rain pairs when it rains. `ratio` is
+ * Check one palette against every pair, plus the pattern pairs when its backdrop is
+ * rain or flowers. `ratio` is
  * the exact, unrounded value and `pass` compares it as-is. Throws on a missing or
  * invalid token (or `headings`, `backdrop`), which both builders report as a problem
  * rather than letting it through.
@@ -133,7 +164,7 @@ export const tokenValue = (p, k) => (k === 'rainBg' ? rainUnder(p) : p[k]);
 export function checkPalette(p) {
   headingAccents(p);
   backdrop(p);
-  return [...PAIRS, ...rainPairs(p)].map(([label, fg, bg, min]) => {
+  return [...PAIRS, ...patternPairs(p)].map(([label, fg, bg, min]) => {
     const ratio = contrastRatio(tokenValue(p, fg), tokenValue(p, bg));
     return { label, fg, bg, min, ratio, pass: ratio >= min };
   });

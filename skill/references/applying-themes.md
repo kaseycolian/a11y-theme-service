@@ -35,7 +35,7 @@ history log so a later session can revisit it.
 
 3. **Background effect — where should it go?** Several themes carry a background effect (`.fx-grid`,
    at each theme's own `--fx-grid-opacity`): the retro crossing-line grid on most, falling code ("rain")
-   on NEO. Ask which surfaces it paints on:
+   on NEO, drifting flowers on Rebecca. Ask which surfaces it paints on:
    - **The page background only (recommended default):** `.fx-grid` on the page-level background
      surface — `<body>` or the main full-width wrapper — and **nothing else**. Sections, cards and
      panels sitting *on top* of that background stay flat; the grid is the backdrop they sit over.
@@ -47,11 +47,12 @@ history log so a later session can revisit it.
    - Either way it costs nothing on the plain themes: `.fx-grid::before` reads
      `opacity: var(--fx-grid-opacity)`, which is `0` on the **"(No Background)"** variants, so the
      effect auto-hides there wherever you put it. Record which surfaces you marked.
-   - **NEO's rain moves.** It falls until motion is off, so an app that offers NEO must also offer the
-     "Reduce motion" control (`data-motion-toggle`) — WCAG 2.2.2 requires a way to pause anything that
-     moves for more than five seconds. `prefers-reduced-motion` holds it still too. Its glyphs are
-     `data:` SVG images, so a CSP that restricts `img-src` has to allow `data:`, or the rain is not drawn
-     (the page is otherwise unaffected).
+   - **NEO's rain and Rebecca's flowers move.** They fall and drift until motion is off, so an app that
+     offers either must also offer the "Reduce motion" control (`data-motion-toggle`) — WCAG 2.2.2
+     requires a way to pause anything that moves for more than five seconds. `prefers-reduced-motion`
+     holds them still too. Their tiles are `data:` SVG images, so a CSP that restricts `img-src` has to
+     allow `data:`, or the pattern is not drawn (the page is otherwise unaffected). Vendor `theme.css`
+     and `effects.css` together: the tiles live in `effects.css`.
    - If the app has no header/footer, only the first option is meaningful — say so and move on.
 
 4. **Existing theme selector (ask only if the app already has one):**
@@ -280,7 +281,8 @@ Requirements:
 - On change: set `document.documentElement.setAttribute('data-theme', id)` (or remove it for Auto).
 - **Persist** to `localStorage` and **re-apply before first paint** to avoid a flash of the wrong theme.
 - Include a "Reduce motion" control that toggles `data-motion="off"` on `<html>`. Optional only if no
-  theme you offer has a moving backdrop: NEO's rain falls, and WCAG 2.2.2 needs a way to stop it.
+  theme you offer has a moving backdrop: NEO's rain falls and Rebecca's flowers drift, and WCAG 2.2.2
+  needs a way to stop them.
 
 ### Selector placement
 Put the picker where it reads as an intentional part of the UI, not bolted on:

@@ -93,10 +93,11 @@ test('build-final emits --accent-h1 … h4 on every theme: the named accents, el
   }
 });
 
-test('build-final emits the rain for a rain theme, and resets it on every other', () => {
+test('build-final emits the rain for a rain theme, the flowers for a flowers theme, and resets both on every other', () => {
   const dir = sandbox('final-rain', 'local.mjs', {
     'light-01-plain':  { ...base, name: 'Plain' },
     'light-02-rainy':  { ...base, name: 'Rainy', backdrop: 'rain', grid: 0.01 },
+    'light-03-flowery': { ...base, name: 'Flowery', backdrop: 'flowers', grid: 0.01 },
   });
   const r = run(dir, 'tools/build-final.mjs', '--no-builtin', '--write');
   assert.equal(r.status, 0, r.stdout + r.stderr);
@@ -106,11 +107,19 @@ test('build-final emits the rain for a rain theme, and resets it on every other'
   assert.match(block('rainy-light'), new RegExp(`--fx-backdrop-color: ${base.green};`));
   assert.match(block('rainy-light'), /--fx-backdrop-mask: var\(--fx-rain\);/);
   assert.match(block('rainy-light'), /--fx-backdrop-anim: fx-rain;/);
-  for (const v of ['image', 'color', 'mask', 'anim']) {
+  assert.match(block('rainy-light'), /--fx-backdrop-timing: var\(--fx-rain-timing\);/);
+  assert.match(block('flowery-light'), /--fx-backdrop-image: none;/);
+  assert.match(block('flowery-light'), new RegExp(`--fx-backdrop-color: ${base.purple};`));
+  assert.match(block('flowery-light'), /--fx-backdrop-mask: var\(--fx-flowers, /);
+  assert.match(block('flowery-light'), /--fx-backdrop-mask-size: var\(--fx-flowers-size\);/);
+  assert.match(block('flowery-light'), /--fx-backdrop-anim: fx-flowers;/);
+  assert.match(block('flowery-light'), /--fx-backdrop-timing: var\(--fx-flowers-timing\);/);
+  for (const v of ['image', 'color', 'mask', 'mask-size', 'anim', 'timing']) {
     assert.match(block('plain-light'), new RegExp(`--fx-backdrop-${v}: initial;`));
   }
   const tokens = JSON.parse(readFileSync(join(dir, 'themes', 'tokens.json'), 'utf8'));
   assert.equal(tokens.themes['rainy-light'].backdrop, 'rain');
+  assert.equal(tokens.themes['flowery-light'].backdrop, 'flowers');
   assert.equal(tokens.themes['plain-light'].backdrop, 'grid');
 });
 

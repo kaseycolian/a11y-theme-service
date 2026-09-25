@@ -22,12 +22,17 @@ accents + white `on*` for light).
 Optional `headings` picks which accent each heading level uses, e.g. `{ h1: 'green', h3: 'green' }`;
 levels left out keep the neon order (h1 `pink`, h2 `green`, h3 `blue`, h4 `purple`). Pink is also the
 error color and blue the link color, so when the user wants different heading colors, set `headings`
-rather than moving their accents between slots (see NEO in `draft-4.mjs`, all-green h1–h3).
+rather than moving their accents between slots (see NEO in `draft-4.mjs`, all-green h1–h3, or Rebecca
+in `draft-5.mjs`, purple h1, h3 and h4).
 
-Optional `backdrop: 'rain'` swaps the grid for falling code (NEO), in `rainColor` (default: the green
-accent), at the palette's `grid` strength. Text sits on it, so the build checks text, muted, every
-accent, the focus ring and the strong border over the brightest glyph; if that fails, lower `grid` or
-darken the failing color. The rain animates, so a consuming app needs the motion toggle (WCAG 2.2.2).
+Optional `backdrop` swaps the grid for a pattern: `'rain'`, falling code (NEO), or `'flowers'`, small
+violets, forget-me-nots and daisies drifting slowly down (Rebecca, in `draft-5.mjs`). The pattern is
+painted in `backdropColor` (default: the green accent for rain, the purple for flowers; rain also
+still takes `rainColor`), at the palette's `grid` strength. Text sits on it, so the build checks text,
+muted, every accent, the focus ring and the strong border over its most opaque point; if that fails,
+lower `grid` or darken the failing color. Both patterns move, so a consuming app needs the motion
+toggle (WCAG 2.2.2). The tiles are generated into `effects.css` by `tools/rain.mjs` and
+`tools/flowers.mjs`; a new pattern follows the same shape.
 
 ## Option 2 — Guided recommendation (socratic)
 Walk the same process used to design the originals: ask for a vibe/color story (1–2 sentences),

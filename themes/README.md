@@ -12,7 +12,7 @@ the palette files (`tools/palettes/draft-*.mjs` built-in + `local.mjs` yours).
 | File | What it is |
 |------|-----------|
 | `theme.css` | All color tokens. `:root` = the default theme (**Rink Classic**, dark, auto-switching to light under `prefers-color-scheme: light`). Every theme is also a `[data-theme="<id>"]` block. **Generated** — do not hand-edit. |
-| `effects.css` | Neon glow / backdrop (grid, or NEO's falling-code rain) / gradient-scrollbar recipes, as tokens. Motion-gated. |
+| `effects.css` | Neon glow / backdrop (grid, NEO's falling-code rain, or Rebecca's drifting flowers) / gradient-scrollbar recipes, as tokens. Motion-gated. |
 | `components.css` | Opt-in class-based component styles (buttons, inputs, dropdown, switch, notices, tabs, …) with full focus/hover/active/disabled/expanded states. |
 | `dropdown.css` + `dropdown.js` | The **accessible dropdown / listbox** — a themed port of the `dropdown` component from the a11y-component-examples library. Optional; include both or neither. See "Accessible dropdown" below. |
 | `tokens.json` | Structured mirror of every theme's tokens (for tooling / non-CSS consumers). |
@@ -45,7 +45,8 @@ the palette files (`tools/palettes/draft-*.mjs` built-in + `local.mjs` yours).
    root element. All transitions, press effects, and glow pulses stop.
 
 Available theme ids: `rink-classic-{dark,light}`, `midnight-arcade-{dark,light}`,
-`hot-neon-{dark,light}`, `synthwave-sunset-{dark,light}`, `acid-arcade-{dark,light}`, `neo-{dark,light}`, `rfg-{dark,light}`.
+`hot-neon-{dark,light}`, `synthwave-sunset-{dark,light}`, `acid-arcade-{dark,light}`, `neo-{dark,light}`, `rfg-{dark,light}`,
+`rebecca-{dark,light}`.
 
 ## Theme selector (vanilla / extensions)
 

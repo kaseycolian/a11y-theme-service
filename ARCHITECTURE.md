@@ -42,9 +42,12 @@ with an on-fill text color `--on-{pink,green,blue,purple}`. `--accent-h1` … `-
 colors (`.t-h1` … `.t-h4`): each one of the four accents, pink → green → blue → purple unless the palette
 names others in `headings`, so a theme can recolor its headings without recoloring its errors or links.
 Plus `color-scheme` and `--glow-strength` (1 dark / 0.35 light), `--fx-grid-opacity` (the backdrop's strength), and the backdrop pattern: `--fx-backdrop-image`,
-`-color`, `-mask`, `-anim` are `initial` (the grid) unless the palette sets `backdrop: 'rain'`, which
-turns on falling glyphs (`tools/rain.mjs`, drawn through the `--fx-rain` mask in `effects.css`) in
-`rainColor`. The build checks every text, focus and border color over the rain's brightest glyph.
+`-color`, `-mask`, `-mask-size`, `-anim`, `-timing` are `initial` (the grid) unless the palette sets
+`backdrop: 'rain'`, falling glyphs (`tools/rain.mjs`, the `--fx-rain` tiles in `effects.css`), or
+`backdrop: 'flowers'`, drifting blossoms (`tools/flowers.mjs`, the `--fx-flowers` tiles), in
+`backdropColor`. Each generator writes its tiles, their size, their motion and their pace
+(`--fx-*-timing`) into `effects.css`; a theme only points at them. The build checks every text,
+focus and border color over the pattern's most opaque point.
 
 Structural tokens (theme-independent, in `components.css` `:root`): `--font-ui --font-mono
 --radius --radius-sm --radius-pill --dur --press-y --press-s`. Effect recipe tokens (in `effects.css`

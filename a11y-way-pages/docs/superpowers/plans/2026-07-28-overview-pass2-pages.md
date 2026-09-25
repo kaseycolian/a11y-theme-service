@@ -525,7 +525,7 @@
   - Change the Image-export line to: `- ⛔ **Image export — dropped.** The graphics live on the page (it's the human quick-view / GitHub Pages home), so no PNG/SVG export is needed.`
   - Change Hero-polish to ✅.
   - Add a line: `- 🌐 **Live demo:** the [overview page](overview.html) is the repo's GitHub Pages home; its "See Built-In Themes" button opens the live [product preview](../themes/preview.html).`
-  - (Once Pages is enabled and the URL is known, add the actual `https://kaseycolian.github.io/theme-service/` link.)
+  - (Once Pages is enabled and the URL is known, add the actual `https://kaseycolian.github.io/a11y-theme-service/` link.)
 
 - [ ] **Step 2:** Add a short note to each of `AGENTS.md`, `CREATING-THEMES.md`, and `skill/references/adding-a-theme.md` in the finalize/create-a-draft section. Suggested wording (adapt to each file's voice):
   > **Publishing to the live site.** The GitHub Pages home (`docs/overview.html`) links a live "Built-In Themes" preview (`themes/preview.html`), which renders the built `theme.css`. The Pages workflow (`.github/workflows/pages.yml`) auto-detects the **highest-numbered `discovery/draft-N`** and builds themes from it, so **when you finalize a new draft as the highest `draft-N`, it automatically becomes the live preview on the next push to `main`** — no extra publish step. Convention: highest `draft-N` = the latest finalized set.

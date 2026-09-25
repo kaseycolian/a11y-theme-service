@@ -7,7 +7,7 @@
 ## Purpose
 
 `docs/overview.html` becomes the **GitHub Pages home page** for the public repo
-(`kaseycolian/theme-service`) — the page a human lands on to understand, at a glance, what the
+(`kaseycolian/a11y-theme-service`) — the page a human lands on to understand, at a glance, what the
 repo does. Pass 2 finishes the polished visual overview (the five remaining diagrams + hero
 tidy-ups), wires the page to the live product preview, and ships a GitHub Actions workflow that
 builds the themes and deploys the site to Pages.

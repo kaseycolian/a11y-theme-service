@@ -18,7 +18,7 @@ updating the **theme-service repo itself** — distinct from `updating-themes.md
    know where they stand (this is also how *you* know what's already been done).
 
 2. **Ensure the `upstream` remote** points at the origin (the repo the user tracks). If missing:
-   `npm run update-from-origin -- --set-upstream https://github.com/<owner>/theme-service.git`
+   `npm run update-from-origin -- --set-upstream https://github.com/<owner>/a11y-theme-service.git`
    (for this project's origin, `<owner>` is `kaseycolian`). Confirm the working tree is clean
    (their `local.mjs` themes should already be committed).
 

@@ -8,7 +8,7 @@
    whether to include the origin's built-in themes, then run `npm run build-themes`.
 
    Usage:
-     npm run update-from-origin -- --set-upstream https://github.com/<owner>/theme-service.git
+     npm run update-from-origin -- --set-upstream https://github.com/<owner>/a11y-theme-service.git
      npm run update-from-origin                 # merge upstream/main
      npm run update-from-origin -- --tag v0.3.0  # update to a specific release tag
    ============================================================================= */
@@ -35,7 +35,7 @@ if (setUp) {
   gitIO([remotes.includes('upstream') ? 'remote' : 'remote', remotes.includes('upstream') ? 'set-url' : 'add', 'upstream', setUp]);
 } else if (!remotes.includes('upstream')) {
   die('No `upstream` remote. Add the origin you want to track, e.g.:\n' +
-      '  npm run update-from-origin -- --set-upstream https://github.com/<owner>/theme-service.git');
+      '  npm run update-from-origin -- --set-upstream https://github.com/<owner>/a11y-theme-service.git');
 }
 
 // Refuse to run with a dirty tree (so a merge can't tangle with uncommitted work).

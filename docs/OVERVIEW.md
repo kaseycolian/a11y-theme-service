@@ -1,7 +1,7 @@
 # Theme Service overview
 
 The live version of this page, with the themes applied, is at
-**<https://kaseycolian.github.io/theme-service/>**.
+**<https://kaseycolian.github.io/a11y-theme-service/>**.
 
 Theme Service is a skill for Claude Code and other AI agents. It walks you through picking colors for
 a theme and checks every color pair against WCAG 2.2 AA. It won't save a theme that fails. Then it
@@ -51,13 +51,13 @@ tabs, alerts and a dropdown that work in every theme.
 1. Clone the repo:
 
    ```sh
-   git clone https://github.com/kaseycolian/theme-service.git
+   git clone https://github.com/kaseycolian/a11y-theme-service.git
    ```
 
 2. Install the skill. This links the skill into Claude Code and builds the themes. You need Node.
 
    ```sh
-   cd theme-service
+   cd a11y-theme-service
    npm run install-all
    ```
 

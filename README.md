@@ -86,7 +86,7 @@ This repo is the **origin**. Fork or clone it and it becomes **your** source of 
   `local.mjs` is origin-untouched, so syncing is conflict-free:
   ```sh
   # one-time: point at this origin
-  npm run update-from-origin -- --set-upstream https://github.com/kaseycolian/theme-service.git
+  npm run update-from-origin -- --set-upstream https://github.com/kaseycolian/a11y-theme-service.git
   npm run update-from-origin        # fetch + merge my latest  (or  -- --tag vX.Y.Z)
   npm run build-themes              # rebuild incl. my built-in themes
   npm run build-themes:mine         # …or rebuild with ONLY your themes

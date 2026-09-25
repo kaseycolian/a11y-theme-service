@@ -10,7 +10,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync } from 'node:fs';
 import { contrastRatio, round2 } from './contrast-checker/contrast.mjs';
-import { PAIRS, checkPalette, headingAccents, rainUnder, backdropUnder, backdropVars } from './palette-checks.mjs';
+import { PAIRS, checkPalette, headingAccents, labelAccent, rainUnder, backdropUnder, backdropVars } from './palette-checks.mjs';
 
 // The built-ins that ship: the highest-numbered draft, the same rule the Pages
 // workflow uses to pick what to build.
@@ -112,6 +112,18 @@ test('each heading level names one of the four accents, and keeps the neon order
   assert.throws(() => checkPalette({ ...base, headings: { h1: 'red' } }));
   assert.throws(() => checkPalette({ ...base, headings: { h3: '#00ff41' } }));
   assert.throws(() => checkPalette({ ...base, headings: { h5: 'green' } }), /unknown level/);
+});
+
+test('labels names one of the four accents, and stays green when omitted', () => {
+  const base = Object.values(BUILTINS).find(p => p.labels === undefined);
+  assert.ok(base, 'needs a built-in that leaves labels unset');
+  assert.equal(labelAccent(base), 'green');
+  assert.equal(labelAccent({ ...base, labels: 'purple' }), 'purple');
+  // Adds no pairs: the accent it names is already checked on every surface.
+  assert.equal(checkPalette({ ...base, labels: 'purple' }).length, checkPalette(base).length);
+  // A color is not an accent name, and neither is a per-level object.
+  assert.throws(() => checkPalette({ ...base, labels: '#663399' }), /labels must be one of/);
+  assert.throws(() => checkPalette({ ...base, labels: { field: 'purple' } }), /labels must be one of/);
 });
 
 test('rain adds its checks only when it is on, against its brightest glyph over the page', () => {

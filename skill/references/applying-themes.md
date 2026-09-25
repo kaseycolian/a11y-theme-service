@@ -186,6 +186,7 @@ Replace hardcoded values with `var(--token)` using this mapping (do not change l
 | Focus outline / ring | `--focus-ring` |
 | Primary action / brand accent | `--accent-pink` (or the closest accent to the brand hue) |
 | Headings, by level | `--accent-h1` … `--accent-h4` (fall back to pink, green, blue, purple: e.g. `var(--accent-h1, var(--accent-pink))`) |
+| Form field labels / small uppercase group labels | `--accent-label` (falls back to green: `var(--accent-label, var(--accent-green))`) |
 | Links / informational | `--accent-blue` |
 | Success / confirm | `--accent-green` |
 | Secondary accent / warning | `--accent-purple` |

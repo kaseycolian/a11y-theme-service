@@ -20,7 +20,7 @@ import { fileURLToPath } from 'node:url';
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { floor2 } from './contrast-checker/contrast.mjs';
-import { checkPalette, HEADING_LEVELS, headingAccents, backdrop, backdropVars } from './palette-checks.mjs';
+import { checkPalette, HEADING_LEVELS, headingAccents, LABEL_DEFAULT, labelAccent, backdrop, backdropVars } from './palette-checks.mjs';
 import { fullLabel, optionLabel, modeLabel } from './theme-name.mjs';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -121,6 +121,8 @@ for (const [draftId, p, origin] of entries) {
   // a failure above, so this only has to not throw; the write is refused.
   const levels = (() => { try { return headingAccents(p); } catch { return HEADING_LEVELS; } })();
   for (const [lvl, a] of Object.entries(levels)) tokens['--accent-' + lvl] = p[a];
+  // Same for the label accent (`labels`, green unless set).
+  tokens['--accent-label'] = p[(() => { try { return labelAccent(p); } catch { return LABEL_DEFAULT; } })()];
   // An invalid `backdrop` was counted as a failure above; the write is refused, so
   // this only has to not throw.
   const bd = (() => { try { return backdrop(p); } catch { return 'grid'; } })();

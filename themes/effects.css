@@ -57,6 +57,11 @@
   --tglow-h3: 0 0 calc(5px * var(--glow-strength)) color-mix(in srgb, var(--accent-h3, var(--accent-blue)) 90%, transparent),
               0 0 calc(15px * var(--glow-strength)) color-mix(in srgb, var(--accent-h3, var(--accent-blue)) 45%, transparent);
   --tglow-h4-sm: 0 0 calc(4px * var(--glow-strength)) color-mix(in srgb, var(--accent-h4, var(--accent-purple)) 40%, transparent);
+  /* Small-text glow in the H2 color, for small text at that rank (the gallery's
+     category titles), and in the label color (--accent-label: palette field `labels`,
+     green unless set) for field labels and the dropdown's group headings. */
+  --tglow-h2-sm:    0 0 calc(4px * var(--glow-strength)) color-mix(in srgb, var(--accent-h2, var(--accent-green)) 40%, transparent);
+  --tglow-label-sm: 0 0 calc(4px * var(--glow-strength)) color-mix(in srgb, var(--accent-label, var(--accent-green)) 40%, transparent);
 
   /* Reduced glow for SMALL text (labels, notices, badges, status, mono). */
   --tglow-pink-sm:   0 0 calc(4px * var(--glow-strength)) color-mix(in srgb, var(--accent-pink)   40%, transparent);

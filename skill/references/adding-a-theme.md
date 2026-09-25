@@ -23,7 +23,12 @@ Optional `headings` picks which accent each heading level uses, e.g. `{ h1: 'gre
 levels left out keep the neon order (h1 `pink`, h2 `green`, h3 `blue`, h4 `purple`). Pink is also the
 error color and blue the link color, so when the user wants different heading colors, set `headings`
 rather than moving their accents between slots (see NEO in `draft-4.mjs`, all-green h1–h3, or Rebecca
-in `draft-5.mjs`, purple h1, h3 and h4).
+in `draft-5.mjs`, purple h1–h4).
+
+Optional `labels` does the same for field labels (and the dropdown's group headings, the same rank):
+one accent name, e.g. `labels: 'purple'`; left out, labels stay `green`. Green is also the success
+color, so set `labels` rather than recoloring the green slot (see Rebecca, purple labels with a green
+success). Neither field adds contrast pairs: each names an accent already checked on every surface.
 
 Optional `backdrop` swaps the grid for a pattern: `'rain'`, falling code (NEO), or `'flowers'`, small
 violets, forget-me-nots and daisies drifting slowly down (Rebecca, in `draft-5.mjs`). The pattern is

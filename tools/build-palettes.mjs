@@ -17,7 +17,7 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { floor2 } from './contrast-checker/contrast.mjs';
-import { checkPalette, headingAccents, tokenValue, backdropVars } from './palette-checks.mjs';
+import { checkPalette, headingAccents, labelAccent, tokenValue, backdropVars } from './palette-checks.mjs';
 import { fullLabel } from './theme-name.mjs';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -73,10 +73,12 @@ if (process.argv.includes('--write')) {
   mkdirSync(join(OUT, 'palettes'), { recursive: true });
   mkdirSync(join(OUT, 'data'), { recursive: true });
   for (const [id, p] of Object.entries(P)) {
-    // --accent-h1 … h4 (the heading accents) are emitted for every palette, same as
-    // build-final.mjs, so each section sets its own rather than inheriting one.
+    // --accent-h1 … h4 (the heading accents) and --accent-label are emitted for every
+    // palette, same as build-final.mjs, so each section sets its own rather than
+    // inheriting one.
     const lines = Object.entries(cssVar).map(([k, v]) => `  ${v}: ${p[k]};`).join('\n') +
-      Object.entries(headingAccents(p)).map(([lvl, a]) => `\n  --accent-${lvl}: ${p[a]};`).join('');
+      Object.entries(headingAccents(p)).map(([lvl, a]) => `\n  --accent-${lvl}: ${p[a]};`).join('') +
+      `\n  --accent-label: ${p[labelAccent(p)]};`;
     // Optional per-theme background (grid) strength — emitted only when set, so themes
     // without it fall back to the effects.css default (--fx-grid-opacity: 0.22).
     const gridLine = p.grid !== undefined ? `  --fx-grid-opacity: ${p.grid};\n` : '';

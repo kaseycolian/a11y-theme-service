@@ -41,6 +41,8 @@ Each theme is a flat set of CSS custom properties. Colors (per theme, in `theme.
 with an on-fill text color `--on-{pink,green,blue,purple}`. `--accent-h1` … `--accent-h4` are the heading
 colors (`.t-h1` … `.t-h4`): each one of the four accents, pink → green → blue → purple unless the palette
 names others in `headings`, so a theme can recolor its headings without recoloring its errors or links.
+`--accent-label` is the field-label color (`.field-label`, `.dropdown-group-label`) the same way: green
+unless the palette names another accent in `labels`, so labels can move without recoloring success.
 Plus `color-scheme` and `--glow-strength` (1 dark / 0.35 light), `--fx-grid-opacity` (the backdrop's strength), and the backdrop pattern: `--fx-backdrop-image`,
 `-color`, `-mask`, `-mask-size`, `-anim`, `-timing` are `initial` (the grid) unless the palette sets
 `backdrop: 'rain'`, falling glyphs (`tools/rain.mjs`, the `--fx-rain` tiles in `effects.css`), or

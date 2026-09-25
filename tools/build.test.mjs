@@ -93,6 +93,31 @@ test('build-final emits --accent-h1 … h4 on every theme: the named accents, el
   }
 });
 
+test('build-final emits --accent-label on every theme: the named accent, else green', () => {
+  assert.equal(base.labels, undefined, 'fixture must leave labels unset');
+  assert.notEqual(base.purple, base.green);
+  const dir = sandbox('final-label', 'local.mjs', {
+    'light-01-plain':    { ...base, name: 'Plain' },
+    'light-02-labelled': { ...base, name: 'Labelled', labels: 'purple' },
+  });
+  const r = run(dir, 'tools/build-final.mjs', '--no-builtin', '--write');
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  const css = readFileSync(join(dir, 'themes', 'theme.css'), 'utf8');
+  const block = id => css.match(new RegExp(`\\[data-theme="${id}"\\] \\{[^}]*\\}`))?.[0] ?? '';
+  assert.match(block('plain-light'), new RegExp(`--accent-label: ${base.green};`));
+  assert.match(block('labelled-light'), new RegExp(`--accent-label: ${base.purple};`));
+});
+
+test('build-final refuses a theme whose labels is not an accent', () => {
+  const dir = sandbox('final-label-bad', 'local.mjs', {
+    'light-01-bad': { ...base, name: 'Bad', labels: 'violet' },
+  });
+  const r = run(dir, 'tools/build-final.mjs', '--no-builtin', '--write');
+  assert.equal(r.status, 1, r.stdout + r.stderr);
+  assert.match(r.stderr, /labels must be one of/);
+  assert.equal(existsSync(join(dir, 'themes')), false, 'nothing may be written');
+});
+
 test('build-final emits the rain for a rain theme, the flowers for a flowers theme, and resets both on every other', () => {
   const dir = sandbox('final-rain', 'local.mjs', {
     'light-01-plain':  { ...base, name: 'Plain' },

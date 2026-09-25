@@ -11,13 +11,14 @@
    Every purple here is Rebecca Purple's own hue (OKLCH 303.4°), at other lightnesses:
    surfaces, text, borders, the focus ring and the purple accent alike. The accent
    slots:
-     purple → Rebecca Purple   (every heading, H1–H4 via `headings`; badges, warnings)
+     purple → Rebecca Purple   (every heading, H1–H4 via `headings`; field labels via
+                               `labels`; badges, warnings)
      pink   → orchid           (errors, radios, pressed chips)
      blue   → periwinkle       (links, tabs, inputs, dropdowns, info)
      green  → leaf green       (success, switches, checkboxes)
    Pink and blue stay next to purple on the wheel (345° and 280°). The green is left
    green on purpose, the leaves of the flowers, so success still reads as success rather
-   than as one more purple; it is kept out of the headings, which are all purple.
+   than as one more purple; it is kept out of the headings and labels, which are all purple.
 
    Light: #663399 exactly, for the purple accent, the focus ring and the flowers. It is
    8.41:1 on white, so it reads as text and letters its own buttons in white. The page
@@ -39,7 +40,7 @@
 import { palettes as d4 } from './draft-4.mjs';
 
 const rebeccaDark = {
-  mode: 'dark', name: 'Rebecca', cohort: 'Tribute · Dark', headings: { h1: 'purple', h2: 'purple', h3: 'purple' },
+  mode: 'dark', name: 'Rebecca', cohort: 'Tribute · Dark', headings: { h1: 'purple', h2: 'purple', h3: 'purple' }, labels: 'purple',
   backdrop: 'flowers', backdropColor: '#663399',
   bg:'#140a20', panel:'#1e102e', elevated:'#29163e', text:'#ede2ff', muted:'#b6a4d0',
   border:'#663399', borderStrong:'#9b79c8', focus:'#c9a9f5',
@@ -47,7 +48,7 @@ const rebeccaDark = {
   blue:'#9499fa', onBlue:'#111034', purple:'#bb86fc', onPurple:'#1d0b2f',
 };
 const rebeccaLight = {
-  mode: 'light', name: 'Rebecca', cohort: 'Tribute · Light', headings: { h1: 'purple', h2: 'purple', h3: 'purple' },
+  mode: 'light', name: 'Rebecca', cohort: 'Tribute · Light', headings: { h1: 'purple', h2: 'purple', h3: 'purple' }, labels: 'purple',
   backdrop: 'flowers', backdropColor: '#663399',
   bg:'#faf7fe', panel:'#ffffff', elevated:'#ffffff', text:'#2a163f', muted:'#5e4a79',
   border:'#e3d8f4', borderStrong:'#8d69ba', focus:'#663399',

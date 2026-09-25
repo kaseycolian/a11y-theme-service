@@ -177,9 +177,11 @@ a.t-link:focus-visible,
    Inputs, textarea, select, labels
    ============================================================================= */
 .field { display: flex; flex-direction: column; gap: 6px; }
+/* --accent-label is the accent the theme names in `labels`, green unless set. The
+   fallbacks keep a theme.css or effects.css from before it on green. */
 .field-label {
   font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-  color: var(--accent-green); text-shadow: var(--tglow-green-sm);
+  color: var(--accent-label, var(--accent-green)); text-shadow: var(--tglow-label-sm, var(--tglow-green-sm));
 }
 .field-label.sub { color: var(--accent-purple); text-shadow: var(--tglow-purple-sm); }
 

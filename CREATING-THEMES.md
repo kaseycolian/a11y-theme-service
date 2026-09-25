@@ -83,7 +83,8 @@ manual workflow, if you want to drive it yourself:
    (the highest-numbered `tools/palettes/draft-N.mjs`) — or start a new `draft-N.mjs` for a fresh side-by-side exploration.
    Reuse the token shape from existing entries; set a clear `label`/`group`. Optional per-theme
    background strength via `grid` (0 = off, 0.22 = subdued, ~0.40 = pronounced), and which accent each
-   heading level uses via `headings` (default: h1 pink, h2 green, h3 blue, h4 purple). The backdrop can
+   heading level uses via `headings` (default: h1 pink, h2 green, h3 blue, h4 purple), and which one
+   the field labels use via `labels` (default: green). The backdrop can
    be falling code (`backdrop: 'rain'`) or drifting flowers (`backdrop: 'flowers'`) instead of the
    grid, in `backdropColor`.
 2. **Validate AA.** `npm run validate` (built-ins) or just build — `build-final.mjs` validates every

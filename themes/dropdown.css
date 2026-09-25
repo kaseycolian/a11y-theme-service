@@ -435,8 +435,8 @@
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--accent-green);
-  text-shadow: var(--tglow-green-sm);
+  color: var(--accent-label, var(--accent-green));
+  text-shadow: var(--tglow-label-sm, var(--tglow-green-sm));
 }
 .dropdown-group + .dropdown-group {
   margin-top: 4px;

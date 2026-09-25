@@ -71,6 +71,18 @@ export function headingAccents(p) {
   }));
 }
 
+/** The accent field labels use (.field-label, and the dropdown's group headings, which
+ *  are the same rank), emitted as --accent-label. Optional palette field `labels`, one
+ *  accent name, e.g. 'purple'; green unless set. Like `headings`, it names an accent
+ *  that is already checked on every surface, so it needs no pair of its own, and a
+ *  theme can move its labels off green without recoloring its success states. */
+export const LABEL_DEFAULT = 'green';
+export function labelAccent(p) {
+  const a = p.labels ?? LABEL_DEFAULT;
+  if (!ACCENTS.includes(a)) throw new Error(`labels must be one of ${ACCENTS.join(', ')}; got "${a}"`);
+  return a;
+}
+
 /** The page backdrop (effects.css .fx-grid). Optional palette field `backdrop`: 'grid',
  *  the crossing neon lines (default); 'rain', falling glyphs (tools/rain.mjs); or
  *  'flowers', drifting blossoms (tools/flowers.mjs). Rain and flowers are PATTERNS:
@@ -157,12 +169,13 @@ export const tokenValue = (p, k) => (k === 'backdropBg' ? backdropUnder(p) : p[k
  * Check one palette against every pair, plus the pattern pairs when its backdrop is
  * rain or flowers. `ratio` is
  * the exact, unrounded value and `pass` compares it as-is. Throws on a missing or
- * invalid token (or `headings`, `backdrop`), which both builders report as a problem
+ * invalid token (or `headings`, `labels`, `backdrop`), which both builders report as a problem
  * rather than letting it through.
  * @returns {Array<{label:string, fg:string, bg:string, min:number, ratio:number, pass:boolean}>}
  */
 export function checkPalette(p) {
   headingAccents(p);
+  labelAccent(p);
   backdrop(p);
   return [...PAIRS, ...patternPairs(p)].map(([label, fg, bg, min]) => {
     const ratio = contrastRatio(tokenValue(p, fg), tokenValue(p, bg));

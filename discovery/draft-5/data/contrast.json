@@ -5759,26 +5759,26 @@
       },
       {
         "label": "green text on bg",
-        "fg": "#68d36f",
+        "fg": "#74c8fd",
         "bg": "#140a20",
         "min": 4.5,
-        "ratio": 10.17,
+        "ratio": 10.44,
         "pass": true
       },
       {
         "label": "green text on panel",
-        "fg": "#68d36f",
+        "fg": "#74c8fd",
         "bg": "#1e102e",
         "min": 4.5,
-        "ratio": 9.52,
+        "ratio": 9.77,
         "pass": true
       },
       {
         "label": "on-green on green fill",
-        "fg": "#042107",
-        "bg": "#68d36f",
+        "fg": "#00192e",
+        "bg": "#74c8fd",
         "min": 4.5,
-        "ratio": 9.08,
+        "ratio": 9.69,
         "pass": true
       },
       {
@@ -5887,10 +5887,10 @@
       },
       {
         "label": "green text on elevated",
-        "fg": "#68d36f",
+        "fg": "#74c8fd",
         "bg": "#29163e",
         "min": 4.5,
-        "ratio": 8.7,
+        "ratio": 8.93,
         "pass": true
       },
       {
@@ -5951,10 +5951,10 @@
       },
       {
         "label": "green text on flowers",
-        "fg": "#68d36f",
+        "fg": "#74c8fd",
         "bg": "#422163",
         "min": 4.5,
-        "ratio": 6.83,
+        "ratio": 7.01,
         "pass": true
       },
       {
@@ -6055,26 +6055,26 @@
       },
       {
         "label": "green text on bg",
-        "fg": "#68d36f",
+        "fg": "#74c8fd",
         "bg": "#140a20",
         "min": 4.5,
-        "ratio": 10.17,
+        "ratio": 10.44,
         "pass": true
       },
       {
         "label": "green text on panel",
-        "fg": "#68d36f",
+        "fg": "#74c8fd",
         "bg": "#1e102e",
         "min": 4.5,
-        "ratio": 9.52,
+        "ratio": 9.77,
         "pass": true
       },
       {
         "label": "on-green on green fill",
-        "fg": "#042107",
-        "bg": "#68d36f",
+        "fg": "#00192e",
+        "bg": "#74c8fd",
         "min": 4.5,
-        "ratio": 9.08,
+        "ratio": 9.69,
         "pass": true
       },
       {
@@ -6183,10 +6183,10 @@
       },
       {
         "label": "green text on elevated",
-        "fg": "#68d36f",
+        "fg": "#74c8fd",
         "bg": "#29163e",
         "min": 4.5,
-        "ratio": 8.7,
+        "ratio": 8.93,
         "pass": true
       },
       {
@@ -6287,26 +6287,26 @@
       },
       {
         "label": "green text on bg",
-        "fg": "#2b6b30",
+        "fg": "#096591",
         "bg": "#faf7fe",
         "min": 4.5,
-        "ratio": 6.09,
+        "ratio": 6.03,
         "pass": true
       },
       {
         "label": "green text on panel",
-        "fg": "#2b6b30",
+        "fg": "#096591",
         "bg": "#ffffff",
         "min": 4.5,
-        "ratio": 6.46,
+        "ratio": 6.39,
         "pass": true
       },
       {
         "label": "on-green on green fill",
         "fg": "#ffffff",
-        "bg": "#2b6b30",
+        "bg": "#096591",
         "min": 4.5,
-        "ratio": 6.46,
+        "ratio": 6.39,
         "pass": true
       },
       {
@@ -6415,10 +6415,10 @@
       },
       {
         "label": "green text on elevated",
-        "fg": "#2b6b30",
+        "fg": "#096591",
         "bg": "#ffffff",
         "min": 4.5,
-        "ratio": 6.46,
+        "ratio": 6.39,
         "pass": true
       },
       {
@@ -6479,10 +6479,10 @@
       },
       {
         "label": "green text on flowers",
-        "fg": "#2b6b30",
+        "fg": "#096591",
         "bg": "#e5dbef",
         "min": 4.5,
-        "ratio": 4.83,
+        "ratio": 4.78,
         "pass": true
       },
       {
@@ -6583,26 +6583,26 @@
       },
       {
         "label": "green text on bg",
-        "fg": "#2b6b30",
+        "fg": "#096591",
         "bg": "#faf7fe",
         "min": 4.5,
-        "ratio": 6.09,
+        "ratio": 6.03,
         "pass": true
       },
       {
         "label": "green text on panel",
-        "fg": "#2b6b30",
+        "fg": "#096591",
         "bg": "#ffffff",
         "min": 4.5,
-        "ratio": 6.46,
+        "ratio": 6.39,
         "pass": true
       },
       {
         "label": "on-green on green fill",
         "fg": "#ffffff",
-        "bg": "#2b6b30",
+        "bg": "#096591",
         "min": 4.5,
-        "ratio": 6.46,
+        "ratio": 6.39,
         "pass": true
       },
       {
@@ -6711,10 +6711,10 @@
       },
       {
         "label": "green text on elevated",
-        "fg": "#2b6b30",
+        "fg": "#096591",
         "bg": "#ffffff",
         "min": 4.5,
-        "ratio": 6.46,
+        "ratio": 6.39,
         "pass": true
       },
       {

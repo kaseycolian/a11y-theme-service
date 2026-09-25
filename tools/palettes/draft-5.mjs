@@ -15,10 +15,16 @@
                                `labels`; badges, warnings)
      pink   → orchid           (errors, radios, pressed chips)
      blue   → periwinkle       (links, tabs, inputs, dropdowns, info)
-     green  → leaf green       (success, switches, checkboxes)
-   Pink and blue stay next to purple on the wheel (345° and 280°). The green is left
-   green on purpose, the leaves of the flowers, so success still reads as success rather
-   than as one more purple; it is kept out of the headings and labels, which are all purple.
+     green  → forget-me-not    (success, switches, checkboxes) — a sky blue, not a green
+   Pink and blue stay next to purple on the wheel (345° and 280°). The green slot holds
+   no green: a true green clashed with the purples, so it is the sky blue of the
+   forget-me-nots in the backdrop (238°), the one hue near this family that stays clear
+   of the other three. It sits further from orchid, purple and periwinkle (OKLab ΔE
+   0.12–0.24) than purple and periwinkle sit from each other (0.07), and holds up best of
+   the candidates under deutan and protan simulation. Fuchsia (325°) sat on top of orchid
+   and purple; a rose (15°) sat next to orchid, the error color, so success and error
+   would both have read pink. As in every theme, status never rides on hue alone: success
+   carries a ✓ and a word.
 
    Light: #663399 exactly, for the purple accent, the focus ring and the flowers. It is
    8.41:1 on white, so it reads as text and letters its own buttons in white. The page
@@ -36,7 +42,7 @@
    daisies, buds, sprigs and loose petals, in Rebecca Purple, drifting slowly down on
    a breeze. Like the rain, the most opaque point of it is checked as a surface text
    sits on. The strengths leave headroom under the limits the checks set (0.63 dark,
-   0.18 light) and were chosen by eye to look about the same in both modes. */
+   0.17 light) and were chosen by eye to look about the same in both modes. */
 import { palettes as d4 } from './draft-4.mjs';
 
 const rebeccaDark = {
@@ -44,7 +50,7 @@ const rebeccaDark = {
   backdrop: 'flowers', backdropColor: '#663399',
   bg:'#140a20', panel:'#1e102e', elevated:'#29163e', text:'#ede2ff', muted:'#b6a4d0',
   border:'#663399', borderStrong:'#9b79c8', focus:'#c9a9f5',
-  pink:'#f77dc6', onPink:'#2a051d', green:'#68d36f', onGreen:'#042107',
+  pink:'#f77dc6', onPink:'#2a051d', green:'#74c8fd', onGreen:'#00192e',
   blue:'#9499fa', onBlue:'#111034', purple:'#bb86fc', onPurple:'#1d0b2f',
 };
 const rebeccaLight = {
@@ -52,7 +58,7 @@ const rebeccaLight = {
   backdrop: 'flowers', backdropColor: '#663399',
   bg:'#faf7fe', panel:'#ffffff', elevated:'#ffffff', text:'#2a163f', muted:'#5e4a79',
   border:'#e3d8f4', borderStrong:'#8d69ba', focus:'#663399',
-  pink:'#a32a7a', onPink:'#ffffff', green:'#2b6b30', onGreen:'#ffffff',
+  pink:'#a32a7a', onPink:'#ffffff', green:'#096591', onGreen:'#ffffff',
   blue:'#4841af', onBlue:'#ffffff', purple:'#663399', onPurple:'#ffffff',
 };
 
